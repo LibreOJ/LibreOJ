@@ -1,0 +1,31 @@
+{
+  "private": true,
+  "name": "libreoj-bootstrap-azure",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "author": "Menci <huanghaorui301@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "node --experimental-json-modules build.mjs",
+    "settings": "node --experimental-json-modules settings.mjs",
+    "dev": "yarn build && yarn settings local && func start",
+    "pre-deploy": "yarn build && node --experimental-json-modules bundle.mjs && cd deploy && yarn --frozen-lockfile --prod && zip -r ../deploy.zip ."
+  },
+  "devDependencies": {
+    "@azure/functions": "^1.2.3",
+    "@types/fs-extra": "^9.0.12",
+    "@types/geoip-country": "^4.0.0",
+    "@types/node": "*",
+    "@types/node-fetch": "^2.5.12",
+    "esbuild": "^0.12.24",
+    "esbuild-node-externals": "^1.3.0",
+    "fs-extra": "^10.0.0",
+    "libreoj-bootstrap-core": "*",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "@peculiar/webcrypto": "^1.1.7",
+    "geoip-country": "^4.0.84",
+    "node-fetch": "^3.0.0"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "appVersion": "0.2.2",
+  "apiEndpoint": "CN=https://api.loj.ac.cn;https://api.loj.ac",
+  "polyfillServiceEndpoint": "CN=https://api.loj.ac.cn/polyfill;https://polyfill.io",
+  "defaultTitle": "LibreOJ",
+  "favicon": "https://cdn.jsdelivr.net/gh/libreoj/assets/favicon.ico"
+}

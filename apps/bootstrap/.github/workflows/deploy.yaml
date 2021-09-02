@@ -1,0 +1,119 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+env:
+  CLOUDFLARE_SUBDIRECTORY: libreoj-bootstrap-cloudflare
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+  CLOUDFLARE_WORKER_NAME_PRODUCTION: libreoj-bootstrap
+  CLOUDFLARE_WORKER_NAME_STAGING: libreoj-bootstrap-staging
+
+  AZURE_SUBDIRECTORY: libreoj-bootstrap-azure
+  AZURE_SUBSCRIPTION: 029ab8ea-4f74-47eb-8630-b9e0413e487d
+  AZURE_RESOURCE_GROUP: LibreOJ
+  AZURE_FUNCTION_APP: libreoj-bootstrap
+
+jobs:
+  cf-staging:
+    name: Cloudflare Workers (Staging)
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Install Node.js 16
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
+    - name: Build for deployment
+      working-directory: ${{ env.CLOUDFLARE_SUBDIRECTORY }}
+      run: yarn pre-deploy
+      env:
+        CLOUDFLARE_WORKER_NAME: ${{ env.CLOUDFLARE_WORKER_NAME_STAGING }}
+    - name: Deploy with Wrangler
+      uses: cloudflare/wrangler-action@1.2.0
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        workingDirectory: ${{ env.CLOUDFLARE_SUBDIRECTORY }}
+  cf-production:
+    name: Cloudflare Workers (Production)
+    environment: production
+    needs: cf-staging
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Install Node.js 16
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
+    - name: Build for deployment
+      working-directory: ${{ env.CLOUDFLARE_SUBDIRECTORY }}
+      run: yarn pre-deploy
+      env:
+        CLOUDFLARE_WORKER_NAME: ${{ env.CLOUDFLARE_WORKER_NAME_PRODUCTION }}
+    - name: Deploy with Wrangler
+      uses: cloudflare/wrangler-action@1.2.0
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        workingDirectory: ${{ env.CLOUDFLARE_SUBDIRECTORY }}
+  az-staging:
+    name: Azure Function App (Staging)
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Install Node.js 14
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
+    - name: Build for deployment
+      working-directory: ${{ env.AZURE_SUBDIRECTORY }}
+      run: yarn pre-deploy
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Get Publish Profile
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          PUBLISH_PROFILE="$(az functionapp deployment list-publishing-profiles --subscription "$AZURE_SUBSCRIPTION" --resource-group "$AZURE_RESOURCE_GROUP" --name "$AZURE_FUNCTION_APP" --slot staging --xml)"
+          echo "PUBLISH_PROFILE=$(tr -d '\r\n' <<< "$PUBLISH_PROFILE")" >> $GITHUB_ENV
+    - name: Deploy
+      uses: azure/functions-action@v1
+      with:
+        app-name: ${{ env.AZURE_FUNCTION_APP }}
+        package: ${{ env.AZURE_SUBDIRECTORY }}/deploy.zip
+        publish-profile: ${{ env.PUBLISH_PROFILE }}
+    - name: Deploy Application Settings
+      run: |
+        yarn settings deploy az functionapp config appsettings set --subscription "$AZURE_SUBSCRIPTION" --resource-group "$AZURE_RESOURCE_GROUP" --name "$AZURE_FUNCTION_APP" --slot staging --settings
+        echo "PUBLISH_PROFILE=''" >> $GITHUB_ENV
+      working-directory: ${{ env.AZURE_SUBDIRECTORY }}
+    - name: Set runtime Node.js version
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az functionapp config set --subscription "$AZURE_SUBSCRIPTION" --resource-group "$AZURE_RESOURCE_GROUP" --name "$AZURE_FUNCTION_APP" --slot staging --linux-fx-version "node|14"
+  az-production:
+    name: Azure Function App (Production)
+    environment: production
+    needs: az-staging
+    runs-on: ubuntu-latest
+    steps:
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Swap deployment slots
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az functionapp deployment slot swap --subscription "$AZURE_SUBSCRIPTION" --resource-group "$AZURE_RESOURCE_GROUP" --name "$AZURE_FUNCTION_APP" --slot staging

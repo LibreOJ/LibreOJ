@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "workspaces": [
+    "libreoj-bootstrap-core",
+    "libreoj-bootstrap-azure",
+    "libreoj-bootstrap-cloudflare"
+  ],
+  "scripts": {
+    "format": "prettier --write '**/*.{ts,js,mjs,json}'"
+  },
+  "devDependencies": {
+    "git-repo-info": "^2.1.1",
+    "prettier": "^2.3.2"
+  }
+}
