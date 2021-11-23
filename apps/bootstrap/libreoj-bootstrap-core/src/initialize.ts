@@ -49,12 +49,9 @@ async function doInitialize(configString: string, cache: Cache) {
     const replaces: Record<string, string> = {
       __api_endpoint__: config.apiEndpoint,
       __polyfill_service__: config.polyfillServiceEndpoint,
-      __gravatar__: config.gravatarEndpoint,
       __default_title__: config.defaultTitle,
       __public_path__: config.webpackPublicPath || cdnRoot,
-      __favicon__: config.favicon,
-      __app_logo__: config.logo,
-      __ga__: config.googleAnalytics
+      __favicon__: config.favicon
     };
 
     let previouslyDefaultRegionHtml: string;
