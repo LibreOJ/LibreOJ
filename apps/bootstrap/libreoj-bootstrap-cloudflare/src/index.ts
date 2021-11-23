@@ -3,10 +3,7 @@
 
 import { initialize, initialized, Cache, handleRequest } from "libreoj-bootstrap-core";
 
-declare var self: ServiceWorkerGlobalScope &
-  typeof globalThis & {
-    CONFIG: string;
-  };
+declare var self: ServiceWorkerGlobalScope & typeof globalThis;
 
 // Implement a generic K-V cache with Web Cache API
 const cache = ((): Cache => {
@@ -34,7 +31,7 @@ self.addEventListener("fetch", (event: FetchEvent) => {
   event.respondWith(
     (async () => {
       if (!initialized) {
-        await initialize(self.CONFIG, cache);
+        await initialize(cache);
       }
       const request = event.request;
       return handleRequest(request, {

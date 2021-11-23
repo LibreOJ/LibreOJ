@@ -10,7 +10,7 @@ const initializationPromise = (async () => {
   global.Headers = nodeFetch.Headers as any;
   global.Request = nodeFetch.Request as any;
   global.Response = nodeFetch.Response as any;
-  global.crypto = new webcrypto.Crypto();
+  global.crypto = new webcrypto.Crypto() as any;
 
   // Use a stub cache for the stateless Azure Function App platform
   const cache: Cache = {
@@ -19,7 +19,7 @@ const initializationPromise = (async () => {
   };
 
   // Initialize core
-  await initialize(process.env.CONFIG, cache);
+  await initialize(cache);
 })();
 
 function getClientIp(xForwardedForList: string[]) {

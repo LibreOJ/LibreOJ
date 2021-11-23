@@ -6,7 +6,7 @@
   "author": "Menci <huanghaorui301@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build:code": "esbuild src/index.ts --bundle --outfile=dist/index.js",
+    "build:code": "node --experimental-json-modules build.mjs",
     "build:config": "node --experimental-json-modules config.mjs",
     "build": "yarn build:code && yarn build:config",
     "dev": "yarn build && wrangler dev",

@@ -92,9 +92,8 @@ jobs:
         app-name: ${{ env.AZURE_FUNCTION_APP }}
         package: ${{ env.AZURE_SUBDIRECTORY }}/deploy.zip
         publish-profile: ${{ env.PUBLISH_PROFILE }}
-    - name: Deploy Application Settings
+    - name: Clear PUBLISH_PROFILE
       run: |
-        yarn settings deploy az functionapp config appsettings set --subscription "$AZURE_SUBSCRIPTION" --resource-group "$AZURE_RESOURCE_GROUP" --name "$AZURE_FUNCTION_APP" --slot staging --settings
         echo "PUBLISH_PROFILE=''" >> $GITHUB_ENV
       working-directory: ${{ env.AZURE_SUBDIRECTORY }}
     - name: Set runtime Node.js version

@@ -7,8 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "node --experimental-json-modules build.mjs",
-    "settings": "node --experimental-json-modules settings.mjs",
-    "dev": "yarn build && yarn settings local && func start",
+    "dev": "yarn build && func start",
     "pre-deploy": "yarn build && node --experimental-json-modules bundle.mjs && cd deploy && yarn --frozen-lockfile --prod && zip -r ../deploy.zip ."
   },
   "devDependencies": {

@@ -2,6 +2,8 @@ import type { ApplicationConfig } from "./config";
 import type { ResponseDataForRegion } from "./index";
 import { md5 } from "./utils";
 
+import configString from "inline:../../config.out.json";
+
 export interface Cache {
   set: <T>(key: string, value: T) => Promise<void>;
   get: <T>(key: string) => Promise<T>;
@@ -20,10 +22,11 @@ const DEFAULT_REGION = "";
 export let initialized = false;
 let initializationError: Error = null;
 
-async function doInitialize(configString: string, cache: Cache) {
+async function doInitialize(cache: Cache) {
   if (initialized) return;
 
   const overallConfig: {
+    html: string;
     applicationConfig: ApplicationConfig;
     buildInfo: BuildInfo;
   } = JSON.parse(configString);
@@ -38,11 +41,10 @@ async function doInitialize(configString: string, cache: Cache) {
   }
 
   try {
-    const cdnRoot = `https://cdn.jsdelivr.net/npm/syzoj-ng-app@${config.appVersion}/build`;
+    const cdnRoot = config.cdnRoot;
 
-    const response = await fetch(`${cdnRoot}/index.html`);
     responseDataForRegion[DEFAULT_REGION] = {
-      html: await response.text(),
+      html: overallConfig.html,
       eTag: null
     };
 
@@ -89,9 +91,9 @@ async function doInitialize(configString: string, cache: Cache) {
 }
 
 export let initializationPromise: Promise<void> = null;
-export function initialize(config: string, cache: Cache) {
+export function initialize(cache: Cache) {
   if (!initializationPromise) {
-    initializationPromise = doInitialize(config, cache).then(() => {
+    initializationPromise = doInitialize(cache).then(() => {
       initialized = true;
     });
   }
