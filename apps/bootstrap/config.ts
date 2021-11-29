@@ -4,8 +4,7 @@ import fs from "fs";
 import url from "url";
 import path from "path";
 import crypto from "crypto";
-
-import inputApplicationConfig from "./config.json";
+import { createRequire } from "module";
 
 interface ApplicationConfig {
   cdnRoot: string;
@@ -16,7 +15,7 @@ interface ApplicationConfig {
   favicon: string;
 }
 
-const applicationConfig: ApplicationConfig = inputApplicationConfig;
+const applicationConfig: ApplicationConfig = createRequire(import.meta.url)("./config.json");
 
 async function fetchIndexHtml() {
   const response = await fetch(applicationConfig.cdnRoot + "/index.html");
