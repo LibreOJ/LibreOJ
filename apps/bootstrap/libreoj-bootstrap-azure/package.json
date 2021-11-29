@@ -5,9 +5,8 @@
   "main": "dist/index.js",
   "author": "Menci <huanghaorui301@gmail.com>",
   "license": "MIT",
-  "type": "module",
   "scripts": {
-    "build": "node --experimental-json-modules --loader ts-node/esm build.ts",
+    "build": "node --experimental-json-modules --loader ts-node/esm build.mjs",
     "dev": "yarn build && func start",
     "pre-deploy": "yarn build && node --experimental-json-modules bundle.mjs && cd deploy && yarn --frozen-lockfile --prod && zip -r ../deploy.zip ."
   },
