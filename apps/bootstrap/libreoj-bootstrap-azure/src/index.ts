@@ -1,7 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import geoip from "geoip-country";
-import webcrypto from "@peculiar/webcrypto";
-import { initialize, initialized, Cache, handleRequest } from "libreoj-bootstrap-core";
+import { handleRequest } from "libreoj-bootstrap-core";
 
 const initializationPromise = (async () => {
   // Polyfills for Web interfaces
@@ -10,16 +9,6 @@ const initializationPromise = (async () => {
   global.Headers = nodeFetch.Headers as any;
   global.Request = nodeFetch.Request as any;
   global.Response = nodeFetch.Response as any;
-  global.crypto = new webcrypto.Crypto() as any;
-
-  // Use a stub cache for the stateless Azure Function App platform
-  const cache: Cache = {
-    set: async () => {},
-    get: async () => null
-  };
-
-  // Initialize core
-  await initialize(cache);
 })();
 
 function getClientIp(xForwardedForList: string[]) {
@@ -28,7 +17,7 @@ function getClientIp(xForwardedForList: string[]) {
 }
 
 const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest) => {
-  if (!initialized) await initializationPromise;
+  await initializationPromise;
 
   const url = new URL(req.url);
   const headers = { ...req.headers };

@@ -5,8 +5,9 @@
   "main": "dist/index.js",
   "author": "Menci <huanghaorui301@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "scripts": {
-    "build:code": "node --experimental-json-modules build.mjs",
+    "build:code": "node --experimental-json-modules --loader ts-node/esm build.ts",
     "build:config": "node --experimental-json-modules config.mjs",
     "build": "yarn build:code && yarn build:config",
     "dev": "yarn build && wrangler dev",

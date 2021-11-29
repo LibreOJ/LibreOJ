@@ -1,7 +1,4 @@
-import { buildInfo, getResponseDataForRegion } from "./initialize";
-
-export { initialize, initialized, initializationPromise, Cache } from "./initialize";
-export type { ApplicationConfig } from "./config";
+import configString from "inline:../../config.out.json";
 
 export interface ResponseDataForRegion {
   html: string;
@@ -11,6 +8,21 @@ export interface ResponseDataForRegion {
 interface ClientInfo {
   ip: string;
   ipRegion: string;
+}
+
+const {
+  responseDataForRegion,
+  buildInfo
+}: {
+  responseDataForRegion: Record<string, ResponseDataForRegion>;
+  buildInfo: {
+    buildTime: string;
+    buildCommit: string;
+  };
+} = JSON.parse(configString as unknown as string);
+
+function getResponseDataForRegion(region: string) {
+  return responseDataForRegion[region] || responseDataForRegion[""];
 }
 
 export function handleRequest(request: Request, clientInfo: ClientInfo): Response {

@@ -1,7 +1,7 @@
 import esbuild from "esbuild";
 import inlineImportPlugin from "esbuild-plugin-inline-import";
 
-import "../config.mjs";
+import "../config.ts";
 
 esbuild.build({
   entryPoints: ["src/index.ts"],
@@ -9,7 +9,5 @@ esbuild.build({
   platform: "node",
   outfile: "dist/index.js",
   logLevel: "info",
-  plugins: [
-    inlineImportPlugin()
-  ]
+  plugins: [inlineImportPlugin()]
 });

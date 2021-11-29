@@ -5,6 +5,7 @@
     "libreoj-bootstrap-azure",
     "libreoj-bootstrap-cloudflare"
   ],
+  "type": "module",
   "scripts": {
     "format": "prettier --write '**/*.{ts,js,mjs,json}'"
   },
@@ -12,6 +13,8 @@
     "esbuild-plugin-inline-import": "^1.0.1",
     "git-repo-info": "^2.1.1",
     "node-fetch": "^3.1.0",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
   }
 }

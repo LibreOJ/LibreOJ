@@ -4,7 +4,7 @@ import inlineImportPlugin from "esbuild-plugin-inline-import";
 
 import workspaceRoot from "../package.json";
 
-import "../config.mjs";
+import "../config.ts";
 
 esbuild.build({
   entryPoints: ["src/index.ts"],

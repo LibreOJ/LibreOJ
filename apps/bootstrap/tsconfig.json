@@ -13,11 +13,11 @@
     "isolatedModules": true,
     "noEmit": true,
     "strict": false,
-    "module": "commonjs",
+    "module": "esnext",
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": false,
     "baseUrl": "./"
   },
-  "include": ["src"],
+  "include": ["."],
   "exclude": ["node_modules", "dist"]
 }

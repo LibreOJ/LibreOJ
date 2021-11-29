@@ -5,8 +5,9 @@
   "main": "dist/index.js",
   "author": "Menci <huanghaorui301@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "scripts": {
-    "build": "node --experimental-json-modules build.mjs",
+    "build": "node --experimental-json-modules --loader ts-node/esm build.ts",
     "dev": "yarn build && func start",
     "pre-deploy": "yarn build && node --experimental-json-modules bundle.mjs && cd deploy && yarn --frozen-lockfile --prod && zip -r ../deploy.zip ."
   },
@@ -23,7 +24,6 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@peculiar/webcrypto": "^1.1.7",
     "geoip-country": "^4.0.84",
     "node-fetch": "^3.0.0"
   }
