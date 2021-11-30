@@ -1,5 +1,5 @@
 {
-  "cdnRoot": "https://cdn.jsdelivr.net/npm/@lyrio/ui@0.2.4/build",
+  "cdnRoot": "https://cdn.jsdelivr.net/npm/@lyrio/ui@0.2.5/build",
   "apiEndpoint": "CN=https://api.loj.ac.cn;https://api.loj.ac",
   "polyfillServiceEndpoint": "CN=https://api.loj.ac.cn/polyfill;https://polyfill.io",
   "defaultTitle": "LibreOJ",
