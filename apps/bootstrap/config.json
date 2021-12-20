@@ -1,7 +1,30 @@
 {
-  "cdnRoot": "https://cdn.menci.xyz/npm/@lyrio/ui@0.2.5/build",
-  "apiEndpoint": "CN=https://api.loj.ac.cn;https://api.loj.ac",
-  "polyfillServiceEndpoint": "CN=https://api.loj.ac.cn/polyfill;https://polyfill.io",
-  "defaultTitle": "LibreOJ",
-  "favicon": "https://cdn.menci.xyz/gh/libreoj/assets/favicon.ico"
+  "env": {
+    "title": "LibreOJ",
+
+    "cdnEndpoint": "https://cdn.menci.xyz",
+    "cdnRoot": "${cdnEndpoint}/npm/@lyrio/ui@0.2.5/build",
+
+    "apiEndpointCN": "https://api.loj.ac.cn",
+    "apiEndpoint": "https://api.loj.ac",
+
+    "polyfillServiceCN": "https://api.loj.ac.cn/polyfill",
+    "polyfillService": "https://polyfill.io",
+
+    "favicon": "${cdnEndpoint}/gh/libreoj/assets/favicon.ico"
+  },
+  "htmlTemplate": "${cdnRoot}/index.html",
+  "substitution": {
+    "__api_endpoint__": {
+      "CN": "${apiEndpointCN}",
+      "": "${apiEndpoint}"
+    },
+    "__polyfill_service__": {
+      "CN": "${polyfillServiceCN}",
+      "": "${polyfillService}"
+    },
+    "__default_title__": "${title}",
+    "__public_path__": "${cdnRoot}",
+    "__favicon__": "${favicon}"
+  }
 }

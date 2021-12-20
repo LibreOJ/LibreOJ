@@ -6,19 +6,31 @@ import path from "path";
 import crypto from "crypto";
 import { createRequire } from "module";
 
+type ValueForRegions = string | Record<string, string>;
+
 interface ApplicationConfig {
-  cdnRoot: string;
-  apiEndpoint: string;
-  polyfillServiceEndpoint: string;
-  defaultTitle: string;
-  webpackPublicPath?: string;
-  favicon: string;
+  env: Record<string, string>;
+  htmlTemplate: string;
+  substitution: Record<string, ValueForRegions>;
 }
 
 const applicationConfig: ApplicationConfig = createRequire(import.meta.url)("./config.json");
 
-async function fetchIndexHtml() {
-  const response = await fetch(applicationConfig.cdnRoot + "/index.html");
+const applyEnv = (() => {
+  const env = Object.entries(applicationConfig.env);
+  function applyEnv(string: string, envEntries: [string, string][] = env) {
+    for (const [key, value] of envEntries) string = string.split("${" + key + "}").join(value);
+    return string;
+  }
+
+  // Initialize env
+  for (const i of env.keys()) env[i][1] = applyEnv(env[i][1], env.slice(0, i));
+
+  return applyEnv;
+})();
+
+async function fetchHtmlTemplate() {
+  const response = await fetch(applyEnv(applicationConfig.htmlTemplate));
   return response.text();
 }
 
@@ -30,32 +42,19 @@ export interface ResponseDataForRegion {
 function prepareResponseDataForRegion(html: string) {
   const responseDataForRegion: Record<string, ResponseDataForRegion> = {};
 
-  const cdnRoot = applicationConfig.cdnRoot;
-
   responseDataForRegion[""] = {
     html: html,
     eTag: null
   };
 
-  const replaces: Record<string, string> = {
-    __api_endpoint__: applicationConfig.apiEndpoint,
-    __polyfill_service__: applicationConfig.polyfillServiceEndpoint,
-    __default_title__: applicationConfig.defaultTitle,
-    __public_path__: applicationConfig.webpackPublicPath || cdnRoot,
-    __favicon__: applicationConfig.favicon
-  };
-
   let previouslyDefaultRegionHtml: string;
-  // value is in the form of CN=domain1.com;US=domain2.com;domain3.com
-  for (const [placeholder, value] of Object.entries(replaces)) {
+  for (const [placeholder, value] of Object.entries(applicationConfig.substitution)) {
     if (!value) continue;
     previouslyDefaultRegionHtml = responseDataForRegion[""].html;
 
-    const entries = value
-      .split(";")
-      .map(item => (item.indexOf("=") === -1 ? ["", item] : item.split("=")) as [string, string]);
+    const entries: [string, string][] = typeof value === "string" ? [["", value]] : Object.entries(value);
     const regions = new Set([...entries.map(([region]) => region), ...Object.keys(responseDataForRegion)]);
-    const valuesMap = new Map(entries);
+    const valuesMap = new Map(entries.map(([key, value]) => [key, applyEnv(value)]));
     for (const region of regions) {
       if (!responseDataForRegion[region])
         responseDataForRegion[region] = {
@@ -78,7 +77,7 @@ function prepareResponseDataForRegion(html: string) {
 }
 
 const config = {
-  responseDataForRegion: prepareResponseDataForRegion(await fetchIndexHtml()),
+  responseDataForRegion: prepareResponseDataForRegion(await fetchHtmlTemplate()),
   buildInfo: {
     buildTime: new Date().toISOString(),
     buildCommit: getGitRepoInfo().sha
