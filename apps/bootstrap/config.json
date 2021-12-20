@@ -1,9 +1,12 @@
 {
   "env": {
     "title": "LibreOJ",
+    "uiVersion": "0.2.6",
 
-    "cdnEndpoint": "https://cdn.menci.xyz",
-    "cdnRoot": "${cdnEndpoint}/npm/@lyrio/ui@0.2.5/build",
+    "cdnEndpoint": "https://cdn.jsdelivr.net",
+    "cdnEndpointCN": "https://cdn.menci.xyz",
+    "cdnRoot": "${cdnEndpoint}/npm/@lyrio/ui@${uiVersion}/build",
+    "cdnRootCN": "${cdnEndpointCN}/npm/@lyrio/ui@${uiVersion}/build",
 
     "apiEndpointCN": "https://api.loj.ac.cn",
     "apiEndpoint": "https://api.loj.ac",
@@ -11,7 +14,15 @@
     "polyfillServiceCN": "https://api.loj.ac.cn/polyfill",
     "polyfillService": "https://polyfill.io",
 
-    "favicon": "${cdnEndpoint}/gh/libreoj/assets/favicon.ico"
+    "assets": "${cdnEndpoint}/gh/libreoj/assets",
+    "assetsCN": "${cdnEndpointCN}/gh/libreoj/assets",
+    "favicon": "${assets}/favicon.ico",
+    "faviconCN": "${assetsCN}/favicon.ico",
+    "appLogo": "${assets}/logo-website.min.svg",
+    "appLogoCN": "${assetsCN}/logo-website.min.svg",
+
+    "gravatar": "https://gravatar.com",
+    "gravatarCN": "https://cdn.menci.xyz"
   },
   "htmlTemplate": "${cdnRoot}/index.html",
   "substitution": {
@@ -24,7 +35,21 @@
       "": "${polyfillService}"
     },
     "__default_title__": "${title}",
-    "__public_path__": "${cdnRoot}",
-    "__favicon__": "${favicon}"
+    "__public_path__": {
+      "CN": "${cdnRootCN}",
+      "": "${cdnRoot}"
+    },
+    "__favicon__": {
+      "CN": "${faviconCN}",
+      "": "${favicon}"
+    },
+    "__applogo__": {
+      "CN": "${appLogoCN}",
+      "": "${appLogo}"
+    },
+    "__gravatar__": {
+      "CN": "${gravatarCN}",
+      "": "${gravatar}"
+    }
   }
 }
