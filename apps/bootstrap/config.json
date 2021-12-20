@@ -1,7 +1,7 @@
 {
-  "cdnRoot": "https://cdn.jsdelivr.net/npm/@lyrio/ui@0.2.5/build",
+  "cdnRoot": "https://cdn.menci.xyz/npm/@lyrio/ui@0.2.5/build",
   "apiEndpoint": "CN=https://api.loj.ac.cn;https://api.loj.ac",
   "polyfillServiceEndpoint": "CN=https://api.loj.ac.cn/polyfill;https://polyfill.io",
   "defaultTitle": "LibreOJ",
-  "favicon": "https://cdn.jsdelivr.net/gh/libreoj/assets/favicon.ico"
+  "favicon": "https://cdn.menci.xyz/gh/libreoj/assets/favicon.ico"
 }
