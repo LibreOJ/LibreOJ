@@ -1,18 +1,18 @@
 {
   "env": {
     "title": "LibreOJ",
-    "uiVersion": "0.2.6",
+    "uiVersion": "0.2.7",
 
     "cdnEndpoint": "https://cdn.jsdelivr.net",
     "cdnEndpointCN": "https://cdn.menci.xyz",
     "cdnRoot": "${cdnEndpoint}/npm/@lyrio/ui@${uiVersion}/build",
     "cdnRootCN": "${cdnEndpointCN}/npm/@lyrio/ui@${uiVersion}/build",
 
-    "apiEndpointCN": "https://api.loj.ac.cn",
     "apiEndpoint": "https://api.loj.ac",
+    "apiEndpointCN": "https://api.loj.ac.cn",
 
-    "polyfillServiceCN": "https://api.loj.ac.cn/polyfill",
     "polyfillService": "https://polyfill.io",
+    "polyfillServiceCN": "https://api.loj.ac.cn/polyfill",
 
     "assets": "${cdnEndpoint}/gh/libreoj/assets",
     "assetsCN": "${cdnEndpointCN}/gh/libreoj/assets",
@@ -22,7 +22,10 @@
     "appLogoCN": "${assetsCN}/logo-website.min.svg",
 
     "gravatar": "https://gravatar.com",
-    "gravatarCN": "https://cdn.menci.xyz"
+    "gravatarCN": "https://cdn.menci.xyz",
+
+    "twemoji": "https://twemoji.maxcdn.com/v/latest/",
+    "twemojiCN": "https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/twemoji/13.0.1/"
   },
   "htmlTemplate": "${cdnRoot}/index.html",
   "substitution": {
@@ -50,6 +53,10 @@
     "__gravatar__": {
       "CN": "${gravatarCN}",
       "": "${gravatar}"
+    },
+    "__twemoji__": {
+      "CN": "${twemojiCN}",
+      "": "${twemoji}"
     }
   }
 }
