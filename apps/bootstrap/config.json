@@ -1,7 +1,7 @@
 {
   "env": {
     "title": "LibreOJ",
-    "uiVersion": "0.2.7",
+    "uiVersion": "0.2.8",
 
     "cdnEndpoint": "https://cdn.jsdelivr.net",
     "cdnEndpointCN": "https://cdn.menci.xyz",
@@ -23,6 +23,8 @@
 
     "gravatar": "https://gravatar.com",
     "gravatarCN": "https://cdn.menci.xyz",
+    "ghAvatar": "https://github.com",
+    "ghAvatarCN": "https://cdn.menci.xyz/gh-avatar",
 
     "twemoji": "https://twemoji.maxcdn.com/v/latest/",
     "twemojiCN": "https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/twemoji/13.0.1/"
@@ -53,6 +55,10 @@
     "__gravatar__": {
       "CN": "${gravatarCN}",
       "": "${gravatar}"
+    },
+    "__ghavatar__": {
+      "CN": "${ghAvatarCN}",
+      "": "${ghAvatar}"
     },
     "__twemoji__": {
       "CN": "${twemojiCN}",
