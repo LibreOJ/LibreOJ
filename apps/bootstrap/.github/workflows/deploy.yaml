@@ -5,15 +5,20 @@ on:
   push:
 
 env:
-  CLOUDFLARE_SUBDIRECTORY: libreoj-bootstrap-cloudflare
+  CLOUDFLARE_SUBDIRECTORY: cloudflare
   CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
   CLOUDFLARE_WORKER_NAME_PRODUCTION: libreoj-bootstrap
   CLOUDFLARE_WORKER_NAME_STAGING: libreoj-bootstrap-staging
 
-  AZURE_SUBDIRECTORY: libreoj-bootstrap-azure
+  AZURE_SUBDIRECTORY: azure
   AZURE_SUBSCRIPTION: 029ab8ea-4f74-47eb-8630-b9e0413e487d
   AZURE_RESOURCE_GROUP: LibreOJ
   AZURE_FUNCTION_APP: libreoj-bootstrap
+
+  ALIYUN_OSS_SUBDIRECTORY: aliyun-oss
+  ALIYUN_OSS_BUCKET_PRODUCTION: libreoj-bootstrap
+  ALIYUN_OSS_BUCKET_STAGING: libreoj-bootstrap-staging
+  ALIYUN_OSS_ENDPOINT: oss-cn-shanghai.aliyuncs.com
 
 jobs:
   cf-staging:
@@ -62,6 +67,7 @@ jobs:
       with:
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         workingDirectory: ${{ env.CLOUDFLARE_SUBDIRECTORY }}
+
   az-staging:
     name: Azure Function App (Staging)
     runs-on: ubuntu-latest
@@ -117,3 +123,46 @@ jobs:
       with:
         inlineScript: |
           az functionapp deployment slot swap --subscription "$AZURE_SUBSCRIPTION" --resource-group "$AZURE_RESOURCE_GROUP" --name "$AZURE_FUNCTION_APP" --slot staging
+
+  ali-staging:
+    name: Aliyun OSS (Staging)
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Install Node.js 14
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
+    - name: Deploy
+      working-directory: ${{ env.ALIYUN_OSS_SUBDIRECTORY }}
+      run: yarn deploy
+      env:
+        ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+        ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        ALIYUN_OSS_BUCKET: ${{ env.ALIYUN_OSS_BUCKET_STAGING }}
+        ALIYUN_OSS_ENDPOINT: ${{ env.ALIYUN_OSS_ENDPOINT }}
+  ali-production:
+    name: Aliyun OSS (Production)
+    environment: production
+    needs: ali-staging
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Install Node.js 14
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
+    - name: Deploy
+      working-directory: ${{ env.ALIYUN_OSS_SUBDIRECTORY }}
+      run: yarn deploy
+      env:
+        ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+        ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        ALIYUN_OSS_BUCKET: ${{ env.ALIYUN_OSS_BUCKET_PRODUCTION }}
+        ALIYUN_OSS_ENDPOINT: ${{ env.ALIYUN_OSS_ENDPOINT }}

@@ -1,7 +1,7 @@
 /// <reference no-default-lib="true"/>
 /// <reference lib="WebWorker" />
 
-import { handleRequest } from "libreoj-bootstrap-core";
+import { handleRequest } from "core";
 
 declare var self: ServiceWorkerGlobalScope & typeof globalThis;
 

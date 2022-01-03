@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import geoip from "geoip-country";
-import { handleRequest } from "libreoj-bootstrap-core";
+import { handleRequest } from "core";
 
 const initializationPromise = (async () => {
   // Polyfills for Web interfaces

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "libreoj-bootstrap-azure",
+  "name": "azure",
   "version": "1.0.0",
   "main": "dist/index.js",
   "author": "Menci <huanghaorui301@gmail.com>",
@@ -16,10 +16,10 @@
     "@types/geoip-country": "^4.0.0",
     "@types/node": "*",
     "@types/node-fetch": "^2.5.12",
+    "core": "*",
     "esbuild": "^0.12.24",
     "esbuild-node-externals": "^1.3.0",
     "fs-extra": "^10.0.0",
-    "libreoj-bootstrap-core": "*",
     "typescript": "^4.4.2"
   },
   "dependencies": {

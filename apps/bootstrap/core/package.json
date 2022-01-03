@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "libreoj-bootstrap-core",
+  "name": "core",
   "version": "1.0.0",
   "main": "src/index.ts",
   "author": "Menci <huanghaorui301@gmail.com>",

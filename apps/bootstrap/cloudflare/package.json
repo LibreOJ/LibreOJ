@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "libreoj-bootstrap-cloudflare",
+  "name": "cloudflare",
   "version": "1.0.0",
   "main": "dist/index.js",
   "author": "Menci <huanghaorui301@gmail.com>",
@@ -16,6 +16,6 @@
   "devDependencies": {
     "@iarna/toml": "^2.2.5",
     "esbuild": "^0.12.24",
-    "libreoj-bootstrap-core": "*"
+    "core": "*"
   }
 }

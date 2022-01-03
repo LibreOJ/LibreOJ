@@ -11,6 +11,11 @@
     "apiEndpoint": "https://api.loj.ac",
     "apiEndpointCN": "https://api.loj.ac.cn",
 
+    "bootstrapCdnRoot": "loj.ac",
+    "bootstrapCdnRootCN": "bootstrap.loj.ac.cn",
+    "bootstrapCdnRootStaging": "",
+    "bootstrapCdnRootStagingCN": "bootstrap-staging.loj.ac.cn",
+
     "polyfillService": "https://polyfill.io",
     "polyfillServiceCN": "https://api.loj.ac.cn/polyfill",
 
@@ -63,6 +68,14 @@
     "__twemoji__": {
       "CN": "${twemojiCN}",
       "": "${twemoji}"
+    },
+    "__bootstrap_cdn_root__": {
+      "CN": "${bootstrapCdnRootCN}",
+      "": "${bootstrapCdnRoot}"
+    },
+    "__bootstrap_cdn_root_staging__": {
+      "CN": "${bootstrapCdnRootStagingCN}",
+      "": "${bootstrapCdnRootStaging}"
     }
   }
 }

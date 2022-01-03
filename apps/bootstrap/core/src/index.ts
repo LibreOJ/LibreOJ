@@ -1,7 +1,9 @@
-import configString from "inline:../../config.out.json";
+import config from "../../config.out.json";
 
 export interface ResponseDataForRegion {
-  html: string;
+  body: string;
+  contentType: string;
+  cacheControl: string;
   eTag: string;
 }
 
@@ -12,14 +14,16 @@ interface ClientInfo {
 
 const {
   responseDataForRegion,
+  serviceWorker,
   buildInfo
 }: {
   responseDataForRegion: Record<string, ResponseDataForRegion>;
+  serviceWorker: ResponseDataForRegion;
   buildInfo: {
     buildTime: string;
     buildCommit: string;
   };
-} = JSON.parse(configString as unknown as string);
+} = config;
 
 function getResponseDataForRegion(region: string) {
   return responseDataForRegion[region] || responseDataForRegion[""];
@@ -32,8 +36,15 @@ export function handleRequest(request: Request, clientInfo: ClientInfo): Respons
     baseResponseHeaders["X-Build-Commit"] = buildInfo.buildCommit;
   }
 
+  const url = new URL(request.url);
+
   try {
-    const data = getResponseDataForRegion(clientInfo.ipRegion);
+    let data: ResponseDataForRegion;
+    if (url.pathname === "/sw.js") {
+      data = serviceWorker;
+    } else {
+      data = getResponseDataForRegion(clientInfo.ipRegion);
+    }
 
     if (request.headers.get("If-None-Match") === data.eTag) {
       return new Response(null, {
@@ -41,11 +52,14 @@ export function handleRequest(request: Request, clientInfo: ClientInfo): Respons
       });
     }
 
-    return new Response(data.html, {
+    return new Response(data.body, {
       headers: {
         ...baseResponseHeaders,
         ETag: data.eTag,
-        "Content-Type": "text/html; charset=utf-8"
+        "Content-Type": data.contentType,
+        "Cache-Control": data.cacheControl,
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "*"
       }
     });
   } catch (e) {
