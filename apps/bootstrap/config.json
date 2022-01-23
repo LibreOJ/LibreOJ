@@ -6,7 +6,7 @@
     "cdnEndpoint": "https://cdn.jsdelivr.net",
     "cdnEndpointCN": "https://cdn.menci.xyz",
     "cdnRoot": "${cdnEndpoint}/npm/@lyrio/ui@${uiVersion}/build",
-    "cdnRootCN": "https://unpkg.zhimg.com/@lyrio/ui@${uiVersion}/build",
+    "cdnRootCN": "https://cdn.menci.moe/npm/@lyrio/ui@${uiVersion}/build",
 
     "apiEndpoint": "https://api.loj.ac",
     "apiEndpointCN": "https://api.loj.ac.cn",
