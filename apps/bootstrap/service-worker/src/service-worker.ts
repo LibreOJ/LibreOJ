@@ -11,9 +11,10 @@ sw.addEventListener("install", event => {
 });
 
 sw.addEventListener("fetch", event => {
+  if (event.request.method !== "GET") return;
+
   const url = new URL(event.request.url);
   if (url.origin !== sw.origin) {
-    event.respondWith(fetch(event.request));
     return;
   }
 
