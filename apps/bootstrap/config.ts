@@ -44,8 +44,9 @@ async function fetchHtmlTemplate() {
   const serviceWorkerInstallerPath = require.resolve("service-worker/dist/installer");
 
   const $ = cheerio.load(originalHtmlFile);
-  const script = $("body > script:last-child");
-  script.html(script.html() + ";" + fs.readFileSync(serviceWorkerInstallerPath, "utf-8"));
+  const script = $("<script>");
+  script.html(fs.readFileSync(serviceWorkerInstallerPath, "utf-8"));
+  $("body").append(script);
 
   return $.html();
 }

@@ -1,12 +1,12 @@
 {
   "env": {
     "title": "LibreOJ",
-    "uiVersion": "0.2.8",
+    "uiVersion": "0.3.0",
 
     "cdnEndpoint": "https://cdn.jsdelivr.net",
     "cdnEndpointCN": "https://cdn.menci.xyz",
-    "cdnRoot": "${cdnEndpoint}/npm/@lyrio/ui@${uiVersion}/build",
-    "cdnRootCN": "https://cdn.menci.xyz/npm/@lyrio/ui@${uiVersion}/build",
+    "cdnRoot": "${cdnEndpoint}/npm/@lyrio/ui@${uiVersion}/dist",
+    "cdnRootCN": "https://cdn.menci.xyz/npm/@lyrio/ui@${uiVersion}/dist",
 
     "apiEndpoint": "https://api.loj.ac",
     "apiEndpointCN": "https://api.loj.ac.cn",
@@ -15,9 +15,6 @@
     "bootstrapCdnRootCN": "bootstrap.loj.ac.cn",
     "bootstrapCdnRootStaging": "",
     "bootstrapCdnRootStagingCN": "bootstrap-staging.loj.ac.cn",
-
-    "polyfillService": "https://polyfill.io",
-    "polyfillServiceCN": "https://api.loj.ac.cn/polyfill",
 
     "assets": "${cdnEndpoint}/gh/libreoj/assets",
     "assetsCN": "${cdnEndpointCN}/gh/libreoj/assets",
@@ -39,10 +36,6 @@
     "__api_endpoint__": {
       "CN": "${apiEndpointCN}",
       "": "${apiEndpoint}"
-    },
-    "__polyfill_service__": {
-      "CN": "${polyfillServiceCN}",
-      "": "${polyfillService}"
     },
     "__default_title__": "${title}",
     "__public_path__": {
