@@ -23,6 +23,7 @@ interface ApplicationConfig {
 }
 
 const applicationConfig: ApplicationConfig = require("./config.json");
+applicationConfig.env.uiVersion = require("./version.json").version;
 
 const applyEnv = (() => {
   const env = Object.entries(applicationConfig.env);
