@@ -3,10 +3,7 @@
     "title": "LibreOJ",
     "uiVersion": null,
 
-    "cdnEndpoint": "https://cdn.jsdelivr.net",
-    "cdnEndpointCN": "https://cdn.menci.xyz",
-    "cdnRoot": "${cdnEndpoint}/npm/@lyrio/ui@${uiVersion}/dist",
-    "cdnRootCN": "https://cdn.menci.xyz/npm/@lyrio/ui@${uiVersion}/dist",
+    "cdnRoot": "https://cdn-static.menci.xyz/libreoj-frontend",
 
     "apiEndpoint": "https://api.loj.ac",
     "apiEndpointCN": "https://api.loj.ac.cn",
@@ -16,8 +13,8 @@
     "bootstrapCdnRootStaging": "",
     "bootstrapCdnRootStagingCN": "bootstrap-staging.loj.ac.cn",
 
-    "assets": "${cdnEndpoint}/gh/libreoj/assets",
-    "assetsCN": "${cdnEndpointCN}/gh/libreoj/assets",
+    "assets": "https://cdn.jsdelivr.net/gh/libreoj/assets",
+    "assetsCN": "https://cdn.menci.xyz/gh/libreoj/assets",
     "favicon": "${assets}/favicon.ico",
     "faviconCN": "${assetsCN}/favicon.ico",
     "appLogo": "${assets}/logo-website.min.svg",
@@ -31,7 +28,7 @@
     "twemoji": "https://twemoji.maxcdn.com/v/latest/",
     "twemojiCN": "https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/twemoji/13.0.1/"
   },
-  "htmlTemplate": "${cdnRoot}/index.html",
+  "htmlTemplate": "https://cdn.jsdelivr.net/npm/@lyrio/ui@${uiVersion}/dist/index.html",
   "substitution": {
     "__api_endpoint__": {
       "CN": "${apiEndpointCN}",
@@ -39,7 +36,7 @@
     },
     "__default_title__": "${title}",
     "__public_path__": {
-      "CN": "${cdnRootCN}",
+      "CN": "${cdnRoot}",
       "": "${cdnRoot}"
     },
     "__favicon__": {
