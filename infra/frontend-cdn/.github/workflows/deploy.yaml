@@ -1,0 +1,57 @@
+name: Deploy
+
+concurrency: 
+  group: deploy
+
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  PROJECT_NAME: libreoj-frontend
+  PACKAGE_NAME: "@lyrio/ui"
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+    - name: Cache node_modules
+      uses: actions/cache@v2
+      id: cache
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('yarn.lock', 'patches/**') }}
+        restore-keys: ${{ runner.os }}-node-
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: yarn install --production --frozen-lockfile
+    - name: Download files
+      run: yarn ts-node-esm download.ts ${{ env.PACKAGE_NAME }} ./dist
+    - name: Deploy to Cloudflare Pages
+      uses: cloudflare/pages-action@1
+      with:
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        projectName: menci-libreoj-frontend
+        directory: dist
+        gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+    - name: Deploy to Aliyun OSS
+      uses: Menci/upload-to-oss@main
+      with:
+        access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+        access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        bucket: ${{ secrets.ALIYUN_OSS_BUCKET }}
+        endpoint: ${{ secrets.ALIYUN_OSS_ENDPOINT }}
+        local-path: dist
+        remote-path: libreoj-frontend
+        headers: |
+          {
+            "Cache-Control": `public, max-age=2419200`
+          }

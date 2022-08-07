@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ES2016",
+    "strict": false,
+    "module": "NodeNext"
+  },
+  "ts-node": {
+    "swc": true
+  }
+}
