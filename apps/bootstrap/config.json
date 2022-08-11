@@ -13,12 +13,9 @@
     "bootstrapCdnRootStaging": "",
     "bootstrapCdnRootStagingCN": "bootstrap-staging.loj.ac.cn",
 
-    "assets": "https://cdn.jsdelivr.net/gh/libreoj/assets",
-    "assetsCN": "https://cdn.menci.xyz/gh/libreoj/assets",
+    "assets": "https://cdn-static.menci.xyz/libreoj-assets",
     "favicon": "${assets}/favicon.ico",
-    "faviconCN": "${assetsCN}/favicon.ico",
     "appLogo": "${assets}/logo-website.min.svg",
-    "appLogoCN": "${assetsCN}/logo-website.min.svg",
 
     "gravatar": "https://gravatar.com",
     "gravatarCN": "https://cdn.menci.xyz",
@@ -36,15 +33,12 @@
     },
     "__default_title__": "${title}",
     "__public_path__": {
-      "CN": "${cdnRoot}",
       "": "${cdnRoot}"
     },
     "__favicon__": {
-      "CN": "${faviconCN}",
       "": "${favicon}"
     },
     "__applogo__": {
-      "CN": "${appLogoCN}",
       "": "${appLogo}"
     },
     "__gravatar__": {
