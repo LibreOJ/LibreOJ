@@ -87,6 +87,7 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+        allow-no-subscriptions: true
     - name: Get Publish Profile
       uses: azure/CLI@v1
       with:
@@ -118,6 +119,7 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+        allow-no-subscriptions: true
     - name: Swap deployment slots
       uses: azure/CLI@v1
       with:
