@@ -8,10 +8,8 @@
     "apiEndpoint": "https://api.loj.ac",
     "apiEndpointCN": "https://api.loj.ac.cn",
 
-    "bootstrapCdnRoot": "loj.ac",
-    "bootstrapCdnRootCN": "bootstrap.loj.ac.cn",
-    "bootstrapCdnRootStaging": "",
-    "bootstrapCdnRootStagingCN": "bootstrap-staging.loj.ac.cn",
+    "bootstrapCdnRoot": "bootstrap.loj.ac.cn",
+    "bootstrapCdnRootStaging": "bootstrap-staging.loj.ac.cn",
 
     "assets": "https://cdn-static.menci.xyz/libreoj-assets",
     "favicon": "${assets}/favicon.ico",
@@ -54,11 +52,9 @@
       "": "${twemoji}"
     },
     "__bootstrap_cdn_root__": {
-      "CN": "${bootstrapCdnRootCN}",
       "": "${bootstrapCdnRoot}"
     },
     "__bootstrap_cdn_root_staging__": {
-      "CN": "${bootstrapCdnRootStagingCN}",
       "": "${bootstrapCdnRootStaging}"
     }
   }
