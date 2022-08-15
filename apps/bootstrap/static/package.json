@@ -1,13 +1,14 @@
 {
   "private": true,
-  "name": "oss",
+  "name": "static",
   "version": "1.0.0",
   "main": "deploy.ts",
   "author": "Menci",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "deploy": "node --experimental-json-modules --loader ts-node/esm deploy.ts"
+    "deploy-oss": "node --experimental-json-modules --loader ts-node/esm deploy-oss.ts",
+    "get-vps-deploy-input": "node --experimental-json-modules --loader ts-node/esm get-vps-deploy-input.ts"
   },
   "devDependencies": {
     "@types/ali-oss": "^6.16.2",

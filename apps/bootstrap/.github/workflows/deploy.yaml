@@ -15,7 +15,7 @@ env:
   AZURE_RESOURCE_GROUP: LibreOJ
   AZURE_FUNCTION_APP: libreoj-bootstrap
 
-  ALIYUN_OSS_SUBDIRECTORY: aliyun-oss
+  STATIC_SUBDIRECTORY: static
   ALIYUN_OSS_BUCKET_PRODUCTION: libreoj-bootstrap
   ALIYUN_OSS_BUCKET_STAGING: libreoj-bootstrap-staging
   ALIYUN_OSS_ENDPOINT: oss-cn-shanghai.aliyuncs.com
@@ -139,8 +139,8 @@ jobs:
     - name: Install dependencies
       run: yarn --frozen-lockfile
     - name: Deploy
-      working-directory: ${{ env.ALIYUN_OSS_SUBDIRECTORY }}
-      run: yarn deploy
+      working-directory: ${{ env.STATIC_SUBDIRECTORY }}
+      run: yarn deploy-oss
       env:
         ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
         ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
@@ -161,10 +161,55 @@ jobs:
     - name: Install dependencies
       run: yarn --frozen-lockfile
     - name: Deploy
-      working-directory: ${{ env.ALIYUN_OSS_SUBDIRECTORY }}
-      run: yarn deploy
+      working-directory: ${{ env.STATIC_SUBDIRECTORY }}
+      run: yarn deploy-oss
       env:
         ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
         ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         ALIYUN_OSS_BUCKET: ${{ env.ALIYUN_OSS_BUCKET_PRODUCTION }}
         ALIYUN_OSS_ENDPOINT: ${{ env.ALIYUN_OSS_ENDPOINT }}
+
+  vps-staging:
+    name: VPS (Staging)
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Install Node.js 14
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
+    - name: Deploy
+      working-directory: ${{ env.STATIC_SUBDIRECTORY }}
+      run: |
+        eval `ssh-agent -s`
+        echo "$VPS_DEPLOY_KEY" | tr -d '\r' | ssh-add -
+        yarn -s get-vps-deploy-input staging | ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null "root@$VPS_HOST"
+      env:
+        VPS_HOST: ${{ secrets.VPS_HOST }}
+        VPS_DEPLOY_KEY: ${{ secrets.VPS_DEPLOY_KEY }}
+  vps-production:
+    name: VPS (Production)
+    environment: production
+    needs: vps-staging
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Install Node.js 14
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
+    - name: Deploy
+      working-directory: ${{ env.STATIC_SUBDIRECTORY }}
+      run: |
+        eval `ssh-agent -s`
+        echo "$VPS_DEPLOY_KEY" | tr -d '\r' | ssh-add -
+        yarn -s get-vps-deploy-input production | ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null "root@$VPS_HOST"
+      env:
+        VPS_HOST: ${{ secrets.VPS_HOST }}
+        VPS_DEPLOY_KEY: ${{ secrets.VPS_DEPLOY_KEY }}
