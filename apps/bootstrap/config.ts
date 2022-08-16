@@ -55,7 +55,7 @@ async function fetchHtmlTemplate() {
 async function postProcessHtml(html: string) {
   const $ = cheerio.load(html);
   await Promise.all(
-    $("script")
+    $("script:not([type=module])")
       .toArray()
       .map(async script => {
         const scriptText = $(script).html();
