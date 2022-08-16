@@ -16,7 +16,7 @@
     "appLogo": "${assets}/logo-website.min.svg",
 
     "gravatar": "https://gravatar.com",
-    "gravatarCN": "https://cdn.menci.xyz",
+    "gravatarCN": "https://cravatar.cn",
     "ghAvatar": "https://github.com",
     "ghAvatarCN": "https://cdn.menci.xyz/gh-avatar",
 
