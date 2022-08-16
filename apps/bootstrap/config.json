@@ -21,7 +21,7 @@
     "ghAvatarCN": "https://cdn.menci.xyz/gh-avatar",
 
     "twemoji": "https://twemoji.maxcdn.com/v/latest/",
-    "twemojiCN": "https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/twemoji/13.0.1/"
+    "twemojiCN": "https://cdnjs.baoshuo.ren/ajax/libs/twemoji/14.0.2/"
   },
   "htmlTemplate": "https://cdn.jsdelivr.net/npm/@lyrio/ui@${uiVersion}/dist/index.html",
   "substitution": {
