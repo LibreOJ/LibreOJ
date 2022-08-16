@@ -20,8 +20,8 @@
     "ghAvatar": "https://github.com",
     "ghAvatarCN": "https://cdn.menci.xyz/gh-avatar",
 
-    "twemoji": "https://twemoji.maxcdn.com/v/latest/",
-    "twemojiCN": "https://cdnjs.baoshuo.ren/ajax/libs/twemoji/14.0.2/"
+    "cdnjs": "https://cdnjs.cloudflare.com/ajax/libs",
+    "cdnjsCN": "https://cdnjs.baoshuo.ren/ajax/libs"
   },
   "htmlTemplate": "https://cdn.jsdelivr.net/npm/@lyrio/ui@${uiVersion}/dist/index.html",
   "substitution": {
@@ -47,9 +47,9 @@
       "CN": "${ghAvatarCN}",
       "": "${ghAvatar}"
     },
-    "__twemoji__": {
-      "CN": "${twemojiCN}",
-      "": "${twemoji}"
+    "__cdnjs__": {
+      "CN": "${cdnjsCN}",
+      "": "${cdnjs}"
     },
     "__bootstrap_cdn_root__": {
       "": "${bootstrapCdnRoot}"
