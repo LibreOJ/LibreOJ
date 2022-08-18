@@ -3,7 +3,7 @@
     "title": "LibreOJ",
     "uiVersion": null,
 
-    "cdnRoot": "https://cdn-static.menci.xyz/libreoj-frontend",
+    "cdnRoot": "https://static.cdn.menci.xyz/libreoj-frontend",
 
     "apiEndpoint": "https://api.loj.ac",
     "apiEndpointCN": "https://api.loj.ac.cn",
@@ -11,7 +11,7 @@
     "bootstrapCdnRoot": "bootstrap.loj.ac.cn",
     "bootstrapCdnRootStaging": "bootstrap-staging.loj.ac.cn",
 
-    "assets": "https://cdn-static.menci.xyz/libreoj-assets",
+    "assets": "https://static.cdn.menci.xyz/libreoj-assets",
     "favicon": "${assets}/favicon.ico",
     "appLogo": "${assets}/logo-website.min.svg",
 
