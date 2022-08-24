@@ -36,6 +36,10 @@ sw.addEventListener("fetch", event => {
     return;
   }
 
+  if (!url.pathname.endsWith(".js")) url.pathname = "/";
+  url.search = "";
+  url.hash = "";
+
   const abortEvent = new Event("abortFetch");
   const eventTarget = new EventTarget();
   const withAbort = <F extends (...args: any[]) => Promise<Response>>(
@@ -71,7 +75,6 @@ sw.addEventListener("fetch", event => {
   const fetchRedirected = withAbort(signal => async () => {
     // Intercept the request of main HTML page and service worker script
     const newUrl = new URL(bootstrapCdnRoot);
-    newUrl.pathname = url.pathname.endsWith(".js") ? url.pathname : "/";
     if (newUrl.origin === url.origin) throw null;
 
     const fetchOptions: RequestInit = {
@@ -92,5 +95,26 @@ sw.addEventListener("fetch", event => {
     return response;
   });
 
-  event.respondWith(Promise.any([fetchOrigin(), fetchRedirected()]));
+  event.respondWith(
+    (async () => {
+      // stale-while-revalidate
+      const SWR_MAXTIME = 7 * 24 * 60 * 60 * 1000;
+
+      const cache = await caches.open("bootstrap");
+      const newResponse = Promise.any([fetchOrigin(), fetchRedirected()]).then(async newResponse => {
+        await cache.put(url, newResponse.clone());
+        return newResponse;
+      });
+
+      const cachedResponse = await cache.match(url);
+
+      // If cache found and valid
+      if (cachedResponse && Date.now() - Date.parse(cachedResponse.headers.get("Date")) <= SWR_MAXTIME) {
+        event.waitUntil(newResponse);
+        return cachedResponse;
+      } else {
+        return newResponse;
+      }
+    })()
+  );
 });
