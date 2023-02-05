@@ -3,7 +3,6 @@ import fetch from "node-fetch";
 import fs from "fs";
 import path from "path";
 import url from "url";
-import crypto from "crypto";
 import cheerio from "cheerio";
 import * as terser from "terser";
 import { createRequire } from "module";
@@ -71,15 +70,13 @@ export interface ResponseDataForRegion {
   body: string;
   contentType: string;
   cacheControl: string;
-  eTag: string;
 }
 
 function makeResponseData(body: string, contentType: string, cacheControl: string): ResponseDataForRegion {
   return {
     body,
     contentType,
-    cacheControl,
-    eTag: crypto.createHash("md5").update(body).digest("hex")
+    cacheControl
   };
 }
 

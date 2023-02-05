@@ -35,8 +35,7 @@ for (const [filename, file] of Object.entries(files)) {
   await oss.put(filename, Buffer.from(file.body), {
     headers: {
       "Content-Type": file.contentType,
-      "Cache-Control": file.cacheControl,
-      ETag: file.eTag
+      "Cache-Control": file.cacheControl
     }
   });
 }

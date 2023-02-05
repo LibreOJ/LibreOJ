@@ -4,7 +4,6 @@ export interface ResponseDataForRegion {
   body: string;
   contentType: string;
   cacheControl: string;
-  eTag: string;
 }
 
 interface ClientInfo {
@@ -46,16 +45,9 @@ export function handleRequest(request: Request, clientInfo: ClientInfo): Respons
       data = getResponseDataForRegion(clientInfo.ipRegion);
     }
 
-    if (request.headers.get("If-None-Match") === data.eTag) {
-      return new Response(null, {
-        status: 204
-      });
-    }
-
     return new Response(data.body, {
       headers: {
         ...baseResponseHeaders,
-        ETag: data.eTag,
         "Content-Type": data.contentType,
         "Cache-Control": data.cacheControl,
         "Access-Control-Allow-Origin": "*",
