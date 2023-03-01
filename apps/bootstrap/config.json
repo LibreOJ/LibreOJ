@@ -6,7 +6,7 @@
     "cdnRoot": "https://static.cdn.menci.xyz/libreoj-frontend",
 
     "apiEndpoint": "https://api.loj.ac",
-    "apiEndpointCN": "https://api.loj.ac.cn",
+    "apiEndpointCN": "https://api.loj.ac",
 
     "bootstrapCdnRoot": "bootstrap.loj.ac.cn",
     "bootstrapCdnRootStaging": "bootstrap-staging.loj.ac.cn",
