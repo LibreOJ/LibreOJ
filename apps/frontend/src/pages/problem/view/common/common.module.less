@@ -1,0 +1,114 @@
+@rightContentWidth: 260px;
+@rightContainerWidth: calc(@rightContentWidth + 1rem);
+
+.leftContainer {
+  width: calc(100% - @rightContainerWidth);
+  padding-right: 1rem;
+}
+
+.rightContainer {
+  width: @rightContainerWidth;
+  padding-left: 1rem;
+}
+
+.actionMenu {
+  width: @rightContentWidth !important;
+}
+
+@media only screen and (max-width: 1023px) and (min-width: 768px) {
+  @rightContentWidth: 190px;
+  @rightContainerWidth: calc(@rightContentWidth + 1rem);
+
+  .leftContainer {
+    width: calc(100% - @rightContainerWidth);
+  }
+
+  .rightContainer {
+    width: @rightContainerWidth;
+  }
+
+  .actionMenu {
+    width: @rightContentWidth !important;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .leftContainer {
+    width: 100%;
+    padding-right: 0 !important;
+  }
+
+  .actionMenu {
+    width: 100% !important;
+  }
+
+  .rightContainer {
+    padding-left: 0 !important;
+    position: static !important;
+    width: 100%;
+  }
+}
+
+:global(#root) .actionMenu {
+  min-height: 0 !important;
+  margin-bottom: 0 !important;
+
+  border-right: none !important;
+  border-left-width: 2px !important;
+  border-left-style: solid !important;
+
+  :global(.item) {
+    border-right: none !important;
+    border-left-style: solid !important;
+    border-left-color: transparent !important;
+    margin: 0 0 0 -2px !important;
+    border-left-width: 2px !important;
+
+    & {
+      background: var(--theme-action-menu-item-background) !important;
+      color: var(--theme-action-menu-item-foreground) !important;
+      border-left-color: var(--theme-action-menu-item-side) !important;
+
+      &:hover {
+        background: var(--theme-action-menu-item-background-hover) !important;
+        color: var(--theme-action-menu-item-foreground-hover) !important;
+        border-left-color: var(--theme-action-menu-item-side-hover) !important;
+      }
+    }
+
+    &.menuItemImportant {
+      background: var(--theme-action-menu-item-important-background) !important;
+      color: var(--theme-action-menu-item-important-foreground) !important;
+      border-left-color: var(--theme-action-menu-item-important-side) !important;
+
+      &:hover {
+        background: var(--theme-action-menu-item-important-background-hover) !important;
+        color: var(--theme-action-menu-item-important-foreground-hover) !important;
+        border-left-color: var(--theme-action-menu-item-important-side-hover) !important;
+      }
+    }
+
+    &.menuItemDangerous {
+      background: var(--theme-action-menu-item-dangerous-background) !important;
+      color: var(--theme-action-menu-item-dangerous-foreground) !important;
+      border-left-color: var(--theme-action-menu-item-dangerous-side) !important;
+
+      &:hover {
+        background: var(--theme-action-menu-item-dangerous-background-hover) !important;
+        color: var(--theme-action-menu-item-dangerous-foreground-hover) !important;
+        border-left-color: var(--theme-action-menu-item-dangerous-side-hover) !important;
+      }
+    }
+
+    > :global(.icon) {
+      float: none !important;
+      margin: 0 1em 0 0 !important;
+    }
+
+    > :global(.loader) {
+      right: 16px;
+      left: unset !important;
+      transform: translateY(-50%) !important;
+    }
+  }
+}

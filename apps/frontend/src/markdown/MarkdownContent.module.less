@@ -1,0 +1,84 @@
+.markdownContent {
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+
+  // Fix box-shadow get cut
+  &:not(.noOverflowCutFix) {
+    padding: 2px;
+    margin: -2px;
+  }
+
+  p, blockquote, mjx-container[display="true"] {
+    overflow: auto;
+    overflow-y: hidden;
+  }
+
+  blockquote {
+    color: var(--theme-blockquote-foreground);
+    padding: 0 0 0 1em;
+    border-left: 0.25em solid var(--theme-blockquote-side);
+    margin: 1em 0;
+  }
+
+  ul, ol, blockquote, mjx-container[display="true"] {
+    &:first-child {
+      margin-top: 0 !important;
+    }
+
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  // Center align images
+  p > img:only-child {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+
+  // Normal lists
+  ul, ol {
+    padding-left: 2em;
+
+    ul, ol {
+      padding-left: 1.5em;
+    }
+  }
+
+  // Task lists
+  :global(.contains-task-list) {
+    &, ul, ol {
+      padding-left: 21px;
+    }
+
+    li {
+      margin-top: 6px;
+
+      &:global(.task-list-item) {
+        list-style-type: none;
+        margin-left: -18.5px;
+      }
+
+      &:not(:global(.task-list-item)) {
+        padding-left: 5.5px;
+      }
+    }
+
+    .taskListCheckbox > label:first-of-type + div {
+      padding-left: 24px;
+    }
+  }
+
+  mjx-container {
+    font-size: 1.15em;
+
+    :global(.copy) {
+      display: inline-block;
+      width: 0;
+      height: 0;
+      font-size: 0;
+    }
+  }
+}

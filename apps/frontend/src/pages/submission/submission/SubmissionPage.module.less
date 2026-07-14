@@ -1,0 +1,137 @@
+.downloadIcon {
+  cursor: pointer;
+}
+
+.operationsPopup {
+  padding: 0 !important;
+
+  :global(.menu) {
+    min-width: fit-content;
+    white-space: nowrap;
+  }
+}
+
+.operations {
+  border: none !important;
+  position: relative;
+  z-index: 2;
+  width: 140px !important;
+
+  :global(.item) {
+    padding: 13px 16px !important;
+  }
+
+  :global(.icon) {
+    float: none !important;
+    margin: 0 11px 0 0 !important;
+  }
+}
+
+.compileAndRunOptions {
+  white-space: nowrap;
+}
+
+.compileAndRunOptionsName {
+  padding-right: 12px;
+}
+
+.mainCodeBox {
+  margin-bottom: 25px;
+}
+
+.fileNameWrapper {
+  float: right;
+  opacity: 0.5;
+  cursor: pointer;
+
+  .fileName {
+    font-size: 13px;
+    margin-right: 5px;
+  }
+}
+
+.subAccordion {
+  margin-top: 0 !important;
+}
+
+.accordionTitle {
+  white-space: nowrap;
+
+  :not(:global(.active)) + &:not(.accordionTitleTwoRows) {
+    border-top: none !important;
+  }
+
+  &:not(:hover):not(:global(.active)) {
+    :global(.statuscolor) {
+      color: inherit !important;
+    }
+  }
+}
+
+.accordionContent {
+  padding-bottom: 15px !important;
+
+  .codeBox {
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    p {
+      margin-bottom: 0.5em !important;
+    }
+
+    :global(.segment) {
+      margin-top: 0.5em !important;
+    }
+  }
+}
+
+.accordionTitleIcon {
+  margin-right: 5px !important;
+}
+
+// responsive
+.accordionTitleSecondRow {
+  margin-top: -23px;
+
+  &:empty {
+    display: none !important;
+  }
+
+  :global(.column):first-child {
+    padding-left: 31px !important;
+  }
+
+  :global(.dropdown.icon) {
+    visibility: hidden;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .codeBox.main {
+    margin-bottom: 16px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .accordion {
+    font-size: 0.9em;
+
+    :global(.statusicon) {
+      margin-right: 5px !important;
+    }
+  }
+}
+
+@media only screen and (max-width: 424px) {
+  .subtaskContent {
+    .testcaseColumnTitle,
+    .testcaseColumnScore {
+      margin-right: -7px;
+    }
+
+    .testcaseColumnTime {
+      margin-right: 1px;
+    }
+  }
+}

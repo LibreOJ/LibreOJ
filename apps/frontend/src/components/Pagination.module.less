@@ -1,0 +1,15 @@
+.pagination {
+  :global(.item) {
+    outline: none;
+  }
+}
+
+.pagination.simple {
+  :global(.item) {
+    outline: none;
+
+    &[type=pageItem] {
+      display: none !important;
+    }
+  }
+}

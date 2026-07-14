@@ -1,0 +1,221 @@
+.menu {
+  width: 100vw !important;
+  height: 48px;
+}
+
+.logo {
+  margin-left: -8px;
+  display: inline-block;
+  vertical-align: middle;
+
+  img {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.siteName {
+  text-align: center;
+
+  .logo ~ & {
+    margin-left: 3.5px;
+    text-align: left;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  font-size: 20px;
+  font-family: Saira;
+  font-weight: 500 !important;
+}
+
+.userContainer {
+  margin-left: auto;
+  display: flex;
+}
+
+.loginAndRegisterButton {
+  width: 70px;
+
+  &:first-of-type {
+    margin-right: 0.4em !important;
+  }
+
+  .sidebarMenu & {
+    width: 50%;
+    margin-right: 0 !important;
+  }
+
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+:global(#noty_layout__topRight) {
+  top: calc(20px + 48px) !important;
+}
+
+:global(.noty_body) {
+  padding: 1em 1.05em !important;
+}
+
+@sidebarWidth: 180px;
+
+:global(#root) .sidebarMenu {
+  transform: translateX(@sidebarWidth) !important;
+  width: @sidebarWidth !important;
+  box-shadow: none !important;
+  transition: transform 0.5s ease, box-shadow 0.5s ease !important;
+
+  &.sidebarOpen {
+    transform: translateX(0) !important;
+    right: 0 !important;
+    box-shadow: 0 0 20px var(--theme-shadow) !important;
+  }
+
+  .userMenu {
+    margin-top: 10px !important;
+  }
+}
+
+.sidebarDimmer {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.4);
+  visibility: hidden;
+  opacity: 0;
+  z-index: 102; // Same as Semantic UI's sidebar menu
+  transition: right 0.5s ease, visibility 0.5s ease, opacity 0.5s ease !important;
+
+  &.sidebarOpen {
+    right: @sidebarWidth !important;
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+html.sidebarOpen {
+  overflow: hidden !important;
+}
+
+body {
+  @margin-top: 48px;
+  min-height: calc(100vh - @margin-top);
+  display: block;
+  margin: @margin-top 0 0 0;
+  box-sizing: border-box;
+}
+
+:global(#root) {
+  padding-top: 29px;
+
+  @media only screen and (max-width: 767px) {
+    padding-top: 16px;
+  }
+}
+
+@media only screen and (max-width: 1127px) {
+  :global(.ui.container) {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  #mainUiContainer {
+    width: auto !important;
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+  }
+}
+
+@media only screen and (min-width: 1128px) {
+  #mainUiContainer, #mainMenuContainer {
+    width: 1127px !important;
+  }
+
+  #mainUiContainer {
+    max-width: calc(100% - 30px);
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+}
+
+// Reset SemanticUI scrollbar styles
+@media only screen and (max-width: 767px) {
+  ::-webkit-scrollbar {
+    all: unset !important;
+  }
+
+  ::-webkit-scrollbar-track {
+    all: unset !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    all: unset !important;
+  }
+}
+
+
+// Set "position: relative; " on <body> instead of <html> to make Popper.js work
+body {
+  // Extensions e.g. "Youdao directory" will add a inline style "position: static; " to <body>
+  // Adding "!important" to prevent it from broken
+  position: relative !important;
+}
+
+:global(#root) .footer {
+  @margin-top: 28px;
+  @margin-bottom: 14px;
+
+  padding: 0 !important;
+  border: none !important;
+  color: var(--theme-footer) !important;
+
+  &.placeholder {
+    margin: calc(@margin-top + @margin-bottom) 0 0 0 !important;
+    visibility: hidden;
+  }
+  
+  &.real {
+    margin: @margin-top 0 @margin-bottom 0 !important;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .footer {
+    margin: 20px 0 10px 0 !important;
+  }
+}
+
+#footerVersion {
+  color: var(--theme-footer-version);
+  font-size: 12px !important;
+  margin: 4px 0 4px;
+}
+
+.footerIcons {
+  color: var(--theme-footer-icons);
+
+  a {
+    color: inherit !important;
+  }
+
+  :global(.icon) {
+    font-size: 1.15em !important;
+    margin-top: 0px;
+  }
+
+  > :not(:first-child) {
+    margin-left: 8px;
+  }
+}
+
+.languageSwitchMenu {
+  left: 50% !important;
+  transform: translate(-50%, -6px);
+}

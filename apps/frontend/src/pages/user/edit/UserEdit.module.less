@@ -1,0 +1,377 @@
+.container {
+  display: flex;
+
+  @menuWidth: 240px;
+  @margin: 28px;
+
+  .menu {
+    width: @menuWidth;
+    margin-right: @margin;
+    position: sticky;
+    top: calc(49px + 28px + 0px);
+    align-self: flex-start;
+
+    :global(.menu) {
+      width: @menuWidth !important;
+      margin-right: 0 !important;
+      margin-left: 0 !important;
+    }
+  }
+
+  .main {
+    width: calc(100% - @menuWidth - @margin);
+  }
+}
+
+.adminWarning {
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+}
+
+@profileAvatarWidth: 240px;
+@profileMargin: 28px;
+
+.profileContainer {
+  display: flex;
+}
+
+.profileMain {
+  width: calc(100% - @profileAvatarWidth - @profileMargin);
+  margin-right: @profileMargin;
+}
+
+.profileAvatar {
+  width: @profileAvatarWidth;
+}
+
+.avatar {
+  margin-left: auto;
+  width: 240px;
+  height: 240px;
+  border: 1px solid var(--theme-border);
+  border-radius: 3px;
+}
+
+.avatarOptionList, .avatarInput {
+  margin-left: auto !important;
+  width: 240px;
+}
+
+.header {
+  margin-bottom: 8px !important;
+}
+
+.checkbox {
+  margin-top: 8px;
+
+  &.largeMargin {
+    margin-top: 22px;
+  }
+}
+
+.notes {
+  margin-top: 8px;
+  font-size: 13px;
+  white-space: pre-wrap;
+  color: var(--theme-description-message-foreground);
+
+  &.selectOptionNotes {
+    margin-top: 10px;
+    font-size: 13.5px;
+    font-weight: normal;
+    display: none;
+
+    :global(.menu) & {
+      display: block;
+    }
+  }
+}
+
+.textarea {
+  resize: none !important;
+}
+
+.submit, .header:not(:first-child), .headerMargin {
+  margin-top: 22px !important;
+}
+
+:global(#root) .notFullWidth {
+  width: calc(100% - @profileAvatarWidth - @profileMargin) !important;
+}
+
+.halfWidthFieldContainer {
+  @margin: 7px;
+  width: calc(50% - @margin);
+  display: inline-block;
+
+  &:nth-child(even) {
+    margin-right: @margin !important;
+  }
+
+  &:nth-child(odd) {
+    margin-left: @margin !important;
+  }
+
+  &:nth-last-child(1), &:nth-last-child(2) {
+    margin-bottom: 0 !important;
+  }
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px !important;
+  height: 41.5px;
+
+  .text {
+    flex-grow: 1;
+  }
+
+  &:not(.bottomAttached) {
+    border-bottom: 1px solid var(--theme-border) !important;
+  }
+
+  &.bottomAttached {
+    margin-bottom: 0;
+  }
+}
+
+.localeSelect {
+  :global(.icon:not(.dropdown)), :global(.flag) {
+    margin-right: 11px !important;
+  }
+}
+
+.forceLoadFonts {
+  visibility: hidden;
+  position: absolute;
+  pointer-events: none;
+}
+
+.formLabel {
+  font-size: 14px !important;
+}
+
+.fontSelect {
+  :global(.active.item) {
+    font-weight: inherit !important;
+  }
+}
+
+.scrollableCodeBoxSegment {
+  pre {
+    overflow-y: auto !important;
+    overflow-y: overlay !important;
+  }
+}
+
+.formatPreviewCodeBoxSegment {
+  height: 520px;
+}
+
+.privilegeRow {
+  display: flex;
+  margin-top: 12px;
+
+  :global(.checkbox) {
+    width: 250px;
+  }
+
+  .notes {
+    margin-top: 0;
+  }
+}
+
+.notesAdminOnly {
+  margin-top: 14px;
+
+  + :global(.button) {
+    margin-top: 14px !important;
+  }
+}
+
+.revokeAll {
+  margin-right: 0 !important;
+}
+
+.sessionList {
+  margin-top: 0 !important;
+}
+
+.sessionListItem {
+  display: flex;
+  align-items: center;
+
+  .light {
+    margin: 0 15px 0 8px !important;
+
+    &:global(.grey) {
+      opacity: 0.3;
+    }
+  }
+
+  .iconWrapper {
+    width: 55px;
+    text-align: center;
+    font-size: 45px;
+    margin-right: 10px;
+
+    :global(.icon) {
+      &:global(.terminal)         { color: var(--theme-os-icon-light); }
+      &:global(.mobile.alternate) { color: var(--theme-os-icon-light); }
+      &:global(.tablet.alternate) { color: var(--theme-os-icon-light); }
+      &:global(.desktop)          { color: var(--theme-os-icon-light); }
+      &:global(.windows)          { color: rgba(0  , 173, 239     ); }
+      &:global(.apple)            { color: rgba(125, 125, 125     ); }
+      &:global(.ubuntu)           { color: rgba(221, 72 , 20      ); }
+      &:global(.centos)           { color: rgba(147, 33 , 120     ); }
+      &:global(.suse)             { color: rgba(115, 186, 37      ); }
+      &:global(.fedora)           { color: rgba(60 , 110, 180     ); }
+      &:global(.freebsd)          { color: rgba(176, 1  , 15      ); }
+      &:global(.linux)            { color: var(--theme-os-icon-heavy); }
+    }
+  }
+
+  .info {
+    flex-grow: 1;
+    line-height: 1.7;
+
+    .browserAndOs {
+      .os, .browser {
+        font-weight: bold;
+      }
+
+      .os ~ .browser {
+        font-weight: normal;
+        color: rgb(122, 122, 122);
+
+        &::before {
+          display: inline-block;
+          white-space: pre;
+          content: "   /   "
+        }
+      }
+    }
+
+    .loginIpLocationTime {
+      font-size: 0.95em;
+
+      .loginIpLocation {
+        color: rgb(122, 122, 122);
+        white-space: pre;
+      }
+
+      .time {
+        color: rgb(189, 189, 189);
+      }
+    }
+  }
+}
+
+// Below are for Audit View
+.autoFormGroup {
+  display: flex;
+
+  .inputs {
+    flex-grow: 1;
+    display: flex;
+
+    :global(.input), input { width: 100% !important; }
+
+    .inputActionQuery { width: 35% !important; }
+
+    .inputIp { width: 25% !important; }
+
+    .inputObjectId { width: 20% !important; }
+  }
+
+  .filterButton {
+    white-space: nowrap;
+  }
+}
+
+.auditLogs {
+  max-width: initial !important;
+  margin-top: 14px !important;
+
+  .logItem {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+
+    .action {
+      font-weight: normal;
+
+      &::before {
+        content: "   –   ";
+        white-space: pre;
+      }
+    }
+
+    .message {
+      &:global(.title) {
+        display: flex;
+        align-items: center;
+      }
+
+      margin-top: 8px;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    .codeboxSegment {
+      margin-top: 3px;
+      margin-bottom: 12px;
+
+      .copyDetailsJson {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        width: 25px;
+        height: 25px;
+        opacity: 0.3;
+        font-size: 18px;
+        text-align: center;
+        line-height: 25px;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.5;
+        }
+
+        &:active {
+          opacity: 0.7;
+        }
+
+        :global(.icon) {
+          margin: 0 !important;
+        }
+      }
+
+      pre {
+        max-height: 250px !important;
+      }
+    }
+
+    .info {
+      margin-top: 8px;
+
+      font-size: 1em !important;
+
+      .item {
+        color: var(--theme-description-message-foreground) !important;
+        margin: 0 !important;
+
+        &:not(:first-child) {
+          &::before {
+            content: "   |   ";
+            white-space: pre;
+          }
+        }
+      }
+    }
+  }
+}
+
+.pagination {
+  text-align: center;
+}

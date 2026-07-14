@@ -1,0 +1,174 @@
+// PC
+.headerRow {
+  height: 68px;
+  margin-top: -15px;
+  display: flex;
+  align-items: center;
+}
+
+.headerRightControls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+// Mobile
+.headerSearchRow, .headerControlRow {
+  display: flex;
+  align-items: center;
+}
+
+.headerControlRow {
+  margin-top: 16px;
+  margin-bottom: 7px;
+}
+
+.search :global(.results) {
+  width: 100% !important;
+}
+
+.searchMenu {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  margin-left: 8px !important;
+
+  .searchMenuItem {
+    height: 40px !important;
+    width: 40px !important;
+    place-content: center;
+
+    > :global(.icon) {
+      opacity: 0.5 !important;
+    }
+
+    &:hover, &:global(.active) {
+      > :global(.icon) {
+        opacity: 0.7 !important;
+      }
+    }
+  }
+}
+
+.headerSearchFiltersRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  > strong {
+    margin-right: 10px;
+  }
+
+  :global(.ui.label) {
+    margin: 2px !important;
+  }
+}
+
+.tagsList {
+  height: 300px;
+  overflow: auto;
+  overflow: overlay;
+  margin-top: 15px !important;
+  margin-bottom: 28px !important;
+
+  p:empty {
+    display: none;
+  }
+
+  .tag {
+    margin: 2px !important;
+  }
+
+  .placeholder {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    opacity: 0.6;
+  }
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 18px;
+
+  @media only screen and (max-width: 767px) {
+    margin-top: 14px;
+  }
+}
+
+.topPagination:empty {
+  margin-top: 15px;
+}
+
+.tableHeaderRow {
+  white-space: nowrap;
+}
+
+.row {
+  height: 44px;
+}
+
+.problemTitleCell {
+  display: flex;
+  align-items: center;
+  flex-flow: row wrap;
+  padding: 8px 11px !important;
+  min-height: 44px;
+}
+
+.labelNonPublic {
+  margin-left: 7px !important;
+}
+
+.tags {
+  :global(.ui.label) {
+    margin: 2px !important;
+  }
+
+  margin-left: auto;
+}
+
+.headerButtons :global(.ui.button):not(:first-child) {
+  margin-left: 10px !important;
+}
+
+@media only screen and (min-width: 1024px) {
+  .headerButtons:not(.empty) {
+    margin-left: 15px;
+  }
+
+  .topPagination {
+    margin-top: 16px;
+    margin-bottom: 28px;
+  }
+
+  .search {
+    width: 280px;
+    display: inline-block;
+
+    :global(.ui.input) {
+      width: 100%;
+    }
+  }
+}
+
+@media only screen and (max-width: 1023px) {
+  .search {
+    flex-grow: 1;
+  }
+
+  .headerButtons {
+    margin-left: auto;
+  }
+
+  .headerSearchFiltersRow:not(:empty) {
+    margin-top: 15px;
+  }
+
+  .tagsList {
+    margin-bottom: 18px !important;
+  }
+}

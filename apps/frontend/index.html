@@ -1,0 +1,466 @@
+<!--        Made with 💖 by Menci
+/////////////////////////////////////////////
+//                                         //
+//                                         //
+//    +   +                                //
+//   +++ +++                               //
+//  +++++++++                              //
+//    +++++            /\                 ///
+//     +++            /  \               / //
+//      +            /    \             /  //
+//                  /      \           /   //
+//                 /        \_________/    //
+//                /                        //
+//               /       \         /       //
+//              /       __\       /__      //
+//             /                           //
+//            /             ____           //
+//           /              \  /           //
+//          /     _~_        \/    _~_     //
+//         /     /  /             |   |    //
+//        /     /  /              |   |    //
+//       /     /  /               |   |    //
+/////////////////////////////////////////////
+-->
+<%
+// Esacpe </script> in JSON.stringify's result
+function safeStringify(object) {
+  return JSON.stringify(object).split("<").join("\\u003C");
+}
+%>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <script>
+    window.appVersion = <%- safeStringify({
+      hash: gitCommitInfo.hash.slice(0, 10),
+      date: gitCommitInfo.date
+    }) %>;
+
+    (() => {
+      var normalizePath = (path) => {
+        while (path.endsWith("/")) path = path.slice(0, -1);
+        return path + "/";
+      };
+
+      // This is used for specify public path dynamicly for each request. Useful when you have multiple CDN servers.
+      // Use ngx_http_sub_module in your server to replace the "__public_path__" placeholder with your CDN path.
+      // You may need to add `proxy_set_header Accept-Encoding "";` to disable gzip for upstream traffic.
+      // If it's not replaced, the default "/" will be used.
+      var publicPath;
+      try {
+        publicPath = __public_path__;
+      } catch (e) {
+        publicPath = "";
+      }
+      publicPath = normalizePath(publicPath);
+      window.publicPath = publicPath;
+
+      // Specify the default title (before server info is retrieved) in the same way.
+      var title;
+      try {
+        title = __default_title__;
+      } catch (e) {
+        title = "Lyrio";
+      }
+      document.title = title;
+
+      // Specify the API endpoint in the same way.
+      var apiEndpoint;
+      try {
+        apiEndpoint = __api_endpoint__;
+      } catch (e) {
+        apiEndpoint = "";
+      }
+      window.apiEndpoint = normalizePath(apiEndpoint);
+
+      // Specify the favicon URL in the same way.
+      var faviconUrl;
+      try {
+        faviconUrl = __favicon__;
+      } catch (e) {
+        faviconUrl = publicPath + "favicon.ico";
+      }
+
+      // Specify the app logo in the same way.
+      var appLogo;
+      try {
+        appLogo = __applogo__;
+      } catch (e) {
+        appLogo = null;
+      }
+      window.appLogo = appLogo;
+
+      // Specify the gravatar CDN in the same way.
+      var gravatarCdn;
+      try {
+        gravatarCdn = __gravatar__;
+      } catch (e) {
+        gravatarCdn = "";
+      }
+      window.gravatarCdn = gravatarCdn;
+
+      // Specify the GitHub avatar CDN in the same way.
+      var ghAvatarCdn;
+      try {
+        ghAvatarCdn = __ghavatar__;
+      } catch (e) {
+        ghAvatarCdn = "";
+      }
+      window.ghAvatarCdn = ghAvatarCdn;
+
+      // Specify the CDNJS mirror in the same way.
+      var cdnjs;
+      try {
+        cdnjs = __cdnjs__;
+      } catch (e) {
+        cdnjs = "https://cdnjs.cloudflare.com/ajax/libs";
+      }
+      window.cdnjs = cdnjs;
+
+      var addLinkTag = (rel, href) => {
+        var link = document.createElement("link");
+        link.rel = rel;
+        link.href = href;
+        document.head.appendChild(link);
+      };
+
+      addLinkTag("icon", faviconUrl);
+
+      <%
+      for (const [packageName, , cssFiles] of externalPackages) {
+        for (const css of (Array.isArray(cssFiles) ? cssFiles : [cssFiles]).filter(f => f)) {
+      %>
+          addLinkTag(
+            "stylesheet",
+            window.cdnjs + <%- safeStringify(`/${packageName}/${externalPackageVersions[packageName]}/${css}`) %>
+          );
+      <%
+        }
+      }
+      %>
+
+      // __add_link_tags__
+    })();
+  </script>
+
+  <style id="initial-style">
+    :root {
+      --error-color: rgb(0, 0, 0, 0.5);
+      --error-title-color: rgba(0, 0, 0, 0.87);
+      --error-footer-color: rgba(0, 0, 0, 0.4);
+      --error-background-color: #f3f3f3;
+    }
+    /* Styles for error screen */
+    #error {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 99999;
+      width: calc(100vw - 28px);
+      margin: 0 14px 0 14px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--error-color);
+      font-family: "Helvetica Neue", Helvetica, Roboto, "Segoe", Tahoma, sans-serif;
+      overflow: auto;
+    }
+
+    #error::before,
+    #error::after {
+      content: "";
+      flex-basis: 90px;
+      flex-shrink: 999999999;
+    }
+
+    #error ::selection {
+      background-color: #cce2ff;
+    }
+
+    #error-title {
+      display: flex;
+      align-items: center;
+      color: var(--error-title-color);
+      margin: 32px 0 25px 0;
+    }
+
+    #error-icon {
+      width: 50px;
+      position: relative;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid var(--error-color);
+      margin-right: 20px;
+    }
+
+    #error-icon::after,
+    #error-icon::before {
+      position: absolute;
+      content: "";
+      width: 5%;
+      left: 47.5%;
+      top: 15%;
+      height: 70%;
+      background-color: var(--error-color);
+      transform: rotate(-45deg);
+    }
+
+    #error-icon::before {
+      transform: rotate(45deg);
+    }
+
+    #error h1 {
+      font-weight: normal;
+      font-size: 28px;
+      margin: 0;
+    }
+
+    #error p {
+      margin: 7px 0 7px 0;
+      font-size: 14px;
+    }
+
+    #error pre {
+      box-sizing: border-box;
+      max-width: 100%;
+      overflow: auto;
+      margin: 25px 0 0 0;
+      background: var(--error-background-color, #f3f3f3);
+      padding: 13px;
+      font-size: 13px;
+      flex-shrink: 1;
+    }
+
+    #error-footer {
+      font-size: 13px;
+      color: var(--error-footer-color);
+      margin: 25px 0 25px 0;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    #error a {
+      color: #4183c4;
+      text-decoration: none;
+    }
+
+    #error a:hover {
+      color: #1e70bf;
+    }
+
+    #error code, #error pre {
+      font-family: "Fira Code", "Roboto Mono", "DM Mono", "Menlo", "Consolas", "Ubuntu Mono";
+    }
+
+    /* Early stage light/dark mode support */
+
+    /*
+     * The page will flickering to white and then back to black since the stylesheet applies before theme is set
+     * Use a default value as workaround
+     * This value is in themes/pure.css (light) and themes/far.css (dark)
+     */
+
+    body {
+      background: var(--theme-background, #fff) !important;
+    }
+
+    @media only screen and (prefers-color-scheme: dark) {
+      body {
+        background: var(--theme-background, #222) !important;
+      }
+
+      :root {
+        --error-color: rgb(255, 255, 255, 0.5);
+        --error-title-color: rgba(255, 255, 255, 0.87);
+        --error-footer-color: rgba(255, 255, 255, 0.4);
+        --error-background-color: #0c0c0c;
+      }
+    }
+  </style>
+
+  <!-- Handle script errors -->
+  <script>
+    var fatalError = (messages, stack) => {
+      var error = document.getElementById("error");
+      if (error.style.display === "") return;
+
+      var root = document.getElementById("root");
+      if (root) document.body.removeChild(root);
+
+      var styles = document.getElementsByTagName("style");
+      for (var i = styles.length - 1; i >= 0; i--) {
+        if (styles[i].id === "initial-style") continue;
+        styles[i].parentNode.removeChild(styles[i]);
+      }
+
+      var footer = document.getElementById("error-footer");
+
+      for (var i in messages) {
+        var p = document.createElement("p");
+        p.innerText = messages[i];
+        error.insertBefore(p, footer);
+      }
+
+      if (stack) {
+        var pre = document.createElement("pre");
+        pre.innerText = stack;
+        error.insertBefore(pre, footer);
+      }
+
+      error.style.display = "";
+    };
+
+    var handleLoadingError = () => {
+      fatalError([
+        "There's an error loading the application. Please check your network connection.",
+        "加载应用程序时出现错误，请检查您的网络连接。"
+      ]);
+    };
+
+    // Get session and server info
+    var refreshSession = (token) => {
+      var getSessionToken = () => {
+        try {
+          var appState = JSON.parse(localStorage["appState"]);
+          if (appState.logout) {
+            appState.logout = false;
+            localStorage["appState"] = JSON.stringify(appState);
+          } else
+            return appState.token;
+        } catch (e) {
+          return null;
+        }
+      };
+
+      if (!token) token = getSessionToken() || "";
+      var script = document.createElement("script");
+      script.async = true;
+      script.onerror = handleLoadingError;
+      script.src = window.apiEndpoint + "api/auth/getSessionInfo?jsonp=1&token=" + encodeURIComponent(token);
+      document.head.appendChild(script);
+    };
+    refreshSession();
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <div id="error" style="display: none; ">
+    <div id="error-title">
+      <div id="error-icon"></div>
+      <h1><code>Error</code></h1>
+    </div>
+    <div id="error-footer">
+      <code>
+        Powered by Lyrio<br>
+        (version <%= gitCommitInfo.hash.slice(0, 10) %>)
+      </code>
+    </div>
+  </div>
+
+  <!-- Dynamicly generate <script> tags -->
+  <script>
+    (() => {
+      var modernScriptTags = [];
+      window.modernScriptTags = modernScriptTags;
+      var legacyScriptTags = [];
+      window.legacyScriptTags = legacyScriptTags;
+      var addScriptTag = (attributes, code) => {
+        var script = document.createElement("script");
+        if (attributes) for (var key in attributes) script.setAttribute(key, attributes[key]);
+
+        script.async = false;
+        script.onerror = handleLoadingError;
+        if (code) script.src = "data:text/javascript," + code;
+
+        if (attributes.type === "module" && !code) {
+          modernScriptTags.push(script);
+        } else if (script.noModule) {
+          script.noModule = false;
+          legacyScriptTags.push(script);
+        } else {
+          var promise = new Promise(function (resolve) {
+            script.onload = resolve;
+          });
+          document.body.appendChild(script);
+          return promise;
+        }
+      };
+
+      var dependencyPromises = [];
+
+      // xdomain.js
+      // Check for cross-origin API endpoint.
+      var apiEndpoint = window.apiEndpoint;
+      var isCrossOrigin = (url) => {
+        return new URL(url, location).origin !== location.origin;
+      };
+      if (isCrossOrigin(apiEndpoint)) {
+        // Load xdomain library from API host.
+        var apiHostCorsPath = apiEndpoint + "api/cors/";
+        dependencyPromises.push(addScriptTag({
+          src: apiHostCorsPath + "xdomain.min.js",
+          "data-slave": apiHostCorsPath + "xdomain.html"
+        }, null));
+      }
+
+      <%
+      for (const [packageName, scripts] of externalPackages) {
+        for (const scriptName of (Array.isArray(scripts) ? scripts : [scripts]).filter(f => f)) {
+      %>
+          dependencyPromises.push(addScriptTag({
+            src: window.cdnjs + <%-
+              safeStringify(`/${packageName}/${externalPackageVersions[packageName]}/${scriptName}`)
+            %>
+          }));
+      <%
+        }
+      }
+      %>
+
+      window.scriptTagsLoaded = Promise.all(dependencyPromises).then(function () {
+        // __add_script_tags__
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      // Workaround for Vite: type="module" got replaced by Vite
+      var script = document.currentScript;
+      if (script) {
+        var newScript = document.createElement("script");
+        newScript.type = "module";
+        newScript.innerHTML = script.innerHTML;
+        document.body.appendChild(newScript);
+        return;
+      }
+      window.scriptTagsLoaded.then(function () {
+        console.log("Loading " + (window.__vite_is_modern_browser ? "modern" : "legacy") + " script tags: feature detection");
+        var scriptTags = window.__vite_is_modern_browser ? window.modernScriptTags : window.legacyScriptTags;
+        for (var i in scriptTags) {
+          document.body.appendChild(scriptTags[i]);
+        }
+      });
+    })();
+  </script>
+
+  <script nomodule data-notransform>
+    window.scriptTagsLoaded.then(function () {
+      console.log("Loading legacy script tags: no module");
+      var scriptTags = window.legacyScriptTags;
+      for (var i in scriptTags) {
+        document.body.appendChild(scriptTags[i]);
+      }
+    });
+  </script>
+
+  <script type="module" src="/src/index.ts"></script>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json.schemastore.org/proxies",
+  "proxies": {
+    "root": {
+      "matchCondition": {
+        "route": "/{*proxyPath}"
+      },
+      "backendUri": "https://localhost/entry",
+      "requestOverrides": {
+        "backend.request.headers.X-ORIGINAL-HOST": "{request.headers.host}"
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "rootfsRepo": "lyrio-dev/sandbox-rootfs",
+  "githubToken": "YOUR_GITHUB_TOKEN",
+  "rootfsDir": "/rootfs",
+  "rootfsOldDir": "/rootfs-old",
+  "extractDir": "/rootfs-extract"
+}

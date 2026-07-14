@@ -1,0 +1,268 @@
+.columnStatus,
+.columnScore,
+.columnProblemAndSubmitter,
+.columnTime,
+.columnMemory,
+.columnAnswer,
+.columnSubmitTime {
+  white-space: nowrap;
+}
+
+.columnStatus {
+  width: 190px;
+  padding-right: 0 !important;
+}
+
+.columnScore {
+  width: 50px;
+  padding-left: 0 !important;
+}
+
+.columnProblemAndSubmitter {
+  width: auto;
+  display: flex;
+
+  .problem, .submitter {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .problem {
+    max-width: min-content;
+    flex-grow: 1;
+  }
+
+  .submitter {
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+}
+
+.columnTime {
+  width: 100px;
+}
+
+.columnMemory {
+  width: 80px;
+}
+
+.columnAnswer {
+  width: 130px;
+
+  .downloadIcon {
+    margin-left: 5px;
+  }
+}
+
+.columnSubmitTime {
+  width: 120px;
+}
+
+.popupOnIcon {
+  top: 5px !important;
+}
+
+// responsive
+.submissionsPage, .statisticsPage {
+  @media only screen and (max-width: 1023px) {
+    &.statisticsPage {
+      .columnStatus {
+        width: 40px !important;
+        text-align: center !important;
+
+        :global(.statusicon) {
+          margin-right: 0 !important;
+        }
+
+        :global(.statustext) {
+          display: none;
+        }
+      }
+    }
+
+    &.submissionsPage {
+      .columnTime {
+        display: none;
+      }
+
+      .columnMemory {
+        display: none;
+      }
+    }
+  }
+}
+
+.submissionItemMobile {
+  .flexContainer {
+    @line-spacing: 7px;
+
+    display: flex;
+    text-align: left;
+    overflow: hidden;
+
+    // Column 1: status & score
+    //           answer
+    > :nth-child(1) {
+      // Wide screen
+      @media only screen and (min-width: 540px) {
+        width: 240px;
+
+        // Row 1
+        > :nth-child(1) > {
+          > a, > span {
+            display: flex;
+
+            > :nth-child(1) {
+              flex-grow: 1;
+            }
+
+            > :nth-child(2) {
+              flex-shrink: 0;
+              width: 39px;
+              text-align: center;
+            }
+          }
+        }
+      }
+
+      // Narrow screen
+      @media only screen and (max-width: 539px) {
+        width: 110px;
+
+        .headerScoreColumn::before {
+          white-space: pre;
+          content: "  /  ";
+        }
+
+        :global(.statusicon) {
+          margin-right: 8px !important;
+        }
+
+        :global(.statustext) {
+          display: none;
+        }
+      }
+
+      flex-shrink: 0;
+      padding-right: 11px;
+
+      // Row 1: status & score
+      > :nth-child(1) {
+        margin-bottom: @line-spacing;
+      }
+    }
+
+    // Column 2: problem
+    //           submitter & [important field]
+    > :nth-child(2) {
+      flex-grow: 1;
+      overflow: hidden;
+
+      // Row 1: problem
+      > :nth-child(1) {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        margin-bottom: @line-spacing;
+      }
+
+      // Row 2: submitter & [important field]
+      > :nth-child(2) {
+        display: flex;
+
+        // submitter
+        > :nth-child(1) {
+          flex-grow: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        // [important field]
+        > :nth-child(2) {
+          text-align: right;
+          padding-left: 11px;
+          flex-shrink: 1;
+        }
+      }
+    }
+  }
+}
+
+.submissionPage {
+  @media only screen and (max-width: 1023px) {
+    .columnTime,
+    .columnMemory,
+    .columnAnswer,
+    .columnSubmitTime {
+      display: none;
+    }
+  }
+}
+
+.extraRowsWrapper {
+  white-space: nowrap;
+  margin-right: 7px;
+  margin-bottom: 15px !important;
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 13px;
+
+    :global(.icon) {
+      &:not(:global(.statusicon)) {
+        opacity: 0.7;
+      }
+      margin-right: 5px !important;
+      flex-shrink: 0;
+    }
+
+    .downloadIcon {
+      margin-left: 5px;
+    }
+
+    @media only screen and (max-width: 767px) {
+      > div:last-child {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+
+        :global(.icon):not(.downloadIcon) {
+          margin-left: 5px !important;
+          margin-right: 0 !important;
+        }
+      }
+
+      .downloadIcon {
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+.extraRowsColumnProblem {
+  flex-basis: calc(100% - 80px);
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+
+  &::after {
+    content: "";
+    width: 14px;
+    display: block;
+  }
+}
+
+.extraRowsColumnProblem, .extraRowsColumnSubmitter {
+  overflow: hidden;
+
+  > a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.downloadIcon {
+  cursor: pointer;
+}

@@ -1,0 +1,74 @@
+.header {
+  margin-bottom: 28px;
+  @media only screen and (max-width: 767px) {
+    margin-bottom: 16px;
+  }
+
+  display: flex;
+
+  .manageGroups {
+    margin-left: auto !important;
+
+    > :global(.button) {
+      margin-left: 14px;
+      margin-right: 0 !important;
+    }
+  }
+}
+
+.link {
+  color: var(--theme-foreground) !important;
+}
+
+.table {
+  .columnRank {
+    width: 65px;
+  }
+
+  .columnUsername {
+    width: 1px;
+  }
+
+  .columnBio {
+    display: flex;
+    justify-content: center;
+
+    > div {
+      white-space: normal;
+      height: 19.5px;
+      overflow: hidden;
+    }
+  }
+
+  .columnAcceptedProblemCount {
+    width: 100px;
+  }
+
+  .columnRating {
+    width: 100px;
+  }
+
+  th, td:not(.bio) {
+    white-space: nowrap;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .columnBio {
+    display: none !important;
+  }
+
+  .searchContainer {
+    margin-bottom: 11px;
+  }
+}
+
+.pagination:not(:empty) {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 18px;
+
+  @media only screen and (max-width: 1023px) {
+    margin-top: 14px;
+  }
+}

@@ -1,0 +1,36 @@
+.codeBox {
+  margin-top: 0px;
+  margin-bottom: 14px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.codeBoxSegment {
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+.codeBoxContent {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 1em 1em;
+  height: 100%;
+  overflow: auto;
+  overflow: overlay;
+  overflow-y: hidden;
+
+  &.wrap {
+    white-space: pre-wrap;
+  }
+}
+
+.omittedLabel {
+  position: absolute;
+  background-color: var(--theme-background-transparent);
+  color: var(--theme-foreground-transparent);
+  right: 0;
+  bottom: 0;
+  padding: 14px 14px;
+}

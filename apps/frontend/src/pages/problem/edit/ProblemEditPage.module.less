@@ -1,0 +1,115 @@
+.headerContainer {
+  display: flex;
+  align-items: center;
+
+  .icon {
+    margin-right: 0.6rem;
+  }
+}
+
+.row {
+  padding-bottom: 0 !important;
+}
+
+.typeDropdown {
+  margin-left: 15px !important;
+}
+
+.backButton {
+  margin-left: auto !important;
+  margin-right: 10px !important;
+}
+
+.boldInput :global(input) {
+  font-weight: bolder;
+}
+
+.toolbarMenu {
+  border-radius: 0 !important;
+  height: 43px;
+}
+
+.toolbarMenuInputItem {
+  flex-grow: 1 !important;
+
+  &::before {
+    display: none;
+  }
+}
+
+.toolbarMenuIconItem {
+  width: 43px;
+  padding: 0 !important;
+}
+
+.sectionBorder {
+  border: 1px solid #d4d4d5;
+}
+
+.sectionSegment {
+  border-radius: 0 !important;
+
+  &[data-type=Text] {
+    padding: 0 !important;
+
+    textarea {
+      border: none !important;
+    }
+  }
+}
+
+.sampleEditorGrid {
+  :global(.row) {
+    &:first-child {
+      padding: 0 !important;
+
+      :global(.column) {
+        padding: 0 !important;
+
+        textarea {
+          border-radius: 0 !important;
+          border: none !important;
+          border-bottom: 1px solid var(--theme-border) !important;
+          resize: none !important;
+        }
+
+        &:first-child textarea {
+          border-right: 1px solid var(--theme-border) !important;
+        }
+      }
+    }
+
+    &:last-child {
+      padding: 0 !important;
+
+      :global(.column) {
+        padding: 0 !important;
+
+        textarea {
+          border-radius: 0 !important;
+          border: none !important;
+        }
+      }
+    }
+  }
+}
+
+.sampleWarningMessage {
+  white-space: nowrap;
+}
+
+.noSampleDimmer {
+  margin-left: -1px;
+  width: calc(100% + 2px);
+  padding-left: 1px;
+  padding-right: 1px;
+
+  :global(.dimmer) {
+    background-color: rgba(255, 255, 255, 0.6) !important;
+    z-index: initial;
+  }
+
+  > .sectionSegment {
+    margin-bottom: 0 !important;
+  }
+}

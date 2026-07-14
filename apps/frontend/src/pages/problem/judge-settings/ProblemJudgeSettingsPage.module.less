@@ -1,0 +1,77 @@
+@import "common/common.module.less";
+
+.leftContainer {
+  height: calc(100vh - 105px);
+  position: sticky !important;
+  top: calc(49px + 28px + 0px);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+
+  :global(.ui.header) {
+    margin: 0 !important;
+  }
+}
+
+.backButton {
+  margin-left: auto !important;
+  margin-right: 10px !important;
+}
+
+.yamlCodeBox {
+  height: 100%;
+
+  .yamlSegment {
+    margin-top: 14px !important;
+    height: calc(100% - 50px);
+
+    pre {
+      overflow-y: auto !important;
+      overflow-y: overlay !important;
+    }
+  }
+}
+
+#buttonEditRaw {
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  margin-right: 0;
+}
+
+.codeEditor {
+  height: calc(100vh - 350px) !important;
+}
+
+:global(#root) .problemTypeForm {
+  margin-bottom: 14px;
+
+  .label {
+    margin-bottom: 0 !important;
+  }
+
+  .field {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+
+    .dropdown {
+      width: 100% !important;
+    }
+
+    .switchButton {
+      margin-left: 11px;
+      height: 38px;
+    }
+  }
+
+  .submittable {
+    padding-right: 0;
+    white-space: nowrap;
+  }
+}
