@@ -1,7 +1,6 @@
 {
   "env": {
     "title": "LibreOJ",
-    "uiVersion": null,
 
     "cdnRoot": "https://static.cdn.menci.xyz/libreoj-frontend",
 
@@ -23,7 +22,6 @@
     "cdnjs": "https://cdnjs.cloudflare.com/ajax/libs",
     "cdnjsCN": "https://cdnjs.baoshuo.ren/ajax/libs"
   },
-  "htmlTemplate": "https://cdn.jsdelivr.net/npm/@lyrio/ui@${uiVersion}/dist/index.html",
   "substitution": {
     "__api_endpoint__": {
       "CN": "${apiEndpointCN}",

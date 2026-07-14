@@ -1,4 +1,4 @@
-import config from "../../config.out.json";
+import config from "@libreoj/bootstrap-config/config.json";
 
 export interface ResponseDataForRegion {
   body: string;
@@ -54,8 +54,8 @@ export function handleRequest(request: Request, clientInfo: ClientInfo): Respons
         "Access-Control-Expose-Headers": "*"
       }
     });
-  } catch (e) {
-    return new Response(e.stack, {
+  } catch (error) {
+    return new Response(error instanceof Error ? error.stack : String(error), {
       status: 500,
       headers: {
         ...baseResponseHeaders,

@@ -1,13 +1,13 @@
 import esbuild from "esbuild";
-import url from "url";
-import path from "path";
+import path from "node:path";
+import url from "node:url";
 
 const dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
-esbuild.build({
+await esbuild.build({
   entryPoints: ["installer.ts", "service-worker.ts"].map(file => path.resolve(dirname, "src", file)),
   bundle: true,
-  platform: "node",
+  platform: "browser",
   outdir: path.resolve(dirname, "dist"),
   logLevel: "info",
   minify: true,

@@ -1,7 +1,4 @@
-import "../config.ts";
-
-// @ts-ignore
-const config = (await import("../config.out.json")).default;
+import config from "@libreoj/bootstrap-config/config.json";
 
 console.log(
   JSON.stringify({

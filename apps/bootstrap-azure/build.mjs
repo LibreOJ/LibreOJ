@@ -2,11 +2,7 @@ import esbuild from "esbuild";
 import { nodeExternalsPlugin } from "esbuild-node-externals";
 import inlineImportPlugin from "esbuild-plugin-inline-import";
 
-import workspaceRoot from "../package.json";
-
-import "../config.ts";
-
-esbuild.build({
+await esbuild.build({
   entryPoints: ["src/index.ts"],
   bundle: true,
   platform: "node",
@@ -14,7 +10,7 @@ esbuild.build({
   logLevel: "info",
   plugins: [
     nodeExternalsPlugin({
-      allowList: workspaceRoot.workspaces
+      allowList: [/^@libreoj\/bootstrap-/]
     }),
     inlineImportPlugin()
   ]

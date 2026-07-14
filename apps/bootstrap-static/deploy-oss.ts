@@ -1,9 +1,6 @@
 import OSS from "ali-oss";
 
-import "../config.ts";
-
-// @ts-ignore
-const config = (await import("../config.out.json")).default;
+import config from "@libreoj/bootstrap-config/config.json";
 
 if (
   !process.env.ALIYUN_ACCESS_KEY_ID ||

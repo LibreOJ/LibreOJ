@@ -1,13 +1,10 @@
 import getGitRepoInfo from "git-repo-info";
-import fetch from "node-fetch";
 import fs from "fs";
 import path from "path";
 import url from "url";
 import cheerio from "cheerio";
 import * as terser from "terser";
 import { createRequire } from "module";
-
-import "service-worker/build.ts";
 
 const require = createRequire(import.meta.url);
 const dirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -16,13 +13,12 @@ type ValueForRegions = string | Record<string, string>;
 
 interface ApplicationConfig {
   env: Record<string, string>;
-  bootstrapCdnRoot: string;
-  htmlTemplate: string;
   substitution: Record<string, ValueForRegions>;
 }
 
-const applicationConfig: ApplicationConfig = require("./config.json");
-applicationConfig.env.uiVersion = require("./version.json").version;
+const applicationConfig: ApplicationConfig = JSON.parse(
+  fs.readFileSync(path.resolve(dirname, "../settings.json"), "utf8")
+);
 
 const applyEnv = (() => {
   const env = Object.entries(applicationConfig.env);
@@ -37,11 +33,9 @@ const applyEnv = (() => {
   return applyEnv;
 })();
 
-async function fetchHtmlTemplate() {
-  const response = await fetch(applyEnv(applicationConfig.htmlTemplate));
-  const originalHtmlFile = await response.text();
-
-  const serviceWorkerInstallerPath = require.resolve("service-worker/dist/installer");
+function readHtmlTemplate() {
+  const originalHtmlFile = fs.readFileSync(require.resolve("@libreoj/frontend/index.html"), "utf8");
+  const serviceWorkerInstallerPath = require.resolve("@libreoj/service-worker/installer");
 
   const $ = cheerio.load(originalHtmlFile);
   const script = $("<script>");
@@ -58,7 +52,9 @@ async function postProcessHtml(html: string) {
       .toArray()
       .map(async script => {
         const scriptText = $(script).html();
+        if (scriptText === null) throw new Error("Cannot minify a script without inline content.");
         const terserOutput = await terser.minify(scriptText);
+        if (terserOutput.code === undefined) throw new Error("Terser did not produce output for an inline script.");
         $(script).html(terserOutput.code);
       })
   );
@@ -116,17 +112,18 @@ async function prepareResponseDataForRegion(html: string): Promise<Record<string
   );
 }
 
+const gitRepoInfo = getGitRepoInfo();
 const config = {
-  responseDataForRegion: await prepareResponseDataForRegion(await fetchHtmlTemplate()),
+  responseDataForRegion: await prepareResponseDataForRegion(readHtmlTemplate()),
   serviceWorker: makeResponseData(
-    fs.readFileSync(require.resolve("service-worker/dist/service-worker"), "utf-8"),
+    fs.readFileSync(require.resolve("@libreoj/service-worker/service-worker"), "utf8"),
     "text/javascript",
     "public, max-age=604800"
   ),
   buildInfo: {
-    buildTime: new Date().toISOString(),
-    buildCommit: getGitRepoInfo().sha
+    buildTime: new Date(gitRepoInfo.committerDate).toISOString(),
+    buildCommit: gitRepoInfo.sha
   }
 };
 
-fs.writeFileSync(path.resolve(dirname, "config.out.json"), JSON.stringify(config));
+fs.writeFileSync(path.resolve(dirname, "../config.json"), JSON.stringify(config));

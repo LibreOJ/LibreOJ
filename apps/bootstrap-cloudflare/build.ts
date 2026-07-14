@@ -1,9 +1,7 @@
 import esbuild from "esbuild";
 import inlineImportPlugin from "esbuild-plugin-inline-import";
 
-import "../config.ts";
-
-esbuild.build({
+await esbuild.build({
   entryPoints: ["src/index.ts"],
   bundle: true,
   platform: "node",
