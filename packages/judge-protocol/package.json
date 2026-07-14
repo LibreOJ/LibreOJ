@@ -1,0 +1,23 @@
+{
+  "name": "@libreoj/judge-protocol",
+  "version": "0.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check-format": "prettier --check \"src/**/*.ts\" \"*.json\"",
+    "check-types": "tsc --noEmit -p tsconfig.json",
+    "format": "prettier --write \"src/**/*.ts\" \"*.json\""
+  },
+  "devDependencies": {
+    "prettier": "catalog:",
+    "typescript": "^4.7.4"
+  }
+}

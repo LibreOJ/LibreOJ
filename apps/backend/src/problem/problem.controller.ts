@@ -3,6 +3,8 @@ import { ApiOperation, ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 import { Recaptcha } from "@nestlab/google-recaptcha";
 
+import { SubmissionStatus } from "@libreoj/judge-protocol";
+
 import { ConfigService } from "@/config/config.service";
 import { UserService } from "@/user/user.service";
 import { GroupService } from "@/group/group.service";
@@ -13,7 +15,6 @@ import { GroupEntity } from "@/group/group.entity";
 import { UserPrivilegeService, UserPrivilegeType } from "@/user/user-privilege.service";
 import { Locale } from "@/common/locale.type";
 import { SubmissionService } from "@/submission/submission.service";
-import { SubmissionStatus } from "@/submission/submission-status.enum";
 import { AuditLogObjectType, AuditService } from "@/audit/audit.service";
 import { DiscussionService } from "@/discussion/discussion.service";
 

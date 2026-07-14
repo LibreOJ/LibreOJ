@@ -5,11 +5,12 @@ import { InjectRepository, InjectDataSource } from "@nestjs/typeorm";
 
 import { Repository, DataSource, Like, MoreThan, EntityManager } from "typeorm";
 
+import { SubmissionStatus } from "@libreoj/judge-protocol";
+
 import { escapeLike } from "@/database/database.utils";
 import { LockService } from "@/redis/lock.service";
 import { SubmissionService } from "@/submission/submission.service";
 import { SubmissionEntity } from "@/submission/submission.entity";
-import { SubmissionStatus } from "@/submission/submission-status.enum";
 import { ConfigService } from "@/config/config.service";
 import { AuthEmailVerificationCodeService } from "@/auth/auth-email-verification-code.service";
 import { AuditLogObjectType, AuditService } from "@/audit/audit.service";

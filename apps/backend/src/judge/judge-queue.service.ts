@@ -2,6 +2,8 @@ import { Injectable } from "@nestjs/common";
 
 import { Redis } from "ioredis";
 
+import { JudgeTaskMeta, JudgeTaskPayload, JudgeTaskType } from "@libreoj/judge-protocol";
+
 import { logger } from "@/logger";
 import { RedisService } from "@/redis/redis.service";
 import { MetricsService } from "@/metrics/metrics.service";
@@ -18,17 +20,6 @@ export enum JudgeTaskPriorityType {
   Lowest = 4
 }
 
-export enum JudgeTaskType {
-  Submission = "Submission",
-  CustomTest = "CustomTest",
-  Hack = "Hack"
-}
-
-export interface JudgeTaskMeta {
-  taskId: string;
-  type: JudgeTaskType;
-}
-
 export interface QueuedJudgeTaskMeta extends JudgeTaskMeta {
   enqueueTime: number;
 }
@@ -37,7 +28,7 @@ export interface QueuedJudgeTaskMeta extends JudgeTaskMeta {
 export interface JudgeTaskExtraInfo {}
 
 // Extra info is also send to judge client while ONLY meta is used to identity the task
-export class JudgeTask<ExtraInfo extends JudgeTaskExtraInfo> implements JudgeTaskMeta {
+export class JudgeTask<ExtraInfo extends JudgeTaskExtraInfo> implements JudgeTaskPayload<ExtraInfo> {
   constructor(
     public taskId: string, // Passed by the task creator, to indentify the task
     public type: JudgeTaskType,

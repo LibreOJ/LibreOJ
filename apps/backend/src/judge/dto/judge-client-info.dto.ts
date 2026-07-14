@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { JudgeClientSystemInfo } from "../judge-client-system-info.interface";
+import { JudgeClientSystemInfo } from "@libreoj/judge-protocol";
 
 export class JudgeClientInfoDto {
   @ApiProperty()

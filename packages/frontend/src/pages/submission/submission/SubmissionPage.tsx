@@ -57,7 +57,6 @@ export interface SubmissionProgress<TestcaseResult extends TestcaseResultCommon 
   score?: number;
 
   compile?: {
-    compileTaskHash: string;
     success: boolean;
     message: OmittableString;
   };

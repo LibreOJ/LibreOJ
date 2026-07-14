@@ -1,11 +1,8 @@
 import fs from "fs";
 
-export type OmittableString =
-  | string
-  | {
-      data: string;
-      omittedLength: number;
-    };
+import { OmittableString } from "@libreoj/judge-protocol";
+
+export type { OmittableString } from "@libreoj/judge-protocol";
 
 export async function readFileOmitted(filePath: string, lengthLimit: number): Promise<OmittableString> {
   let file: fs.promises.FileHandle;

@@ -1,4 +1,5 @@
 import winston from "winston";
+import { SubmissionStatus } from "@libreoj/judge-protocol";
 
 import { Task } from "@/task";
 import { ensureFiles } from "@/file";
@@ -40,28 +41,7 @@ export enum SubmissionProgressType {
   Finished = "Finished"
 }
 
-export enum SubmissionStatus {
-  Pending = "Pending",
-
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  ConfigurationError = "ConfigurationError",
-  SystemError = "SystemError",
-  Canceled = "Canceled",
-
-  CompilationError = "CompilationError",
-
-  FileError = "FileError",
-  RuntimeError = "RuntimeError",
-  TimeLimitExceeded = "TimeLimitExceeded",
-  MemoryLimitExceeded = "MemoryLimitExceeded",
-  OutputLimitExceeded = "OutputLimitExceeded",
-
-  PartiallyCorrect = "PartiallyCorrect",
-  WrongAnswer = "WrongAnswer",
-  Accepted = "Accepted",
-
-  JudgementFailed = "JudgementFailed"
-}
+export { SubmissionStatus } from "@libreoj/judge-protocol";
 
 interface TestcaseProgressReference {
   // If !waiting && !running && !testcaseHash, it's "Skipped"

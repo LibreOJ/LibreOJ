@@ -1,7 +1,6 @@
-import { JudgeTaskProgress } from "@/judge/judge-task-progress.interface";
+import { SubmissionStatus, OmittableString } from "@libreoj/judge-protocol";
 
-import { SubmissionStatus } from "./submission-status.enum";
-import { SubmissionResultOmittableString } from "./submission-testcase-result-omittable-string.interface";
+import { JudgeTaskProgress } from "@/judge/judge-task-progress.interface";
 
 export enum SubmissionProgressType {
   Preparing = "Preparing",
@@ -29,12 +28,11 @@ export interface SubmissionProgress<TestcaseResult extends SubmissionTestcaseRes
   totalOccupiedTime?: number;
 
   compile?: {
-    compileTaskHash: string;
     success: boolean;
-    message: SubmissionResultOmittableString;
+    message: OmittableString;
   };
 
-  systemMessage?: SubmissionResultOmittableString;
+  systemMessage?: OmittableString;
 
   // testcaseHash
   // ->

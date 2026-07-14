@@ -9,7 +9,7 @@ import { JSDOM } from "jsdom";
 
 import { SubmissionEntity } from "@/submission/submission.entity";
 import { ProblemType } from "@/problem/problem.entity";
-import { SubmissionStatus } from "@/submission/submission-status.enum";
+import { SubmissionStatus } from "@libreoj/judge-protocol";
 import { SubmissionDetailEntity } from "@/submission/submission-detail.entity";
 import { ConfigService } from "@/config/config.service";
 import { FileEntity } from "@/file/file.entity";
@@ -27,7 +27,7 @@ import {
   SubmissionTestcaseStatusSubmitAnswer
 } from "@/problem-type/types/submit-answer/submission-testcase-result.interface";
 import { SubmissionContentTraditional } from "@/problem-type/types/traditional/submission-content.interface";
-import { SubmissionResultOmittableString } from "@/submission/submission-testcase-result-omittable-string.interface";
+import { OmittableString } from "@libreoj/judge-protocol";
 
 import { getLanguageAndOptions, parseProblemType } from "./problem";
 import { OldDatabaseJudgeStateEntity } from "./old-database.interface";
@@ -154,7 +154,7 @@ function uuidFromSubmission(submissionId: number) {
 }
 
 const omittedRegex = /\n<(\d+) bytes? omitted>$/;
-function parseOmittedString(data: string): SubmissionResultOmittableString {
+function parseOmittedString(data: string): OmittableString {
   data = data || "";
   const result = data.match(omittedRegex);
   if (!result) return data;
@@ -164,7 +164,7 @@ function parseOmittedString(data: string): SubmissionResultOmittableString {
   };
 }
 
-function getOmittedStringLength(data: SubmissionResultOmittableString) {
+function getOmittedStringLength(data: OmittableString) {
   return typeof data === "string" ? data.length : data.data.length + data.omittedLength;
 }
 
@@ -364,7 +364,6 @@ export const migrationSubmission: MigrationInterface = {
               const notConvertedRegex = /^A [a-zA-Z]+ encountered while compiling your code./;
               const notConverted = notConvertedRegex.test(oldCompileMessage);
               result.compile = {
-                compileTaskHash: null,
                 success: oldResult.compile.status === 2,
                 message: parseOmittedString(notConverted ? oldCompileMessage : htmlToAnsi(oldCompileMessage))
               };

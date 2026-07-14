@@ -14,6 +14,8 @@ import SocketIOParser from "socket.io-msgpack-parser";
 import { Redis } from "ioredis";
 import proxyAddr from "proxy-addr";
 
+import { JudgeClientSystemInfo, JudgeTaskMeta } from "@libreoj/judge-protocol";
+
 import { logger } from "@/logger";
 import { MinioSignFor, FileService } from "@/file/file.service";
 import { SubmissionProgress } from "@/submission/submission-progress.interface";
@@ -24,8 +26,7 @@ import { LockService } from "@/redis/lock.service";
 
 import { JudgeClientService } from "./judge-client.service";
 import { JudgeClientEntity } from "./judge-client.entity";
-import { JudgeQueueService, JudgeTask, JudgeTaskMeta, JudgeTaskExtraInfo } from "./judge-queue.service";
-import { JudgeClientSystemInfo } from "./judge-client-system-info.interface";
+import { JudgeQueueService, JudgeTask, JudgeTaskExtraInfo } from "./judge-queue.service";
 
 interface JudgeClientState {
   judgeClient: JudgeClientEntity;

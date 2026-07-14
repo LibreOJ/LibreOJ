@@ -6,17 +6,13 @@ import { ValidationError } from "class-validator";
 import { v4 as uuid } from "uuid";
 import moment from "moment-timezone";
 
+import { JudgeTaskType, SubmissionStatus } from "@libreoj/judge-protocol";
+
 import { logger } from "@/logger";
 import { ProblemPermissionType, ProblemService } from "@/problem/problem.service";
 import { UserEntity } from "@/user/user.entity";
 import { ProblemEntity, ProblemType } from "@/problem/problem.entity";
-import {
-  JudgeQueueService,
-  JudgeTaskType,
-  JudgeTaskPriorityType,
-  JudgeTask,
-  JudgeTaskExtraInfo
-} from "@/judge/judge-queue.service";
+import { JudgeQueueService, JudgeTaskPriorityType, JudgeTask, JudgeTaskExtraInfo } from "@/judge/judge-queue.service";
 import { JudgeTaskService } from "@/judge/judge-task-service.interface";
 import { ProblemFileType } from "@/problem/problem-file.entity";
 import { ProblemJudgeInfo } from "@/problem/problem-judge-info.interface";
@@ -39,7 +35,6 @@ import { SubmissionProgressService, SubmissionEventType } from "./submission-pro
 import { SubmissionStatisticsService } from "./submission-statistics.service";
 import { SubmissionEntity } from "./submission.entity";
 import { SubmissionDetailEntity } from "./submission-detail.entity";
-import { SubmissionStatus } from "./submission-status.enum";
 
 import { FileUploadInfoDto, SignedFileUploadRequestDto } from "@/file/dto";
 

@@ -6,6 +6,8 @@ import jwt from "jsonwebtoken";
 import { diff } from "jsondiffpatch";
 import SocketIOParser from "socket.io-msgpack-parser";
 
+import { SubmissionStatus } from "@libreoj/judge-protocol";
+
 import { logger } from "@/logger";
 import { ConfigService } from "@/config/config.service";
 
@@ -13,7 +15,6 @@ import { MetricsService } from "@/metrics/metrics.service";
 
 import { SubmissionProgress, SubmissionProgressType } from "./submission-progress.interface";
 import { SubmissionService } from "./submission.service";
-import { SubmissionStatus } from "./submission-status.enum";
 import { SubmissionEventType } from "./submission-progress.service";
 
 import { SubmissionBasicMetaDto } from "./dto";

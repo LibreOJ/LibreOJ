@@ -1,10 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
 
+import { SubmissionStatus } from "@libreoj/judge-protocol";
+
 import { ProblemMetaDto } from "@/problem/dto";
 
 import { UserMetaDto } from "@/user/dto";
 
-import { SubmissionStatus } from "../submission-status.enum";
 import { SubmissionProgressType } from "../submission-progress.interface";
 
 // The basic meta doesn't contains information obtained from related database tables, such as problem and submitter meta

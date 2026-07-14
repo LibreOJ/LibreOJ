@@ -32,6 +32,9 @@ importers:
 
   apps/backend:
     dependencies:
+      '@libreoj/judge-protocol':
+        specifier: workspace:*
+        version: link:../../packages/judge-protocol
       '@nestjs/axios':
         specifier: ^0.1.0
         version: 0.1.0(@nestjs/common@9.0.7(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.1.13)(rxjs@7.5.6))(reflect-metadata@0.1.13)(rxjs@7.5.6)
@@ -393,6 +396,9 @@ importers:
 
   apps/judge:
     dependencies:
+      '@libreoj/judge-protocol':
+        specifier: workspace:*
+        version: link:../../packages/judge-protocol
       '@swc-node/core':
         specifier: ^1.9.0
         version: 1.9.0
@@ -1021,6 +1027,15 @@ importers:
       xss:
         specifier: ^1.0.13
         version: 1.0.13
+
+  packages/judge-protocol:
+    devDependencies:
+      prettier:
+        specifier: 'catalog:'
+        version: 2.7.1
+      typescript:
+        specifier: ^4.7.4
+        version: 4.7.4
 
   packages/service-worker:
     devDependencies:

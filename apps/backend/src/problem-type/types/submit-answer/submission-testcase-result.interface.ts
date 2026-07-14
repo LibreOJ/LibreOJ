@@ -1,5 +1,6 @@
+import { OmittableString } from "@libreoj/judge-protocol";
+
 import { SubmissionTestcaseResult } from "@/submission/submission-progress.interface";
-import { SubmissionResultOmittableString } from "@/submission/submission-testcase-result-omittable-string.interface";
 
 // For subtasks and testcasese
 export enum SubmissionTestcaseStatusSubmitAnswer {
@@ -22,10 +23,10 @@ export interface SubmissionTestcaseResultSubmitAnswer extends SubmissionTestcase
   };
   status: SubmissionTestcaseStatusSubmitAnswer;
   score: number;
-  input?: SubmissionResultOmittableString;
-  output?: SubmissionResultOmittableString;
-  userOutput?: SubmissionResultOmittableString;
+  input?: OmittableString;
+  output?: OmittableString;
+  userOutput?: OmittableString;
   userOutputLength?: number;
-  checkerMessage?: SubmissionResultOmittableString;
-  systemMessage?: SubmissionResultOmittableString;
+  checkerMessage?: OmittableString;
+  systemMessage?: OmittableString;
 }

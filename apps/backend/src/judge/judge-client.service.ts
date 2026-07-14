@@ -6,11 +6,12 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Redis } from "ioredis";
 
+import { JudgeClientSystemInfo } from "@libreoj/judge-protocol";
+
 import { RedisService } from "@/redis/redis.service";
 
 import { JudgeClientEntity } from "./judge-client.entity";
 import { JudgeClientInfoDto } from "./dto/judge-client-info.dto";
-import { JudgeClientSystemInfo } from "./judge-client-system-info.interface";
 
 const JUDGE_CLIENT_KEY_BYTE_LENGTH = 30;
 

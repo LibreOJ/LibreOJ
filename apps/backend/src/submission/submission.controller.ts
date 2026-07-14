@@ -3,6 +3,8 @@ import { ApiOperation, ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 import { Recaptcha } from "@nestlab/google-recaptcha";
 
+import { SubmissionStatus } from "@libreoj/judge-protocol";
+
 import { CurrentUser } from "@/common/user.decorator";
 import { UserEntity } from "@/user/user.entity";
 import { ProblemService, ProblemPermissionType } from "@/problem/problem.service";
@@ -14,7 +16,6 @@ import { AuditLogObjectType, AuditService } from "@/audit/audit.service";
 import { MinioSignFor, FileService } from "@/file/file.service";
 import { ProblemTypeFactoryService } from "@/problem-type/problem-type-factory.service";
 
-import { SubmissionStatus } from "./submission-status.enum";
 import { SubmissionStatisticsService } from "./submission-statistics.service";
 import { SubmissionProgressService } from "./submission-progress.service";
 import { SubmissionProgressGateway, SubmissionProgressSubscriptionType } from "./submission-progress.gateway";

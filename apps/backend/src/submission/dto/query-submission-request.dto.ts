@@ -2,11 +2,11 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { IsInt, IsString, Length, IsEnum, IsOptional, IsPositive } from "class-validator";
 
+import { SubmissionStatus } from "@libreoj/judge-protocol";
+
 import { IsUsername } from "@/common/validators";
 
 import { Locale } from "@/common/locale.type";
-
-import { SubmissionStatus } from "../submission-status.enum";
 
 export class QuerySubmissionRequestDto {
   @ApiProperty()

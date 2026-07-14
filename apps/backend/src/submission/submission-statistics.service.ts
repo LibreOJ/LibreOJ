@@ -3,12 +3,13 @@ import { InjectDataSource } from "@nestjs/typeorm";
 
 import { DataSource } from "typeorm";
 
+import { SubmissionStatus } from "@libreoj/judge-protocol";
+
 import { logger } from "@/logger";
 import { RedisService } from "@/redis/redis.service";
 import { ProblemEntity } from "@/problem/problem.entity";
 
 import { SubmissionEntity } from "./submission.entity";
-import { SubmissionStatus } from "./submission-status.enum";
 import { SubmissionService } from "./submission.service";
 
 // Along with submission statistics, this file also provide the submission score statistics

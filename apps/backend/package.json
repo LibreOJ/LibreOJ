@@ -28,6 +28,7 @@
     }
   },
   "dependencies": {
+    "@libreoj/judge-protocol": "workspace:*",
     "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "^9.0.7",
     "@nestjs/core": "^9.0.7",

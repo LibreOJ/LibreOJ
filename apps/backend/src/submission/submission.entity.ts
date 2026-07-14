@@ -1,9 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Index, ManyToOne, Column, JoinColumn, OneToOne } from "typeorm";
 
+import { SubmissionStatus } from "@libreoj/judge-protocol";
+
 import { UserEntity } from "@/user/user.entity";
 import { ProblemEntity } from "@/problem/problem.entity";
 
-import { SubmissionStatus } from "./submission-status.enum";
 import { SubmissionDetailEntity } from "./submission-detail.entity";
 
 @Entity("submission")
