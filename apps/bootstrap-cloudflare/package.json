@@ -1,21 +1,28 @@
 {
   "private": true,
-  "name": "cloudflare",
-  "version": "1.0.0",
+  "name": "@libreoj/bootstrap-cloudflare",
+  "version": "0.0.0",
   "main": "dist/index.js",
   "author": "Menci <huanghaorui301@gmail.com>",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build:code": "node --experimental-json-modules --loader ts-node/esm build.ts",
-    "build:config": "node --experimental-json-modules config.mjs",
-    "build": "yarn build:code && yarn build:config",
-    "dev": "yarn build && wrangler dev",
-    "pre-deploy": "yarn build"
+    "build": "tsx build.ts",
+    "check-format": "prettier --check \"**/*.{mjs,ts,json}\"",
+    "configure": "node config.mjs",
+    "dev": "wrangler dev",
+    "format": "prettier --write \"**/*.{mjs,ts,json}\""
+  },
+  "dependencies": {
+    "@libreoj/bootstrap-core": "workspace:*"
   },
   "devDependencies": {
     "@iarna/toml": "^2.2.5",
-    "esbuild": "^0.12.24",
-    "core": "*"
+    "esbuild": "0.12.24",
+    "esbuild-plugin-inline-import": "^1.0.1",
+    "prettier": "catalog:",
+    "tsx": "4.23.1",
+    "typescript": "^4.7.4",
+    "wrangler": "4.110.0"
   }
 }

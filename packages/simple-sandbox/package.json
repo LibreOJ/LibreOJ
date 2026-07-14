@@ -1,14 +1,16 @@
 {
   "name": "simple-sandbox",
   "version": "0.3.25",
-  "description": "A simple sandbox for Node.js using Linux namespaces and cgroup.",
+  "description": "The native Linux process sandbox used by LibreOJ.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "author": "t123yh",
   "license": "MIT",
+  "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/t123yh/simple-sandbox"
+    "url": "https://github.com/LibreOJ/LibreOJ.git",
+    "directory": "packages/simple-sandbox"
   },
   "keywords": [
     "sandbox",
@@ -17,19 +19,19 @@
   ],
   "dependencies": {
     "bindings": "^1.5.0",
-    "cmake-js": "^6.1.0",
-    "node-addon-api": "^3.0.2",
     "randomstring": "^1.1.5"
   },
   "devDependencies": {
-    "@types/node": "^14.14.6",
+    "@types/node": "18.6.3",
+    "cmake-js": "^6.3.2",
+    "node-addon-api": "^5.0.0",
     "typescript": "^4.0.5"
   },
   "scripts": {
-    "install": "cmake-js compile",
     "build": "tsc -p ./src",
+    "build:native": "cmake-js compile",
     "build:watch": "tsc -w -p ./src",
-    "prepublishOnly": "yarn build"
+    "check-types": "tsc --noEmit -p ./src"
   },
   "files": [
     "CMakeLists.txt",

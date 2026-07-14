@@ -12,6 +12,7 @@
 # production
 /build
 /dist
+*.bundled_*.cjs
 
 # misc
 .DS_Store

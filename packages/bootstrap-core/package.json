@@ -1,15 +1,23 @@
 {
   "private": true,
-  "name": "core",
-  "version": "1.0.0",
-  "main": "src/index.ts",
+  "name": "@libreoj/bootstrap-core",
+  "version": "0.0.0",
+  "type": "module",
+  "exports": "./src/index.ts",
   "author": "Menci <huanghaorui301@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
-    "@types/node": "*",
-    "typescript": "^4.4.2"
+  "scripts": {
+    "build": "tsc --noEmit -p tsconfig.json",
+    "check-format": "prettier --check \"src/**/*.ts\" \"*.json\"",
+    "check-types": "tsc --noEmit -p tsconfig.json",
+    "format": "prettier --write \"src/**/*.ts\" \"*.json\""
   },
   "dependencies": {
-    "@types/node": "*"
+    "@libreoj/bootstrap-config": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "18.6.3",
+    "prettier": "catalog:",
+    "typescript": "^4.7.4"
   }
 }

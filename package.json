@@ -1,0 +1,23 @@
+{
+  "name": "@libreoj/monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "LibreOJ online judge monorepo",
+  "license": "MIT",
+  "packageManager": "pnpm@11.13.0",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "build": "pnpm --recursive --sort --if-present run build",
+    "build:artifacts": "pnpm --filter '@libreoj/bootstrap-config...' --sort run build",
+    "build:native": "pnpm --filter '@libreoj/judge...' --sort --if-present run build:native",
+    "check": "pnpm build && pnpm --recursive --if-present run check-types && pnpm --recursive --if-present run lint && pnpm --recursive --if-present run check-format",
+    "check-format": "pnpm --recursive --if-present run check-format",
+    "check-types": "pnpm build:artifacts && pnpm --recursive --if-present run check-types",
+    "dev": "pnpm build:artifacts && pnpm --recursive --parallel --if-present run dev",
+    "format": "pnpm --recursive --if-present run format",
+    "lint": "pnpm --recursive --if-present run lint",
+    "test": "pnpm --recursive --if-present run test"
+  }
+}

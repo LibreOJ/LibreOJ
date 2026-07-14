@@ -1,7 +1,7 @@
-diff --git a/node_modules/@vitejs/plugin-legacy/dist/index.cjs b/node_modules/@vitejs/plugin-legacy/dist/index.cjs
+diff --git a/dist/index.cjs b/dist/index.cjs
 index 294a950..61b2605 100644
---- a/node_modules/@vitejs/plugin-legacy/dist/index.cjs
-+++ b/node_modules/@vitejs/plugin-legacy/dist/index.cjs
+--- a/dist/index.cjs
++++ b/dist/index.cjs
 @@ -8,6 +8,7 @@ const node_module = require('node:module');
  const node_url = require('node:url');
  const vite = require('vite');
@@ -68,10 +68,10 @@ index 294a950..61b2605 100644
    node_crypto.createHash("sha256").update(dynamicFallbackInlineCode).digest("base64")
  ];
  
-diff --git a/node_modules/@vitejs/plugin-legacy/dist/index.d.ts b/node_modules/@vitejs/plugin-legacy/dist/index.d.ts
+diff --git a/dist/index.d.ts b/dist/index.d.ts
 index a7f0056..fa5f608 100644
---- a/node_modules/@vitejs/plugin-legacy/dist/index.d.ts
-+++ b/node_modules/@vitejs/plugin-legacy/dist/index.d.ts
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
 @@ -14,12 +14,20 @@ interface Options {
      /**
       * default: true

@@ -1,7 +1,7 @@
-diff --git a/node_modules/fomantic-ui-css/components/site.css b/node_modules/fomantic-ui-css/components/site.css
+diff --git a/components/site.css b/components/site.css
 index b9e10c4..6ff4f19 100644
---- a/node_modules/fomantic-ui-css/components/site.css
-+++ b/node_modules/fomantic-ui-css/components/site.css
+--- a/components/site.css
++++ b/components/site.css
 @@ -13,7 +13,6 @@
               Page
  *******************************/

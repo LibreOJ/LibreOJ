@@ -1,17 +1,23 @@
 {
-  "name": "@lyrio/judge",
+  "name": "@libreoj/judge",
   "version": "1.0.0",
-  "description": "The judge service of Lyrio",
-  "repository": "https://github.com/lyrio-dev/judge",
+  "description": "The judge service of LibreOJ",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LibreOJ/LibreOJ.git",
+    "directory": "apps/judge"
+  },
   "license": "MIT",
   "author": "Menci <huanghaorui301@gmail.com>",
   "scripts": {
+    "build": "tsc --noEmit -p tsconfig.json",
+    "build:native": "cmake-js compile",
+    "check-format": "prettier --check \"src/**/*.ts\"",
+    "check-types": "tsc --noEmit -p tsconfig.json",
     "format": "prettier --write \"src/**/*.ts\"",
-    "check-style": "prettier --check \"src/**/*.ts\"",
-    "install": "cmake-js compile",
     "lint": "eslint src --ext ts --cache",
-    "start": "node -r @swc-node/register -r tsconfig-paths/register index",
-    "test": "tsc --noEmit -p ."
+    "start": "node -r @swc-node/register -r tsconfig-paths/register index.mjs"
   },
   "config": {
     "commitizen": {
@@ -32,10 +38,9 @@
     "lru-cache": "^7.14.0",
     "node-addon-api": "^5.0.0",
     "object-hash": "^3.0.0",
-    "prettier": "^2.7.1",
     "promise-queue": "^2.2.5",
     "reflect-metadata": "^0.1.13",
-    "simple-sandbox": "^0.3.25",
+    "simple-sandbox": "workspace:*",
     "socket.io-client": "^4.5.1",
     "socket.io-msgpack-parser": "^3.0.1",
     "stream-to-string": "^1.2.0",
@@ -46,11 +51,11 @@
     "winston": "^3.8.1"
   },
   "devDependencies": {
+    "@types/node": "18.6.3",
     "@types/js-yaml": "^4.0.5",
     "@types/lodash.debounce": "^4.0.7",
     "@types/object-hash": "^2.2.1",
     "@types/promise-queue": "^2.2.0",
-    "@types/stream-to-string": "^1.2.0",
     "@types/toposort": "^2.0.3",
     "@types/unzipper": "^0.10.5",
     "@types/uuid": "^8.3.4",
@@ -62,7 +67,9 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-import-resolver-typescript": "^3.5.0",
     "eslint-plugin-import": "^2.26.0",
+    "prettier": "catalog:",
     "tsconfig-paths": "^4.1.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "@types/validator": "^13.7.4"
   }
 }

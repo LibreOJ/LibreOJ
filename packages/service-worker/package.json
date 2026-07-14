@@ -1,17 +1,25 @@
 {
   "private": true,
-  "name": "service-worker",
-  "version": "1.0.0",
-  "main": "dist/index.js",
+  "name": "@libreoj/service-worker",
+  "version": "0.0.0",
+  "exports": {
+    "./installer": "./dist/installer.js",
+    "./service-worker": "./dist/service-worker.js"
+  },
   "author": "Menci",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "node --experimental-json-modules --loader ts-node/esm build.ts"
+    "build": "tsx build.ts",
+    "check-format": "prettier --check \"**/*.ts\" \"*.json\"",
+    "check-types": "tsc --noEmit -p tsconfig.json",
+    "format": "prettier --write \"**/*.ts\" \"*.json\""
   },
   "devDependencies": {
-    "esbuild": "^0.14.10",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.5.4"
+    "@types/node": "18.6.3",
+    "esbuild": "0.14.10",
+    "prettier": "catalog:",
+    "tsx": "4.23.1",
+    "typescript": "^4.7.4"
   }
 }

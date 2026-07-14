@@ -1,3 +1,2 @@
-yarn-error.log
-/config.out.json
-node_modules
+config.json
+dist/
