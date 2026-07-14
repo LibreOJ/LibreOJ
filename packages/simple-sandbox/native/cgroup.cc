@@ -17,7 +17,9 @@
 
 #include <fmt/format.h>
 #include <fmt/ostream.h>
+#if FMT_VERSION >= 90000
 #include <fmt/std.h>
+#endif
 
 #include "utils.h"
 #include "cgroup.h"
