@@ -5,6 +5,7 @@ import { useBoundingRect } from "@/utils/hooks";
 
 interface HorizontalScrollProps {
   className?: string;
+  children?: React.ReactNode;
 }
 
 const HorizontalScroll: React.FC<HorizontalScrollProps> = props => {

@@ -74,6 +74,7 @@ SubmitViewFrame = observer(SubmitViewFrame);
 
 interface EditorWrapperProps {
   disabled?: boolean;
+  children?: React.ReactNode;
 }
 
 const EditorWrapper: React.FC<EditorWrapperProps> = props => {

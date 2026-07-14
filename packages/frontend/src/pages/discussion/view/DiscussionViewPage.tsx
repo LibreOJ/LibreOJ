@@ -642,7 +642,9 @@ let DiscussionViewPage: React.FC<DiscussionViewPageProps> = props => {
     const styleElement = document.createElement("style");
     styleElement.innerHTML = `.${style.loadMore}::before { mask-image: url(${loadMoreBackground}); -webkit-mask-image: url(${loadMoreBackground}); }`;
     document.head.appendChild(styleElement);
-    return () => document.head.removeChild(styleElement);
+    return () => {
+      document.head.removeChild(styleElement);
+    };
   });
 
   const recaptcha = useRecaptcha();

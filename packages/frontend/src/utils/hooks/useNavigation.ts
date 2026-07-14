@@ -64,7 +64,12 @@ export function useConfirmNavigation(): [boolean, (confirm: boolean) => void] {
   const refConfirm = useRef<boolean>(false);
   const [stateConfirm, setStateConfirm] = useState(false);
 
-  useEffect(() => () => refConfirm.current && confirmNavigationState.count--, []);
+  useEffect(
+    () => () => {
+      if (refConfirm.current) confirmNavigationState.count--;
+    },
+    []
+  );
 
   return [
     stateConfirm,

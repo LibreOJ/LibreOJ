@@ -22,7 +22,7 @@ export class RouteError implements ErrorPageProps {
   ) {}
 }
 
-export function defineRoute(getViewFunction: (request: NaviRequest) => Promise<React.ReactNode>) {
+export function defineRoute(getViewFunction: (request: NaviRequest) => Promise<React.ReactNode | Matcher<any, any>>) {
   return map(async request => {
     try {
       const result = await getViewFunction(request);
@@ -45,7 +45,7 @@ export function defineRoute(getViewFunction: (request: NaviRequest) => Promise<R
   });
 }
 
-class ErrorBoundary extends React.Component<{}, { hasError: boolean; error?: Error }> {
+class ErrorBoundary extends React.Component<React.PropsWithChildren, { hasError: boolean; error?: Error }> {
   constructor(props: unknown) {
     super(props);
     this.state = { hasError: false };

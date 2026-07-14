@@ -5,6 +5,7 @@ import { Link } from "@/utils/hooks";
 
 interface UserLinkProps {
   user: UserMeta;
+  children?: React.ReactNode;
 }
 
 const UserLink: React.FC<UserLinkProps> = props => {
