@@ -6,11 +6,11 @@ import { InjectRepository, InjectDataSource } from "@nestjs/typeorm";
 import { Repository, DataSource } from "typeorm";
 import * as bcrypt from "bcrypt";
 
-import { UserEntity } from "@/user/user.entity";
-import { UserService } from "@/user/user.service";
-import { AuthService } from "@/auth/auth.service";
-
 import { UserMigrationInfoEntity } from "./user-migration-info.entity";
+
+import { UserEntity } from "../user/user.entity";
+import { UserService } from "../user/user.service";
+import { AuthService } from "../auth/auth.service";
 
 @Injectable()
 export class UserMigrationService {

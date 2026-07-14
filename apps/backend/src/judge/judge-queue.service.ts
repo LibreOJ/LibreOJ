@@ -4,12 +4,13 @@ import { Redis } from "ioredis";
 
 import { JudgeTaskMeta, JudgeTaskPayload, JudgeTaskType } from "@libreoj/judge-protocol";
 
-import { logger } from "@/logger";
-import { RedisService } from "@/redis/redis.service";
-import { MetricsService } from "@/metrics/metrics.service";
-
 import { JudgeTaskService } from "./judge-task-service.interface";
+
 import { JudgeTaskProgress } from "./judge-task-progress.interface";
+
+import { logger } from "../logger";
+import { RedisService } from "../redis/redis.service";
+import { MetricsService } from "../metrics/metrics.service";
 
 // Smaller means higher priority
 // With the same priority value, the smaller ID means higher priority

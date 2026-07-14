@@ -9,10 +9,10 @@ import yaml from "js-yaml";
 import MariaDB from "mariadb";
 import { Redis } from "ioredis";
 
-import { UserEntity } from "@/user/user.entity";
-import { RedisService } from "@/redis/redis.service";
-
 import { MigrationConfig } from "./migration-config.schema";
+
+import { UserEntity } from "../user/user.entity";
+import { RedisService } from "../redis/redis.service";
 
 @Injectable()
 export class MigrationService {

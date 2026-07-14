@@ -8,16 +8,15 @@ import SocketIOParser from "socket.io-msgpack-parser";
 
 import { SubmissionStatus } from "@libreoj/judge-protocol";
 
-import { logger } from "@/logger";
-import { ConfigService } from "@/config/config.service";
-
-import { MetricsService } from "@/metrics/metrics.service";
-
 import { SubmissionProgress, SubmissionProgressType } from "./submission-progress.interface";
 import { SubmissionService } from "./submission.service";
 import { SubmissionEventType } from "./submission-progress.service";
 
 import { SubmissionBasicMetaDto } from "./dto";
+
+import { MetricsService } from "../metrics/metrics.service";
+import { ConfigService } from "../config/config.service";
+import { logger } from "../logger";
 
 export enum SubmissionProgressSubscriptionType {
   Meta,

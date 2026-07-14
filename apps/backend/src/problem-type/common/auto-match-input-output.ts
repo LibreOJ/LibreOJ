@@ -1,4 +1,4 @@
-import { ProblemFileEntity } from "@/problem/problem-file.entity";
+import { ProblemFileEntity } from "../../problem/problem-file.entity";
 
 interface Subtask {
   scoringType: "Sum" | "GroupMin" | "GroupMul";

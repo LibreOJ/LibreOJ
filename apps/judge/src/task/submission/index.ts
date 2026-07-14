@@ -1,16 +1,18 @@
 import winston from "winston";
 import { SubmissionStatus } from "@libreoj/judge-protocol";
 
-import { Task } from "@/task";
-import { ensureFiles } from "@/file";
-import { ConfigurationError, CanceledError } from "@/error";
-import { OmittableString } from "@/omittableString";
-
 import { SubmissionFile, SubmissionFileInfo } from "./submissionFile";
 
 import * as Traditional from "./traditional";
+
 import * as Interaction from "./interaction";
+
 import * as SubmitAnswer from "./submit-answer";
+
+import { Task } from "..";
+import { ensureFiles } from "../../file";
+import { ConfigurationError, CanceledError } from "../../error";
+import { OmittableString } from "../../omittableString";
 
 /* eslint-disable @typescript-eslint/no-shadow */
 enum ProblemType {

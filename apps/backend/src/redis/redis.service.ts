@@ -2,7 +2,7 @@ import { Injectable, OnModuleInit } from "@nestjs/common";
 
 import Redis from "ioredis";
 
-import { ConfigService } from "@/config/config.service";
+import { ConfigService } from "../config/config.service";
 
 const REDIS_CACHE_EXPIRE_TIME = 60 * 60 * 24 * 30; // 7 days
 

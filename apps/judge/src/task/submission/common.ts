@@ -1,8 +1,8 @@
 import toposort from "toposort";
 import winston from "winston";
 
-import { Disposer } from "@/posixUtils";
-import { runTaskQueued } from "@/taskQueue";
+import { Disposer } from "../../posixUtils";
+import { runTaskQueued } from "../../taskQueue";
 
 import { SubmissionTask, ProblemSample, SubmissionStatus } from ".";
 

@@ -1,13 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { Locale } from "@/common/locale.type";
-
 import { DiscussionOrReplyReactionsDto } from "./discussion-or-reply-reactions.dto";
 
 import { DiscussionMetaDto } from "./discussion-meta.dto";
 
-import { UserMetaDto } from "@/user/dto";
-import { ProblemMetaDto } from "@/problem/dto";
+import { Locale } from "../../common/locale.type";
+
+import { UserMetaDto } from "../../user/dto";
+import { ProblemMetaDto } from "../../problem/dto";
 
 import { DiscussionPermissionType, DiscussionReplyPermissionType } from "../discussion.service";
 

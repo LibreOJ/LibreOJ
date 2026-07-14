@@ -3,12 +3,8 @@ import { InjectRepository, InjectDataSource } from "@nestjs/typeorm";
 
 import { Repository, DataSource, Like } from "typeorm";
 
-import { UserService } from "@/user/user.service";
-import { escapeLike } from "@/database/database.utils";
-import { UserEntity } from "@/user/user.entity";
-import { AuditLogObjectType, AuditService } from "@/audit/audit.service";
-
 import { GroupMembershipEntity } from "./group-membership.entity";
+
 import { GroupEntity } from "./group.entity";
 
 import {
@@ -18,6 +14,11 @@ import {
   SetGroupAdminResponseError,
   GroupMetaDto
 } from "./dto";
+
+import { UserService } from "../user/user.service";
+import { escapeLike } from "../database/database.utils";
+import { UserEntity } from "../user/user.entity";
+import { AuditLogObjectType, AuditService } from "../audit/audit.service";
 
 @Injectable()
 export class GroupService {

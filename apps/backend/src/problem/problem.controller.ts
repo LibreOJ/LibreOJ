@@ -5,21 +5,10 @@ import { Recaptcha } from "@nestlab/google-recaptcha";
 
 import { SubmissionStatus } from "@libreoj/judge-protocol";
 
-import { ConfigService } from "@/config/config.service";
-import { UserService } from "@/user/user.service";
-import { GroupService } from "@/group/group.service";
-import { MinioSignFor, FileService } from "@/file/file.service";
-import { CurrentUser } from "@/common/user.decorator";
-import { UserEntity } from "@/user/user.entity";
-import { GroupEntity } from "@/group/group.entity";
-import { UserPrivilegeService, UserPrivilegeType } from "@/user/user-privilege.service";
-import { Locale } from "@/common/locale.type";
-import { SubmissionService } from "@/submission/submission.service";
-import { AuditLogObjectType, AuditService } from "@/audit/audit.service";
-import { DiscussionService } from "@/discussion/discussion.service";
-
 import { ProblemFileType } from "./problem-file.entity";
+
 import { ProblemEntity } from "./problem.entity";
+
 import { ProblemService, ProblemPermissionType, ProblemPermissionLevel } from "./problem.service";
 
 import {
@@ -82,6 +71,19 @@ import {
   ChangeProblemTypeResponseDto,
   ChangeProblemTypeResponseError
 } from "./dto";
+
+import { ConfigService } from "../config/config.service";
+import { UserService } from "../user/user.service";
+import { GroupService } from "../group/group.service";
+import { MinioSignFor, FileService } from "../file/file.service";
+import { CurrentUser } from "../common/user.decorator";
+import { UserEntity } from "../user/user.entity";
+import { GroupEntity } from "../group/group.entity";
+import { UserPrivilegeService, UserPrivilegeType } from "../user/user-privilege.service";
+import { Locale } from "../common/locale.type";
+import { SubmissionService } from "../submission/submission.service";
+import { AuditLogObjectType, AuditService } from "../audit/audit.service";
+import { DiscussionService } from "../discussion/discussion.service";
 
 @ApiTags("Problem")
 @Controller("problem")

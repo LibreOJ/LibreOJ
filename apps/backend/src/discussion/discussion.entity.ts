@@ -1,9 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Index, Column, ManyToOne, JoinColumn, OneToOne } from "typeorm";
 
-import { ProblemEntity } from "@/problem/problem.entity";
-import { UserEntity } from "@/user/user.entity";
-
 import { DiscussionContentEntity } from "./discussion-content.entity";
+
+import { ProblemEntity } from "../problem/problem.entity";
+import { UserEntity } from "../user/user.entity";
 
 @Entity("discussion")
 @Index(["problemId", "isPublic", "sortTime", "publisherId"])

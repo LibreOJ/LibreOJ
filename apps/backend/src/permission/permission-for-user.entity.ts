@@ -1,8 +1,8 @@
 import { Entity, PrimaryColumn, Index, ManyToOne, Column } from "typeorm";
 
-import { UserEntity } from "@/user/user.entity";
-
 import { PermissionObjectType } from "./permission-object-type.enum";
+
+import { UserEntity } from "../user/user.entity";
 
 @Entity("permission_for_user")
 @Index(["objectId", "objectType", "userId"])

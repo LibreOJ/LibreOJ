@@ -1,11 +1,11 @@
 /* eslint-disable */
 import { Logger } from "@nestjs/common";
 
-import { DiscussionEntity } from "@/discussion/discussion.entity";
-import { DiscussionContentEntity } from "@/discussion/discussion-content.entity";
-import { DiscussionReplyEntity } from "@/discussion/discussion-reply.entity";
-import { HomepageService } from "@/homepage/homepage.service";
-import { Locale } from "@/common/locale.type";
+import { DiscussionEntity } from "../../discussion/discussion.entity";
+import { DiscussionContentEntity } from "../../discussion/discussion-content.entity";
+import { DiscussionReplyEntity } from "../../discussion/discussion-reply.entity";
+import { HomepageService } from "../../homepage/homepage.service";
+import { Locale } from "../../common/locale.type";
 
 import { OldDatabaseArticleCommentEntity, OldDatabaseArticleEntity } from "./old-database.interface";
 import { MigrationInterface } from "./migration.interface";

@@ -5,12 +5,13 @@ import { DataSource } from "typeorm";
 
 import { SubmissionStatus } from "@libreoj/judge-protocol";
 
-import { logger } from "@/logger";
-import { RedisService } from "@/redis/redis.service";
-import { ProblemEntity } from "@/problem/problem.entity";
-
 import { SubmissionEntity } from "./submission.entity";
+
 import { SubmissionService } from "./submission.service";
+
+import { logger } from "../logger";
+import { RedisService } from "../redis/redis.service";
+import { ProblemEntity } from "../problem/problem.entity";
 
 // Along with submission statistics, this file also provide the submission score statistics
 

@@ -1,7 +1,7 @@
 import { IsString, Length, IsObject, IsBoolean, IsOptional, IsEnum } from "class-validator";
 
-import { SubmissionContent } from "@/submission/submission-content.interface";
-import { CodeLanguage } from "@/code-language/code-language.type";
+import { SubmissionContent } from "../../../submission/submission-content.interface";
+import { CodeLanguage } from "../../../code-language/code-language.type";
 
 export class SubmissionContentInteraction implements SubmissionContent {
   @IsString()

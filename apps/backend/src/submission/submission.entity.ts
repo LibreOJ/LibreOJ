@@ -2,10 +2,10 @@ import { Entity, PrimaryGeneratedColumn, Index, ManyToOne, Column, JoinColumn, O
 
 import { SubmissionStatus } from "@libreoj/judge-protocol";
 
-import { UserEntity } from "@/user/user.entity";
-import { ProblemEntity } from "@/problem/problem.entity";
-
 import { SubmissionDetailEntity } from "./submission-detail.entity";
+
+import { UserEntity } from "../user/user.entity";
+import { ProblemEntity } from "../problem/problem.entity";
 
 @Entity("submission")
 @Index(["isPublic", "problemId", "submitterId", "status", "codeLanguage"])

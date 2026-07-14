@@ -1,16 +1,6 @@
 import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { CurrentUser } from "@/common/user.decorator";
-import { UserEntity } from "@/user/user.entity";
-import { Locale } from "@/common/locale.type";
-import { DiscussionService } from "@/discussion/discussion.service";
-import { UserService } from "@/user/user.service";
-import { UserPrivilegeService, UserPrivilegeType } from "@/user/user-privilege.service";
-import { ProblemService } from "@/problem/problem.service";
-import { SubmissionService } from "@/submission/submission.service";
-import { AuditService } from "@/audit/audit.service";
-
 import { HomepageService } from "./homepage.service";
 
 import {
@@ -23,6 +13,16 @@ import {
   UpdateHomepageSettingsResponseDto,
   UpdateHomepageSettingsResponseError
 } from "./dto";
+
+import { CurrentUser } from "../common/user.decorator";
+import { UserEntity } from "../user/user.entity";
+import { Locale } from "../common/locale.type";
+import { DiscussionService } from "../discussion/discussion.service";
+import { UserService } from "../user/user.service";
+import { UserPrivilegeService, UserPrivilegeType } from "../user/user-privilege.service";
+import { ProblemService } from "../problem/problem.service";
+import { SubmissionService } from "../submission/submission.service";
+import { AuditService } from "../audit/audit.service";
 
 @ApiTags("Homepage")
 @Controller("homepage")

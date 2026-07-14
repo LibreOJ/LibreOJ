@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, Column, Index } from "typeorm";
 
-import { Locale } from "@/common/locale.type";
+import { Locale } from "../common/locale.type";
 
 export enum LocalizedContentType {
   ProblemTitle = "ProblemTitle",

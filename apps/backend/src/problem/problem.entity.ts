@@ -1,10 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Index, ManyToOne, Column, JoinColumn, OneToOne } from "typeorm";
 
-import { UserEntity } from "@/user/user.entity";
-import { Locale } from "@/common/locale.type";
-
 import { ProblemJudgeInfoEntity } from "./problem-judge-info.entity";
+
 import { ProblemSampleEntity } from "./problem-sample.entity";
+
+import { UserEntity } from "../user/user.entity";
+import { Locale } from "../common/locale.type";
 
 export enum ProblemType {
   Traditional = "Traditional",

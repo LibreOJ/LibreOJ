@@ -1,13 +1,13 @@
 import { Injectable } from "@nestjs/common";
 
-import { ProblemService } from "@/problem/problem.service";
-import { SettingsService } from "@/settings/settings.service";
-import { UserService } from "@/user/user.service";
-import { ConfigService } from "@/config/config.service";
-import { UserEntity } from "@/user/user.entity";
-import { ProblemEntity } from "@/problem/problem.entity";
-
 import { HomepageSettings } from "./homepage-settings.interface";
+
+import { ProblemService } from "../problem/problem.service";
+import { SettingsService } from "../settings/settings.service";
+import { UserService } from "../user/user.service";
+import { ConfigService } from "../config/config.service";
+import { UserEntity } from "../user/user.entity";
+import { ProblemEntity } from "../problem/problem.entity";
 
 @Injectable()
 export class HomepageService {

@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { IsInt, IsOptional, IsEnum, IsBoolean } from "class-validator";
 
-import { Locale } from "@/common/locale.type";
+import { Locale } from "../../common/locale.type";
 
 export class GetProblemRequestDto {
   @ApiProperty({ required: false })

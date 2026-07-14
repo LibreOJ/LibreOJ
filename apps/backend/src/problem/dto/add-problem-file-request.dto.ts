@@ -3,9 +3,9 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsInt, Length, IsEnum, ValidateNested } from "class-validator";
 
-import { IsValidFilename } from "@/common/validators";
+import { IsValidFilename } from "../../common/validators";
 
-import { FileUploadInfoDto } from "@/file/dto";
+import { FileUploadInfoDto } from "../../file/dto";
 
 import { ProblemFileType } from "../problem-file.entity";
 

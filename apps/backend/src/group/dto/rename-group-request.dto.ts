@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { IsInt } from "class-validator";
 
-import { IsGroupName } from "@/common/validators";
+import { IsGroupName } from "../../common/validators";
 
 export class RenameGroupRequestDto {
   @ApiProperty()

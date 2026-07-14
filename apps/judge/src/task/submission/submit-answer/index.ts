@@ -2,19 +2,19 @@ import fs from "fs";
 
 import { v4 as uuid } from "uuid";
 
-import { SubmissionTask, ProblemSample } from "@/task/submission";
-import { compile, CompileResultSuccess } from "@/compile";
-import { SANDBOX_INSIDE_PATH_WORKING } from "@/sandbox";
-import { serverSideConfig } from "@/config";
-import { safelyJoinPath } from "@/utils";
-import { isOmittableString, OmittableString, readFileOmitted, prependOmittableString } from "@/omittableString";
-import { getFile } from "@/file";
-import { ConfigurationError } from "@/error";
-import { runBuiltinChecker } from "@/checkers/builtin";
-import { runCustomChecker, validateCustomChecker } from "@/checkers/custom";
-import * as fsNative from "@/fsNative";
-
 import { JudgeInfoSubmitAnswer, TestcaseConfig } from "./judgeInfo";
+
+import { SubmissionTask, ProblemSample } from "..";
+import { compile, CompileResultSuccess } from "../../../compile";
+import { SANDBOX_INSIDE_PATH_WORKING } from "../../../sandbox";
+import { serverSideConfig } from "../../../config";
+import { safelyJoinPath } from "../../../utils";
+import { isOmittableString, OmittableString, readFileOmitted, prependOmittableString } from "../../../omittableString";
+import { getFile } from "../../../file";
+import { ConfigurationError } from "../../../error";
+import { runBuiltinChecker } from "../../../checkers/builtin";
+import { runCustomChecker, validateCustomChecker } from "../../../checkers/custom";
+import * as fsNative from "../../../fsNative";
 
 import { runCommonTask } from "../common";
 import { SubmissionFileUnzipResult } from "../submissionFile";

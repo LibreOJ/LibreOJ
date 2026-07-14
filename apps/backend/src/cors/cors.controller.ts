@@ -7,7 +7,7 @@ import serialize from "serialize-javascript";
 import { minify as minifyJs } from "terser";
 import cheerio from "cheerio";
 
-import { ConfigService } from "@/config/config.service";
+import { ConfigService } from "../config/config.service";
 
 // xdomain
 const getXdomainProxyHtml = (whiteList: string[]) =>

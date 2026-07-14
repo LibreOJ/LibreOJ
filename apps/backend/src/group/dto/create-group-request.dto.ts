@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { IsGroupName } from "@/common/validators";
+import { IsGroupName } from "../../common/validators";
 
 export class CreateGroupRequestDto {
   @ApiProperty()

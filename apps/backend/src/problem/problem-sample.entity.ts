@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, OneToOne, Column, JoinColumn } from "typeorm";
 
-import { ProblemEntity } from "@/problem/problem.entity";
+import { ProblemEntity } from "./problem.entity";
 
 import { ProblemSampleData } from "./problem-sample-data.interface";
 

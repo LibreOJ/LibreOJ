@@ -1,7 +1,7 @@
 import { SandboxStatus } from "simple-sandbox";
 
-import { safelyJoinPath } from "@/utils";
-import { prependOmittableString, readFileOmitted } from "@/omittableString";
+import { safelyJoinPath } from "../../utils";
+import { prependOmittableString, readFileOmitted } from "../../omittableString";
 
 import { CustomChecker } from ".";
 

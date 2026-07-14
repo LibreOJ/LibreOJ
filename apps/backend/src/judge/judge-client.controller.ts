@@ -1,9 +1,6 @@
 import { Controller, Post, Body, Get } from "@nestjs/common";
 import { ApiOperation, ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-import { CurrentUser } from "@/common/user.decorator";
-import { UserEntity } from "@/user/user.entity";
-
 import { JudgeClientService } from "./judge-client.service";
 
 import {
@@ -18,6 +15,9 @@ import {
   ResetJudgeClientKeyResponseDto,
   ResetJudgeClientKeyResponseError
 } from "./dto";
+
+import { CurrentUser } from "../common/user.decorator";
+import { UserEntity } from "../user/user.entity";
 
 @ApiTags("Judge Client")
 @Controller("judgeClient")

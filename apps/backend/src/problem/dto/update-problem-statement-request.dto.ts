@@ -13,11 +13,12 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 
-import { Locale } from "@/common/locale.type";
-import { If } from "@/common/validators";
-
 import { ProblemContentSectionDto } from "./problem-content-section.dto";
+
 import { ProblemSampleDataMemberDto } from "./problem-sample-data-member.dto";
+
+import { Locale } from "../../common/locale.type";
+import { If } from "../../common/validators";
 
 export class UpdateProblemRequestUpdatingLocalizedContentDto {
   @ApiProperty()

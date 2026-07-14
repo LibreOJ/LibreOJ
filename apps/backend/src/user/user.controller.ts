@@ -1,17 +1,12 @@
 import { Controller, Get, Post, Body, Query, Inject, forwardRef } from "@nestjs/common";
 import { ApiOperation, ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-import { CurrentUser } from "@/common/user.decorator";
-import { AuthService } from "@/auth/auth.service";
-import { ConfigService } from "@/config/config.service";
-import { SubmissionService } from "@/submission/submission.service";
-import { AuditLogObjectType, AuditService } from "@/audit/audit.service";
-import { AuthIpLocationService } from "@/auth/auth-ip-location.service";
-import { UserMigrationService } from "@/migration/user-migration.service";
-
 import { UserEntity } from "./user.entity";
+
 import { UserService } from "./user.service";
+
 import { UserPrivilegeService } from "./user-privilege.service";
+
 import { UserPrivilegeType } from "./user-privilege.entity";
 
 import {
@@ -54,6 +49,14 @@ import {
   QueryAuditLogsResponseDto,
   QueryAuditLogsResponseError
 } from "./dto";
+
+import { CurrentUser } from "../common/user.decorator";
+import { AuthService } from "../auth/auth.service";
+import { ConfigService } from "../config/config.service";
+import { SubmissionService } from "../submission/submission.service";
+import { AuditLogObjectType, AuditService } from "../audit/audit.service";
+import { AuthIpLocationService } from "../auth/auth-ip-location.service";
+import { UserMigrationService } from "../migration/user-migration.service";
 
 @ApiTags("User")
 @Controller("user")

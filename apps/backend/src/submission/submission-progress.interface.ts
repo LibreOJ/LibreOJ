@@ -1,6 +1,6 @@
 import { SubmissionStatus, OmittableString } from "@libreoj/judge-protocol";
 
-import { JudgeTaskProgress } from "@/judge/judge-task-progress.interface";
+import { JudgeTaskProgress } from "../judge/judge-task-progress.interface";
 
 export enum SubmissionProgressType {
   Preparing = "Preparing",

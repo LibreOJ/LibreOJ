@@ -1,10 +1,10 @@
 import { ValidationError } from "class-validator";
 
-import { ProblemJudgeInfo } from "@/problem/problem-judge-info.interface";
-import { ProblemFileEntity } from "@/problem/problem-file.entity";
-import { SubmissionContent } from "@/submission/submission-content.interface";
-import { SubmissionTestcaseResult, SubmissionProgress } from "@/submission/submission-progress.interface";
-import { FileEntity } from "@/file/file.entity";
+import { ProblemJudgeInfo } from "../problem/problem-judge-info.interface";
+import { ProblemFileEntity } from "../problem/problem-file.entity";
+import { SubmissionContent } from "../submission/submission-content.interface";
+import { SubmissionTestcaseResult, SubmissionProgress } from "../submission/submission-progress.interface";
+import { FileEntity } from "../file/file.entity";
 
 export interface ProblemTypeServiceInterface<
   JudgeInfoType extends ProblemJudgeInfo,

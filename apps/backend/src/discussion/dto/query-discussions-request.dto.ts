@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { IsBoolean, IsEnum, IsInt, IsOptional, Length, Min } from "class-validator";
 
-import { Locale } from "@/common/locale.type";
+import { Locale } from "../../common/locale.type";
 
 export class QueryDiscussionsRequestDto {
   @ApiProperty({ enum: Locale })

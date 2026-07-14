@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { SignedFileUploadRequestDto } from "@/file/dto";
+import { SignedFileUploadRequestDto } from "../../file/dto";
 
 export enum SubmitResponseError {
   PERMISSION_DENIED = "PERMISSION_DENIED",

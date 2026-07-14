@@ -288,9 +288,6 @@ importers:
       rimraf:
         specifier: ^3.0.2
         version: 3.0.2
-      tsconfig-paths:
-        specifier: ^4.0.0
-        version: 4.1.0
       typescript:
         specifier: ^4.7.4
         version: 4.7.4
@@ -526,9 +523,6 @@ importers:
       prettier:
         specifier: 'catalog:'
         version: 2.7.1
-      tsconfig-paths:
-        specifier: ^4.1.0
-        version: 4.1.0
       typescript:
         specifier: ^4.7.4
         version: 4.7.4
@@ -5329,11 +5323,6 @@ packages:
     resolution: {integrity: sha512-aKS4WQjPenRxiQsC93MNfjx+nbF4PAdYzmd/1JIj8HYzqfbu86beTuNgXDzPknWk0n0uARlyewZo4s++ES36Ow==}
     hasBin: true
 
-  json5@2.2.1:
-    resolution: {integrity: sha512-1hqLFMSrGHRHxav9q9gNjJ5EXznIxGVO09xQRrwplcS8qs28pZ8s8hupZAmqDwZUmVZ2Qb2jnyPOWcDH8m8dlA==}
-    engines: {node: '>=6'}
-    hasBin: true
-
   json5@2.2.3:
     resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
     engines: {node: '>=6'}
@@ -7193,10 +7182,6 @@ packages:
 
   tsconfig-paths@3.14.1:
     resolution: {integrity: sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==}
-
-  tsconfig-paths@4.1.0:
-    resolution: {integrity: sha512-AHx4Euop/dXFC+Vx589alFba8QItjF+8hf8LtmuiCwHyI4rHXQtOOENaM8kvYf5fR0dRChy3wzWIZ9WbB7FWow==}
-    engines: {node: '>=6'}
 
   tsconfig-paths@4.2.0:
     resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
@@ -12515,8 +12500,6 @@ snapshots:
     dependencies:
       minimist: 1.2.6
 
-  json5@2.2.1: {}
-
   json5@2.2.3: {}
 
   jsonc-parser@3.2.1: {}
@@ -14482,12 +14465,6 @@ snapshots:
     dependencies:
       '@types/json5': 0.0.29
       json5: 1.0.1
-      minimist: 1.2.6
-      strip-bom: 3.0.0
-
-  tsconfig-paths@4.1.0:
-    dependencies:
-      json5: 2.2.1
       minimist: 1.2.6
       strip-bom: 3.0.0
 

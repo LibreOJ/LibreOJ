@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { IsEmail, IsOptional, IsString, MaxLength } from "class-validator";
 
-import { IsUsername } from "@/common/validators";
+import { IsUsername } from "../../common/validators";
 
 export class MigrateUserRequestDto {
   @ApiProperty()

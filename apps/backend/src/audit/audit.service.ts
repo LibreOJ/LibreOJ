@@ -3,14 +3,15 @@ import { InjectRepository } from "@nestjs/typeorm";
 
 import { FindOptionsWhere, Like, Repository } from "typeorm";
 
-import { logger } from "@/logger";
-import { getCurrentRequest } from "@/auth/auth.middleware";
-import { UserEntity } from "@/user/user.entity";
-import { Locale } from "@/common/locale.type";
-import { escapeLike } from "@/database/database.utils";
-
 import { AuditLogEntity, AuditLogObjectType } from "./audit-log.entity";
+
 import { AuditLogQueryResult } from "./audit-log-query-result.interface";
+
+import { logger } from "../logger";
+import { getCurrentRequest } from "../auth/auth.middleware";
+import { UserEntity } from "../user/user.entity";
+import { Locale } from "../common/locale.type";
+import { escapeLike } from "../database/database.utils";
 
 export { AuditLogObjectType } from "./audit-log.entity";
 

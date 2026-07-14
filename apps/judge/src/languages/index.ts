@@ -1,6 +1,6 @@
-import { CompilationConfig } from "@/compile";
-import { FileDescriptor } from "@/posixUtils";
-import { TaskIndependentSandboxConfig } from "@/sandbox";
+import { CompilationConfig } from "../compile";
+import { FileDescriptor } from "../posixUtils";
+import { TaskIndependentSandboxConfig } from "../sandbox";
 
 export interface LanguageConfig<T> {
   /**

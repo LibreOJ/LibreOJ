@@ -5,20 +5,12 @@ import { Recaptcha } from "@nestlab/google-recaptcha";
 
 import { SubmissionStatus } from "@libreoj/judge-protocol";
 
-import { CurrentUser } from "@/common/user.decorator";
-import { UserEntity } from "@/user/user.entity";
-import { ProblemService, ProblemPermissionType } from "@/problem/problem.service";
-import { UserService } from "@/user/user.service";
-import { UserPrivilegeService, UserPrivilegeType } from "@/user/user-privilege.service";
-import { ConfigService } from "@/config/config.service";
-import { ProblemEntity } from "@/problem/problem.entity";
-import { AuditLogObjectType, AuditService } from "@/audit/audit.service";
-import { MinioSignFor, FileService } from "@/file/file.service";
-import { ProblemTypeFactoryService } from "@/problem-type/problem-type-factory.service";
-
 import { SubmissionStatisticsService } from "./submission-statistics.service";
+
 import { SubmissionProgressService } from "./submission-progress.service";
+
 import { SubmissionProgressGateway, SubmissionProgressSubscriptionType } from "./submission-progress.gateway";
+
 import { SubmissionPermissionType, SubmissionService } from "./submission.service";
 
 import {
@@ -51,6 +43,17 @@ import {
   DeleteSubmissionResponseDto,
   DeleteSubmissionResponseError
 } from "./dto";
+
+import { CurrentUser } from "../common/user.decorator";
+import { UserEntity } from "../user/user.entity";
+import { ProblemService, ProblemPermissionType } from "../problem/problem.service";
+import { UserService } from "../user/user.service";
+import { UserPrivilegeService, UserPrivilegeType } from "../user/user-privilege.service";
+import { ConfigService } from "../config/config.service";
+import { ProblemEntity } from "../problem/problem.entity";
+import { AuditLogObjectType, AuditService } from "../audit/audit.service";
+import { MinioSignFor, FileService } from "../file/file.service";
+import { ProblemTypeFactoryService } from "../problem-type/problem-type-factory.service";
 
 @ApiTags("Submission")
 @Controller("submission")

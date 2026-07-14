@@ -3,11 +3,12 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsString, Length, ValidateNested, IsEnum, ArrayNotEmpty, IsArray, ArrayMaxSize, IsInt } from "class-validator";
 import { Type } from "class-transformer";
 
-import { Locale } from "@/common/locale.type";
-import { If } from "@/common/validators";
-
 import { ProblemSampleDataMemberDto } from "./problem-sample-data-member.dto";
+
 import { ProblemContentSectionDto } from "./problem-content-section.dto";
+
+import { Locale } from "../../common/locale.type";
+import { If } from "../../common/validators";
 
 export class ProblemLocalizedContentDto {
   @ApiProperty()

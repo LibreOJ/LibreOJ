@@ -1,9 +1,9 @@
 import { Entity, Index, ManyToOne, JoinColumn, PrimaryColumn } from "typeorm";
 
-import { UserEntity } from "@/user/user.entity";
-import { MAX_EMOJI_LENGTH } from "@/common/validators";
-
 import { DiscussionEntity } from "./discussion.entity";
+
+import { UserEntity } from "../user/user.entity";
+import { MAX_EMOJI_LENGTH } from "../common/validators";
 
 @Entity("discussion_reaction")
 @Index(["discussionId", "userId", "emoji"])

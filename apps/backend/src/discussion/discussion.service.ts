@@ -3,26 +3,30 @@ import { InjectRepository, InjectDataSource } from "@nestjs/typeorm";
 
 import { Repository, DataSource, EntityManager, Brackets } from "typeorm";
 
-import { UserService } from "@/user/user.service";
-import { UserEntity } from "@/user/user.entity";
-import { AuditLogObjectType, AuditService } from "@/audit/audit.service";
-import { ConfigService } from "@/config/config.service";
-import { UserPrivilegeService, UserPrivilegeType } from "@/user/user-privilege.service";
-import { PermissionObjectType, PermissionService } from "@/permission/permission.service";
-import { GroupEntity } from "@/group/group.entity";
-import { GroupService } from "@/group/group.service";
-import { ProblemEntity } from "@/problem/problem.entity";
-import { LockService } from "@/redis/lock.service";
-import { escapeLike } from "@/database/database.utils";
-import { ProblemPermissionType, ProblemService } from "@/problem/problem.service";
-
 import { DiscussionEntity } from "./discussion.entity";
+
 import { DiscussionContentEntity } from "./discussion-content.entity";
+
 import { DiscussionReplyEntity } from "./discussion-reply.entity";
+
 import { DiscussionReactionEntity } from "./discussion-reaction.entity";
+
 import { DiscussionReplyReactionEntity } from "./discussion-reply-reaction.entity";
 
 import { DiscussionMetaDto } from "./dto";
+
+import { UserService } from "../user/user.service";
+import { UserEntity } from "../user/user.entity";
+import { AuditLogObjectType, AuditService } from "../audit/audit.service";
+import { ConfigService } from "../config/config.service";
+import { UserPrivilegeService, UserPrivilegeType } from "../user/user-privilege.service";
+import { PermissionObjectType, PermissionService } from "../permission/permission.service";
+import { GroupEntity } from "../group/group.entity";
+import { GroupService } from "../group/group.service";
+import { ProblemEntity } from "../problem/problem.entity";
+import { LockService } from "../redis/lock.service";
+import { escapeLike } from "../database/database.utils";
+import { ProblemPermissionType, ProblemService } from "../problem/problem.service";
 
 export enum DiscussionReactionType {
   Discussion = "Discussion",

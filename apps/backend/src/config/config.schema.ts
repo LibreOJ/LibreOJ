@@ -17,9 +17,9 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 
-import { If, isEmoji, IsEmoji, IsPortNumber } from "@/common/validators";
-
 import { ConfigRelation, ConfigRelationType } from "./config-relation.decorator";
+
+import { If, isEmoji, IsEmoji, IsPortNumber } from "../common/validators";
 
 class ServerConfig {
   @IsIP()

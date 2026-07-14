@@ -1,4 +1,4 @@
-import { OmittableString, omittableStringToString, prependOmittableString } from "@/omittableString";
+import { OmittableString, omittableStringToString, prependOmittableString } from "../omittableString";
 
 // integers: check the equivalent of each integer in user's output and answer
 export interface CheckerTypeIntegers {

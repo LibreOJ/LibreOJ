@@ -4,9 +4,9 @@ import { tmpdir } from "os";
 import winston from "winston";
 import unzipper from "unzipper";
 
-import { serverSideConfig } from "@/config";
-import { safelyJoinPath, ensureDirectoryEmpty, download } from "@/utils";
-import * as fsNative from "@/fsNative";
+import { serverSideConfig } from "../../config";
+import { safelyJoinPath, ensureDirectoryEmpty, download } from "../../utils";
+import * as fsNative from "../../fsNative";
 
 export interface SubmissionFileInfo {
   uuid: string;

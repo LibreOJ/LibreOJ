@@ -1,13 +1,13 @@
 import { Module, forwardRef } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { UserModule } from "@/user/user.module";
-import { AuditModule } from "@/audit/audit.module";
-
 import { GroupService } from "./group.service";
 import { GroupController } from "./group.controller";
 import { GroupEntity } from "./group.entity";
 import { GroupMembershipEntity } from "./group-membership.entity";
+
+import { AuditModule } from "../audit/audit.module";
+import { UserModule } from "../user/user.module";
 
 @Module({
   imports: [

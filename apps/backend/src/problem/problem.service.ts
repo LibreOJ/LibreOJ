@@ -3,25 +3,6 @@ import { InjectDataSource, InjectRepository } from "@nestjs/typeorm";
 
 import { DataSource, Repository, EntityManager, Brackets, In, FindOptionsWhere } from "typeorm";
 
-import { UserEntity } from "@/user/user.entity";
-import { GroupEntity } from "@/group/group.entity";
-import { LocalizedContentService } from "@/localized-content/localized-content.service";
-import { LocalizedContentEntity, LocalizedContentType } from "@/localized-content/localized-content.entity";
-import { Locale } from "@/common/locale.type";
-import { UserPrivilegeService, UserPrivilegeType } from "@/user/user-privilege.service";
-import { PermissionService, PermissionObjectType } from "@/permission/permission.service";
-import { UserService } from "@/user/user.service";
-import { GroupService } from "@/group/group.service";
-import { FileService } from "@/file/file.service";
-import { ConfigService } from "@/config/config.service";
-import { RedisService } from "@/redis/redis.service";
-import { LockService } from "@/redis/lock.service";
-import { SubmissionService } from "@/submission/submission.service";
-import { AuditLogObjectType, AuditService } from "@/audit/audit.service";
-import { ProblemTypeFactoryService } from "@/problem-type/problem-type-factory.service";
-import { FileEntity } from "@/file/file.entity";
-import { escapeLike } from "@/database/database.utils";
-
 import { ProblemJudgeInfo } from "./problem-judge-info.interface";
 import { ProblemSampleData } from "./problem-sample-data.interface";
 import { ProblemContentSection } from "./problem-content.interface";
@@ -32,8 +13,6 @@ import { ProblemSampleEntity } from "./problem-sample.entity";
 import { ProblemJudgeInfoEntity } from "./problem-judge-info.entity";
 import { ProblemEntity, ProblemType } from "./problem.entity";
 
-import { FileUploadInfoDto, SignedFileUploadRequestDto } from "@/file/dto";
-
 import {
   ProblemStatementDto,
   UpdateProblemStatementRequestDto,
@@ -42,6 +21,26 @@ import {
   ProblemMetaDto,
   LocalizedProblemTagDto
 } from "./dto";
+
+import { UserEntity } from "../user/user.entity";
+import { GroupEntity } from "../group/group.entity";
+import { LocalizedContentService } from "../localized-content/localized-content.service";
+import { LocalizedContentEntity, LocalizedContentType } from "../localized-content/localized-content.entity";
+import { Locale } from "../common/locale.type";
+import { UserPrivilegeService, UserPrivilegeType } from "../user/user-privilege.service";
+import { PermissionService, PermissionObjectType } from "../permission/permission.service";
+import { UserService } from "../user/user.service";
+import { GroupService } from "../group/group.service";
+import { FileService } from "../file/file.service";
+import { ConfigService } from "../config/config.service";
+import { RedisService } from "../redis/redis.service";
+import { LockService } from "../redis/lock.service";
+import { SubmissionService } from "../submission/submission.service";
+import { AuditLogObjectType, AuditService } from "../audit/audit.service";
+import { ProblemTypeFactoryService } from "../problem-type/problem-type-factory.service";
+import { FileEntity } from "../file/file.entity";
+import { escapeLike } from "../database/database.utils";
+import { FileUploadInfoDto, SignedFileUploadRequestDto } from "../file/dto";
 
 export enum ProblemPermissionType {
   View = "View",

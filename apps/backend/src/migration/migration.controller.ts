@@ -1,13 +1,6 @@
 import { Controller, Post, Body, Req } from "@nestjs/common";
 import { ApiOperation, ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-import { CurrentUser } from "@/common/user.decorator";
-import { UserEntity } from "@/user/user.entity";
-import { AuditService } from "@/audit/audit.service";
-import { RequestWithSession } from "@/auth/auth.middleware";
-import { UserService } from "@/user/user.service";
-import { AuthSessionService } from "@/auth/auth-session.service";
-
 import { UserMigrationService } from "./user-migration.service";
 
 import {
@@ -18,6 +11,13 @@ import {
   QueryUserMigrationInfoResponseDto,
   QueryUserMigrationInfoResponseError
 } from "./dto";
+
+import { CurrentUser } from "../common/user.decorator";
+import { UserEntity } from "../user/user.entity";
+import { AuditService } from "../audit/audit.service";
+import { RequestWithSession } from "../auth/auth.middleware";
+import { UserService } from "../user/user.service";
+import { AuthSessionService } from "../auth/auth-session.service";
 
 @ApiTags("Migration")
 @Controller("migration")

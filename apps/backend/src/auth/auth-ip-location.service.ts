@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 
 import IP2Region from "ip2region";
 
-import { ConfigService } from "@/config/config.service";
+import { ConfigService } from "../config/config.service";
 
 @Injectable()
 export class AuthIpLocationService {

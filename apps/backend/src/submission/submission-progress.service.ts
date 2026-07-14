@@ -2,11 +2,12 @@ import { Injectable } from "@nestjs/common";
 
 import { Redis } from "ioredis";
 
-import { logger } from "@/logger";
-import { RedisService } from "@/redis/redis.service";
-
 import { SubmissionProgress, SubmissionProgressType } from "./submission-progress.interface";
+
 import { SubmissionProgressGateway } from "./submission-progress.gateway";
+
+import { logger } from "../logger";
+import { RedisService } from "../redis/redis.service";
 
 export enum SubmissionEventType {
   Progress,

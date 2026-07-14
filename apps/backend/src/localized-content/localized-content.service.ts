@@ -3,10 +3,10 @@ import { InjectRepository } from "@nestjs/typeorm";
 
 import { Repository, EntityManager, FindOptionsWhere } from "typeorm";
 
-import { Locale } from "@/common/locale.type";
-import { RedisService } from "@/redis/redis.service";
-
 import { LocalizedContentEntity, LocalizedContentType } from "./localized-content.entity";
+
+import { Locale } from "../common/locale.type";
+import { RedisService } from "../redis/redis.service";
 
 const REDIS_KEY_LOCALIZED_CONTENT = "localized-content:%s:%d:%s";
 

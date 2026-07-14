@@ -6,8 +6,9 @@ import { Injectable } from "@nestjs/common";
 import { Redis } from "ioredis";
 import { v4 as uuid } from "uuid";
 
-import { RedisService } from "@/redis/redis.service";
-import { delay } from "@/common/delay";
+import { RedisService } from "./redis.service";
+
+import { delay } from "../common/delay";
 
 // Refer to scripts/lock.lua and scripts/read-write-lock.lua for details
 interface RedisWithLock extends Redis {

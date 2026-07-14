@@ -1,10 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { UserPrivilegeType } from "@/user/user-privilege.service";
+import { UserPrivilegeType } from "../../user/user-privilege.service";
 
-import { PreferenceConfig } from "@/config/config.schema";
+import { PreferenceConfig } from "../../config/config.schema";
 
-import { UserMetaDto, UserPreferenceDto } from "@/user/dto";
+import { UserMetaDto, UserPreferenceDto } from "../../user/dto";
 
 export class ServerVersionDto {
   @ApiProperty()

@@ -3,12 +3,12 @@ import { isEmail } from "class-validator";
 import randomstring from "randomstring";
 import * as bcrypt from "bcrypt";
 
-import { isUsername } from "@/common/validators";
-import { UserEntity } from "@/user/user.entity";
-import { UserAuthEntity } from "@/auth/user-auth.entity";
-import { UserInformationEntity } from "@/user/user-information.entity";
-import { UserPreferenceEntity } from "@/user/user-preference.entity";
-import { UserPrivilegeEntity, UserPrivilegeType } from "@/user/user-privilege.entity";
+import { isUsername } from "../../common/validators";
+import { UserEntity } from "../../user/user.entity";
+import { UserAuthEntity } from "../../auth/user-auth.entity";
+import { UserInformationEntity } from "../../user/user-information.entity";
+import { UserPreferenceEntity } from "../../user/user-preference.entity";
+import { UserPrivilegeEntity, UserPrivilegeType } from "../../user/user-privilege.entity";
 
 import { MigrationInterface } from "./migration.interface";
 import { OldDatabaseUserEntity, OldDatabaseUserPrivilegeEntity } from "./old-database.interface";

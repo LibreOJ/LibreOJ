@@ -1,5 +1,5 @@
-import { ProblemJudgeInfo } from "@/problem/problem-judge-info.interface";
-import { Checker } from "@/problem-type/common/checker";
+import { ProblemJudgeInfo } from "../../../problem/problem-judge-info.interface";
+import { Checker } from "../../common/checker";
 
 export interface ProblemJudgeInfoSubmitAnswer extends ProblemJudgeInfo {
   /*

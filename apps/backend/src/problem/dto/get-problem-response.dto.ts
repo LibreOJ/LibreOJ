@@ -1,9 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { ProblemPermissionType, ProblemPermissionLevel } from "@/problem/problem.service";
-
-import { SubmissionContent } from "@/submission/submission-content.interface";
-
 import { ProblemMetaDto } from "./problem-meta.dto";
 import { ProblemSampleDataMemberDto } from "./problem-sample-data-member.dto";
 import { ProblemFileDto } from "./problem-file.dto";
@@ -11,9 +7,12 @@ import { ProblemLocalizedContentDto } from "./problem-statement.dto";
 import { LocalizedProblemTagDto } from "./localized-problem-tag.dto";
 import { ProblemTagWithAllLocalesDto } from "./get-all-problem-tags-of-all-locales-response.dto";
 
-import { UserMetaDto } from "@/user/dto";
-import { GroupMetaDto } from "@/group/dto";
-import { SubmissionBasicMetaDto } from "@/submission/dto";
+import { SubmissionContent } from "../../submission/submission-content.interface";
+import { ProblemPermissionType, ProblemPermissionLevel } from "../problem.service";
+
+import { UserMetaDto } from "../../user/dto";
+import { GroupMetaDto } from "../../group/dto";
+import { SubmissionBasicMetaDto } from "../../submission/dto";
 
 import { ProblemJudgeInfo } from "../problem-judge-info.interface";
 

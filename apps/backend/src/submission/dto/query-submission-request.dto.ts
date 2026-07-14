@@ -4,9 +4,9 @@ import { IsInt, IsString, Length, IsEnum, IsOptional, IsPositive } from "class-v
 
 import { SubmissionStatus } from "@libreoj/judge-protocol";
 
-import { IsUsername } from "@/common/validators";
+import { IsUsername } from "../../common/validators";
 
-import { Locale } from "@/common/locale.type";
+import { Locale } from "../../common/locale.type";
 
 export class QuerySubmissionRequestDto {
   @ApiProperty()

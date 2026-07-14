@@ -1,11 +1,11 @@
 import { SandboxResult } from "simple-sandbox";
 
-import { CpuAffinityStrategy, runSandbox, SANDBOX_INSIDE_PATH_BINARY } from "@/sandbox";
-import { CompileResultSuccess } from "@/compile";
-import getLanguage from "@/languages";
-import { ConfigurationError } from "@/error";
-import { MappedPath } from "@/utils";
-import { OmittableString } from "@/omittableString";
+import { CpuAffinityStrategy, runSandbox, SANDBOX_INSIDE_PATH_BINARY } from "../../sandbox";
+import { CompileResultSuccess } from "../../compile";
+import getLanguage from "../../languages";
+import { ConfigurationError } from "../../error";
+import { MappedPath } from "../../utils";
+import { OmittableString } from "../../omittableString";
 
 import { CheckerResult, CheckerTypeCustom } from "..";
 

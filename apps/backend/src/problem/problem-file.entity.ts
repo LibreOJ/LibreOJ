@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, ManyToOne, Column, JoinColumn } from "typeorm";
 
-import { ProblemEntity } from "@/problem/problem.entity";
+import { ProblemEntity } from "./problem.entity";
 
 export enum ProblemFileType {
   TestData = "TestData",

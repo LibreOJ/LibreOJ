@@ -1,6 +1,6 @@
 import { Entity, ManyToOne, Column, JoinColumn, Index, PrimaryGeneratedColumn } from "typeorm";
 
-import { UserEntity } from "@/user/user.entity";
+import { UserEntity } from "../user/user.entity";
 
 export enum AuditLogObjectType {
   User = "User",

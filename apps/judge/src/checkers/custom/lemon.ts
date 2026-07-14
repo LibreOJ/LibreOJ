@@ -1,8 +1,8 @@
 import { v4 as uuid } from "uuid";
 import { SandboxStatus } from "simple-sandbox";
 
-import { safelyJoinPath, readFileLimited } from "@/utils";
-import { readFileOmitted } from "@/omittableString";
+import { safelyJoinPath, readFileLimited } from "../../utils";
+import { readFileOmitted } from "../../omittableString";
 
 import { CustomChecker } from ".";
 

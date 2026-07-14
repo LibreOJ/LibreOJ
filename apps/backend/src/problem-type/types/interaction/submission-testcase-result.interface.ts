@@ -1,6 +1,6 @@
 import { OmittableString } from "@libreoj/judge-protocol";
 
-import { SubmissionTestcaseResult } from "@/submission/submission-progress.interface";
+import { SubmissionTestcaseResult } from "../../../submission/submission-progress.interface";
 
 // For subtasks and testcasese
 export enum SubmissionTestcaseStatusInteraction {

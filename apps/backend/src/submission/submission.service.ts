@@ -8,37 +8,42 @@ import moment from "moment-timezone";
 
 import { JudgeTaskType, SubmissionStatus } from "@libreoj/judge-protocol";
 
-import { logger } from "@/logger";
-import { ProblemPermissionType, ProblemService } from "@/problem/problem.service";
-import { UserEntity } from "@/user/user.entity";
-import { ProblemEntity, ProblemType } from "@/problem/problem.entity";
-import { JudgeQueueService, JudgeTaskPriorityType, JudgeTask, JudgeTaskExtraInfo } from "@/judge/judge-queue.service";
-import { JudgeTaskService } from "@/judge/judge-task-service.interface";
-import { ProblemFileType } from "@/problem/problem-file.entity";
-import { ProblemJudgeInfo } from "@/problem/problem-judge-info.interface";
-import { UserService } from "@/user/user.service";
-import { ProblemSampleData } from "@/problem/problem-sample-data.interface";
-import { LockService } from "@/redis/lock.service";
-import { JudgeGateway } from "@/judge/judge.gateway";
-import { ProblemTypeFactoryService } from "@/problem-type/problem-type-factory.service";
-import { AuditLogObjectType, AuditService } from "@/audit/audit.service";
-import { MinioSignFor, FileService } from "@/file/file.service";
-import { ConfigService } from "@/config/config.service";
-import { FileEntity } from "@/file/file.entity";
-import { UserPrivilegeService, UserPrivilegeType } from "@/user/user-privilege.service";
-
-import { MetricsService } from "@/metrics/metrics.service";
-
 import { SubmissionProgress, SubmissionProgressType } from "./submission-progress.interface";
+
 import { SubmissionContent } from "./submission-content.interface";
+
 import { SubmissionProgressService, SubmissionEventType } from "./submission-progress.service";
+
 import { SubmissionStatisticsService } from "./submission-statistics.service";
+
 import { SubmissionEntity } from "./submission.entity";
+
 import { SubmissionDetailEntity } from "./submission-detail.entity";
 
-import { FileUploadInfoDto, SignedFileUploadRequestDto } from "@/file/dto";
-
 import { SubmissionBasicMetaDto } from "./dto";
+
+import { logger } from "../logger";
+import { ProblemPermissionType, ProblemService } from "../problem/problem.service";
+import { UserEntity } from "../user/user.entity";
+import { ProblemEntity, ProblemType } from "../problem/problem.entity";
+import { JudgeQueueService, JudgeTaskPriorityType, JudgeTask, JudgeTaskExtraInfo } from "../judge/judge-queue.service";
+import { JudgeTaskService } from "../judge/judge-task-service.interface";
+import { ProblemFileType } from "../problem/problem-file.entity";
+import { ProblemJudgeInfo } from "../problem/problem-judge-info.interface";
+import { UserService } from "../user/user.service";
+import { ProblemSampleData } from "../problem/problem-sample-data.interface";
+import { LockService } from "../redis/lock.service";
+import { JudgeGateway } from "../judge/judge.gateway";
+import { ProblemTypeFactoryService } from "../problem-type/problem-type-factory.service";
+import { AuditLogObjectType, AuditService } from "../audit/audit.service";
+import { MinioSignFor, FileService } from "../file/file.service";
+import { ConfigService } from "../config/config.service";
+import { FileEntity } from "../file/file.entity";
+import { UserPrivilegeService, UserPrivilegeType } from "../user/user-privilege.service";
+
+import { MetricsService } from "../metrics/metrics.service";
+
+import { FileUploadInfoDto, SignedFileUploadRequestDto } from "../file/dto";
 
 export enum SubmissionPermissionType {
   View = "View",

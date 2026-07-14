@@ -1,4 +1,4 @@
-import { Locale } from "@/common/locale.type";
+import { Locale } from "../common/locale.type";
 
 export interface UserPreference {
   locale?: {

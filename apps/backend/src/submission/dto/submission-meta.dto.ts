@@ -2,9 +2,9 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { SubmissionStatus } from "@libreoj/judge-protocol";
 
-import { ProblemMetaDto } from "@/problem/dto";
+import { ProblemMetaDto } from "../../problem/dto";
 
-import { UserMetaDto } from "@/user/dto";
+import { UserMetaDto } from "../../user/dto";
 
 import { SubmissionProgressType } from "../submission-progress.interface";
 

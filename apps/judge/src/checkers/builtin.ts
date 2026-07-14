@@ -2,7 +2,7 @@ import { promisify } from "util";
 
 import bindings from "bindings";
 
-import { OmittableString } from "@/omittableString";
+import { OmittableString } from "../omittableString";
 
 import { Checker, CheckerResult, parseTestlibMessage } from ".";
 

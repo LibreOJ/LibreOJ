@@ -1,13 +1,6 @@
 import { Controller, Get, Post, Body, Query } from "@nestjs/common";
 import { ApiOperation, ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-import { ConfigService } from "@/config/config.service";
-import { CurrentUser } from "@/common/user.decorator";
-import { UserEntity } from "@/user/user.entity";
-import { UserPrivilegeService, UserPrivilegeType } from "@/user/user-privilege.service";
-import { UserService } from "@/user/user.service";
-import { AuditLogObjectType, AuditService } from "@/audit/audit.service";
-
 import { GroupService } from "./group.service";
 
 import {
@@ -39,6 +32,13 @@ import {
   RenameGroupResponseDto,
   RenameGroupResponseError
 } from "./dto";
+
+import { ConfigService } from "../config/config.service";
+import { CurrentUser } from "../common/user.decorator";
+import { UserEntity } from "../user/user.entity";
+import { UserPrivilegeService, UserPrivilegeType } from "../user/user-privilege.service";
+import { UserService } from "../user/user.service";
+import { AuditLogObjectType, AuditService } from "../audit/audit.service";
 
 @ApiTags("Group")
 @Controller("group")

@@ -2,8 +2,8 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { IsEnum, IsInt, IsOptional, IsString, Length, Min } from "class-validator";
 
-import { Locale } from "@/common/locale.type";
-import { IsUsername } from "@/common/validators";
+import { Locale } from "../../common/locale.type";
+import { IsUsername } from "../../common/validators";
 
 export class QueryAuditLogsRequestDto {
   @ApiProperty()

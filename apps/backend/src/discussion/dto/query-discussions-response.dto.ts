@@ -1,11 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { Locale } from "@/common/locale.type";
-
 import { DiscussionMetaDto } from "./discussion-meta.dto";
 
-import { ProblemMetaDto } from "@/problem/dto";
-import { UserMetaDto } from "@/user/dto";
+import { Locale } from "../../common/locale.type";
+
+import { ProblemMetaDto } from "../../problem/dto";
+import { UserMetaDto } from "../../user/dto";
 
 export enum QueryDiscussionsResponseError {
   TAKE_TOO_MANY = "TAKE_TOO_MANY",

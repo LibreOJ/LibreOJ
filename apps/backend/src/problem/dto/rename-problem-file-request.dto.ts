@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { IsInt, IsString, IsEnum } from "class-validator";
 
-import { IsValidFilename } from "@/common/validators";
+import { IsValidFilename } from "../../common/validators";
 
 import { ProblemFileType } from "../problem-file.entity";
 

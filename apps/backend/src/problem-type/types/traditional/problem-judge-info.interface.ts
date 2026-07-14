@@ -1,6 +1,6 @@
-import { ProblemJudgeInfo } from "@/problem/problem-judge-info.interface";
-import { CodeLanguage } from "@/code-language/code-language.type";
-import { Checker } from "@/problem-type/common/checker";
+import { ProblemJudgeInfo } from "../../../problem/problem-judge-info.interface";
+import { CodeLanguage } from "../../../code-language/code-language.type";
+import { Checker } from "../../common/checker";
 
 export interface ProblemJudgeInfoTraditional extends ProblemJudgeInfo {
   /*

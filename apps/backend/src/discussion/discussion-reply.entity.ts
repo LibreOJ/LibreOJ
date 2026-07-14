@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Index, Column, ManyToOne, JoinColumn } from "typeorm";
 
-import { UserEntity } from "@/user/user.entity";
-
 import { DiscussionEntity } from "./discussion.entity";
+
+import { UserEntity } from "../user/user.entity";
 
 @Entity("discussion_reply")
 @Index(["discussionId", "id", "isPublic"])

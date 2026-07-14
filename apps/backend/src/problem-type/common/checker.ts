@@ -1,9 +1,9 @@
 /* eslint-disable no-throw-literal */
 
-import { CodeLanguage } from "@/code-language/code-language.type";
-import { ProblemFileEntity } from "@/problem/problem-file.entity";
-
 import { restrictProperties } from "./restrict-properties";
+
+import { CodeLanguage } from "../../code-language/code-language.type";
+import { ProblemFileEntity } from "../../problem/problem-file.entity";
 
 interface CheckerTypeIntegers {
   type: "integers";

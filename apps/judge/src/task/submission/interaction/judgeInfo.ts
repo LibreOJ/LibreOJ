@@ -1,8 +1,8 @@
 import objectHash from "object-hash";
 
-import { SubmissionTask, ProblemSample } from "@/task/submission";
-import { getFileHash } from "@/file";
-import { hashData } from "@/utils";
+import { SubmissionTask, ProblemSample } from "..";
+import { getFileHash } from "../../../file";
+import { hashData } from "../../../utils";
 
 import { ExtraParametersInteraction, SubmissionContentInteraction, TestcaseResultInteraction } from ".";
 import { validateJudgeInfoSubtasks, validateJudgeInfoExtraSourceFiles } from "../common";

@@ -3,7 +3,7 @@ import cluster from "cluster";
 
 import { Injectable, Inject, forwardRef } from "@nestjs/common";
 
-import { ConfigService } from "@/config/config.service";
+import { ConfigService } from "../config/config.service";
 
 interface IpcMessage {
   channel: string;

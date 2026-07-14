@@ -7,20 +7,16 @@ import { Repository, DataSource, Like, MoreThan, EntityManager } from "typeorm";
 
 import { SubmissionStatus } from "@libreoj/judge-protocol";
 
-import { escapeLike } from "@/database/database.utils";
-import { LockService } from "@/redis/lock.service";
-import { SubmissionService } from "@/submission/submission.service";
-import { SubmissionEntity } from "@/submission/submission.entity";
-import { ConfigService } from "@/config/config.service";
-import { AuthEmailVerificationCodeService } from "@/auth/auth-email-verification-code.service";
-import { AuditLogObjectType, AuditService } from "@/audit/audit.service";
-import { delay, DELAY_FOR_SECURITY } from "@/common/delay";
-
 import { UserEntity } from "./user.entity";
+
 import { UserPrivilegeService, UserPrivilegeType } from "./user-privilege.service";
+
 import { UserInformationDto } from "./dto/user-information.dto";
+
 import { UserInformationEntity } from "./user-information.entity";
+
 import { UserPreference } from "./user-preference.interface";
+
 import { UserPreferenceEntity } from "./user-preference.entity";
 
 import {
@@ -30,6 +26,15 @@ import {
   UserAvatarType,
   UpdateUserSelfEmailResponseError
 } from "./dto";
+
+import { escapeLike } from "../database/database.utils";
+import { LockService } from "../redis/lock.service";
+import { SubmissionService } from "../submission/submission.service";
+import { SubmissionEntity } from "../submission/submission.entity";
+import { ConfigService } from "../config/config.service";
+import { AuthEmailVerificationCodeService } from "../auth/auth-email-verification-code.service";
+import { AuditLogObjectType, AuditService } from "../audit/audit.service";
+import { delay, DELAY_FOR_SECURITY } from "../common/delay";
 
 @Injectable()
 export class UserService {

@@ -5,9 +5,9 @@ import ProxyAgent from "proxy-agent";
 import { Telegraf } from "telegraf";
 import randomstring from "randomstring";
 
-import { ConfigService } from "@/config/config.service";
-import { ClusterService } from "@/cluster/cluster.service";
-import { RequestWithSession } from "@/auth/auth.middleware";
+import { ConfigService } from "../config/config.service";
+import { ClusterService } from "../cluster/cluster.service";
+import { RequestWithSession } from "../auth/auth.middleware";
 
 const logger = new Logger("EventReporter");
 

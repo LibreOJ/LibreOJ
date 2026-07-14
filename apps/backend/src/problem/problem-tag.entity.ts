@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-import { Locale } from "@/common/locale.type";
+import { Locale } from "../common/locale.type";
 
 @Entity("problem_tag")
 export class ProblemTagEntity {

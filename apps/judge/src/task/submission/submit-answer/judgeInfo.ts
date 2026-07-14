@@ -1,8 +1,8 @@
 import objectHash from "object-hash";
 
-import { SubmissionTask, ProblemSample } from "@/task/submission";
-import { Checker, getCheckerMeta } from "@/checkers";
-import { getFileHash } from "@/file";
+import { SubmissionTask, ProblemSample } from "..";
+import { Checker, getCheckerMeta } from "../../../checkers";
+import { getFileHash } from "../../../file";
 
 import { ExtraParametersSubmitAnswer, SubmissionContentSubmitAnswer, TestcaseResultSubmitAnswer } from ".";
 import { validateJudgeInfoSubtasks } from "../common";

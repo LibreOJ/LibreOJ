@@ -3,13 +3,15 @@ import { InjectRepository, InjectDataSource } from "@nestjs/typeorm";
 
 import { Repository, EntityManager, DataSource, FindOptionsWhere } from "typeorm";
 
-import { UserEntity } from "@/user/user.entity";
-import { GroupEntity } from "@/group/group.entity";
-import { GroupService } from "@/group/group.service";
-
 import { PermissionForUserEntity } from "./permission-for-user.entity";
+
 import { PermissionForGroupEntity } from "./permission-for-group.entity";
+
 import { PermissionObjectType } from "./permission-object-type.enum";
+
+import { UserEntity } from "../user/user.entity";
+import { GroupEntity } from "../group/group.entity";
+import { GroupService } from "../group/group.service";
 
 export { PermissionObjectType } from "./permission-object-type.enum";
 

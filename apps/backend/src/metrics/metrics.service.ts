@@ -5,7 +5,7 @@ import { Injectable, Logger } from "@nestjs/common";
 
 import PromClient from "prom-client";
 
-import { ConfigService } from "@/config/config.service";
+import { ConfigService } from "../config/config.service";
 
 @Injectable()
 export class MetricsService {

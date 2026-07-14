@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { IsInt, Min, IsEnum, IsOptional } from "class-validator";
 
-import { Locale } from "@/common/locale.type";
+import { Locale } from "../../common/locale.type";
 
 import { SubmissionStatisticsType } from "../submission-statistics.service";
 

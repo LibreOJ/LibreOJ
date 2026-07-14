@@ -3,7 +3,7 @@ import { Injectable, Inject, forwardRef } from "@nestjs/common";
 import { Redis } from "ioredis";
 import randomstring from "randomstring";
 
-import { RedisService } from "@/redis/redis.service";
+import { RedisService } from "../redis/redis.service";
 
 const RATE_LIMIT = 60;
 const CODE_VALID_TIME = 60 * 15;

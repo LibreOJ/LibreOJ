@@ -3,26 +3,14 @@ import { ApiOperation, ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 import { Recaptcha } from "@nestlab/google-recaptcha";
 
-import { ConfigService } from "@/config/config.service";
-import { CurrentUser } from "@/common/user.decorator";
-import { UserEntity } from "@/user/user.entity";
-import { UserService } from "@/user/user.service";
-import { UserPrivilegeService, UserPrivilegeType } from "@/user/user-privilege.service";
-import { AuditLogObjectType, AuditService } from "@/audit/audit.service";
-import { ProblemPermissionType, ProblemService } from "@/problem/problem.service";
-import { GroupEntity } from "@/group/group.entity";
-import { GroupService } from "@/group/group.service";
-import { isEmoji } from "@/common/validators";
-
 import {
   DiscussionPermissionType,
   DiscussionReactionType,
   DiscussionService,
   DiscussionPermissionLevel
 } from "./discussion.service";
-import { DiscussionReplyEntity } from "./discussion-reply.entity";
 
-import { UserMetaDto } from "@/user/dto";
+import { DiscussionReplyEntity } from "./discussion-reply.entity";
 
 import {
   CreateDiscussionRequestDto,
@@ -70,6 +58,19 @@ import {
   GetDiscussionPermissionsResponseDto,
   GetDiscussionPermissionsResponseError
 } from "./dto";
+
+import { ConfigService } from "../config/config.service";
+import { CurrentUser } from "../common/user.decorator";
+import { UserEntity } from "../user/user.entity";
+import { UserService } from "../user/user.service";
+import { UserPrivilegeService, UserPrivilegeType } from "../user/user-privilege.service";
+import { AuditLogObjectType, AuditService } from "../audit/audit.service";
+import { ProblemPermissionType, ProblemService } from "../problem/problem.service";
+import { GroupEntity } from "../group/group.entity";
+import { GroupService } from "../group/group.service";
+import { isEmoji } from "../common/validators";
+
+import { UserMetaDto } from "../user/dto";
 
 @ApiTags("Discussion")
 @Controller("discussion")

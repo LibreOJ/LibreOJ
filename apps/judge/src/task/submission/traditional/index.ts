@@ -3,26 +3,31 @@ import fs from "fs";
 import { v4 as uuid } from "uuid";
 import { SandboxStatus } from "simple-sandbox";
 
-import { SubmissionTask, SubmissionStatus, ProblemSample } from "@/task/submission";
-import { compile, CompileResultSuccess } from "@/compile";
-import { CpuAffinityStrategy, runSandbox, SANDBOX_INSIDE_PATH_BINARY, SANDBOX_INSIDE_PATH_WORKING } from "@/sandbox";
-import getLanguage from "@/languages";
-import { serverSideConfig } from "@/config";
-import { safelyJoinPath, MappedPath } from "@/utils";
+import { JudgeInfoTraditional, TestcaseConfig } from "./judgeInfo";
+
+import { SubmissionTask, SubmissionStatus, ProblemSample } from "..";
+import { compile, CompileResultSuccess } from "../../../compile";
+import {
+  CpuAffinityStrategy,
+  runSandbox,
+  SANDBOX_INSIDE_PATH_BINARY,
+  SANDBOX_INSIDE_PATH_WORKING
+} from "../../../sandbox";
+import getLanguage from "../../../languages";
+import { serverSideConfig } from "../../../config";
+import { safelyJoinPath, MappedPath } from "../../../utils";
 import {
   isOmittableString,
   OmittableString,
   prependOmittableString,
   readFileOmitted,
   stringToOmited
-} from "@/omittableString";
-import { getFile } from "@/file";
-import { ConfigurationError } from "@/error";
-import { runBuiltinChecker } from "@/checkers/builtin";
-import { runCustomChecker, validateCustomChecker } from "@/checkers/custom";
-import * as fsNative from "@/fsNative";
-
-import { JudgeInfoTraditional, TestcaseConfig } from "./judgeInfo";
+} from "../../../omittableString";
+import { getFile } from "../../../file";
+import { ConfigurationError } from "../../../error";
+import { runBuiltinChecker } from "../../../checkers/builtin";
+import { runCustomChecker, validateCustomChecker } from "../../../checkers/custom";
+import * as fsNative from "../../../fsNative";
 
 import { runCommonTask, getExtraSourceFiles } from "../common";
 

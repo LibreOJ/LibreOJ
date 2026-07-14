@@ -1,8 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { AuditLogObjectType } from "@/audit/audit.service";
-
 import { UserMetaDto } from "./user-meta.dto";
+
+import { AuditLogObjectType } from "../../audit/audit.service";
 
 export enum QueryAuditLogsResponseError {
   NO_SUCH_USER = "NO_SUCH_USER",

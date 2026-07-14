@@ -10,11 +10,7 @@
     "target": "es2019",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
-    "paths": {
-      "@/*": ["src/*"]
-    } 
+    "incremental": true
   },
   "exclude": ["node_modules", "dist"]
 }

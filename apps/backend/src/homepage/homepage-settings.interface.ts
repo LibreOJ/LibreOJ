@@ -3,9 +3,9 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsBoolean, isDateString, IsOptional, IsString, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
-import { Locale } from "@/common/locale.type";
-import { If } from "@/common/validators";
-import { Settings } from "@/settings/settings.decorator";
+import { Locale } from "../common/locale.type";
+import { If } from "../common/validators";
+import { Settings } from "../settings/settings.decorator";
 
 export class HomepageSettingsNotice {
   @IsBoolean()

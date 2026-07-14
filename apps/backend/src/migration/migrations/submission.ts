@@ -7,32 +7,32 @@ import { Logger } from "@nestjs/common";
 import { v5 as uuid } from "uuid";
 import { JSDOM } from "jsdom";
 
-import { SubmissionEntity } from "@/submission/submission.entity";
-import { ProblemType } from "@/problem/problem.entity";
+import { SubmissionEntity } from "../../submission/submission.entity";
+import { ProblemType } from "../../problem/problem.entity";
 import { SubmissionStatus } from "@libreoj/judge-protocol";
-import { SubmissionDetailEntity } from "@/submission/submission-detail.entity";
-import { ConfigService } from "@/config/config.service";
-import { FileEntity } from "@/file/file.entity";
-import { SubmissionProgressType } from "@/submission/submission-progress.interface";
+import { SubmissionDetailEntity } from "../../submission/submission-detail.entity";
+import { ConfigService } from "../../config/config.service";
+import { FileEntity } from "../../file/file.entity";
+import { SubmissionProgressType } from "../../submission/submission-progress.interface";
 import {
   SubmissionTestcaseResultTraditional,
   SubmissionTestcaseStatusTraditional
-} from "@/problem-type/types/traditional/submission-testcase-result.interface";
+} from "../../problem-type/types/traditional/submission-testcase-result.interface";
 import {
   SubmissionTestcaseResultInteraction,
   SubmissionTestcaseStatusInteraction
-} from "@/problem-type/types/interaction/submission-testcase-result.interface";
+} from "../../problem-type/types/interaction/submission-testcase-result.interface";
 import {
   SubmissionTestcaseResultSubmitAnswer,
   SubmissionTestcaseStatusSubmitAnswer
-} from "@/problem-type/types/submit-answer/submission-testcase-result.interface";
-import { SubmissionContentTraditional } from "@/problem-type/types/traditional/submission-content.interface";
+} from "../../problem-type/types/submit-answer/submission-testcase-result.interface";
+import { SubmissionContentTraditional } from "../../problem-type/types/traditional/submission-content.interface";
 import { OmittableString } from "@libreoj/judge-protocol";
 
 import { getLanguageAndOptions, parseProblemType } from "./problem";
 import { OldDatabaseJudgeStateEntity } from "./old-database.interface";
 import { MigrationInterface } from "./migration.interface";
-import { FileService } from "@/file/file.service";
+import { FileService } from "../../file/file.service";
 
 enum OldSubmissionTestcaseResultType {
   Accepted = 1,

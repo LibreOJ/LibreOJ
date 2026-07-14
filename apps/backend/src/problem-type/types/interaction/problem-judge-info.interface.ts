@@ -1,5 +1,5 @@
-import { ProblemJudgeInfo } from "@/problem/problem-judge-info.interface";
-import { CodeLanguage } from "@/code-language/code-language.type";
+import { ProblemJudgeInfo } from "../../../problem/problem-judge-info.interface";
+import { CodeLanguage } from "../../../code-language/code-language.type";
 
 export interface ProblemJudgeInfoInteraction extends ProblemJudgeInfo {
   /*

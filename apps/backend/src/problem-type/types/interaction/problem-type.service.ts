@@ -3,19 +3,21 @@ import { Injectable } from "@nestjs/common";
 import { ValidationError, validate } from "class-validator";
 import { plainToClass } from "class-transformer";
 
-import { ConfigService } from "@/config/config.service";
-import { ProblemFileEntity } from "@/problem/problem-file.entity";
-import { SubmissionProgress } from "@/submission/submission-progress.interface";
-import { CodeLanguageService } from "@/code-language/code-language.service";
-import { validateMetaAndSubtasks } from "@/problem-type/common/meta-and-subtasks";
-import { validateExtraSourceFiles } from "@/problem-type/common/extra-source-files";
-import { CodeLanguage } from "@/code-language/code-language.type";
-import { autoMatchInputToOutput } from "@/problem-type/common/auto-match-input-output";
-import { restrictProperties } from "@/problem-type/common/restrict-properties";
-
 import { SubmissionTestcaseResultInteraction } from "./submission-testcase-result.interface";
+
 import { SubmissionContentInteraction } from "./submission-content.interface";
+
 import { ProblemJudgeInfoInteraction } from "./problem-judge-info.interface";
+
+import { ConfigService } from "../../../config/config.service";
+import { ProblemFileEntity } from "../../../problem/problem-file.entity";
+import { SubmissionProgress } from "../../../submission/submission-progress.interface";
+import { CodeLanguageService } from "../../../code-language/code-language.service";
+import { validateMetaAndSubtasks } from "../../common/meta-and-subtasks";
+import { validateExtraSourceFiles } from "../../common/extra-source-files";
+import { CodeLanguage } from "../../../code-language/code-language.type";
+import { autoMatchInputToOutput } from "../../common/auto-match-input-output";
+import { restrictProperties } from "../../common/restrict-properties";
 
 import { ProblemTypeServiceInterface } from "../../problem-type-service.interface";
 

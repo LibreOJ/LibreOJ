@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { IsIntString } from "@/common/validators";
+import { IsIntString } from "../../common/validators";
 
 export class GetGroupMetaRequestDto {
   @ApiProperty()

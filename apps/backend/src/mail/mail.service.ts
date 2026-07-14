@@ -5,8 +5,8 @@ import { Injectable } from "@nestjs/common";
 import nodemailer from "nodemailer";
 import ejs from "ejs";
 
-import { ConfigService } from "@/config/config.service";
-import { Locale } from "@/common/locale.type";
+import { ConfigService } from "../config/config.service";
+import { Locale } from "../common/locale.type";
 
 export enum MailTemplate {
   RegisterVerificationCode = "register_verification_code",

@@ -17,7 +17,7 @@
     "check-types": "tsc --noEmit -p tsconfig.json",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint src --ext ts --cache",
-    "start": "node -r @swc-node/register -r tsconfig-paths/register index.mjs"
+    "start": "node -r @swc-node/register index.mjs"
   },
   "config": {
     "commitizen": {
@@ -69,7 +69,6 @@
     "eslint-import-resolver-typescript": "^3.5.0",
     "eslint-plugin-import": "^2.26.0",
     "prettier": "catalog:",
-    "tsconfig-paths": "^4.1.0",
     "typescript": "^4.7.4",
     "@types/validator": "^13.7.4"
   }

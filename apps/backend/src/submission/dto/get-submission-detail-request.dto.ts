@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { IsNumberString, IsEnum } from "class-validator";
 
-import { Locale } from "@/common/locale.type";
+import { Locale } from "../../common/locale.type";
 
 export class GetSubmissionDetailRequestDto {
   @ApiProperty()

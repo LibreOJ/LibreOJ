@@ -1,6 +1,6 @@
 import { IsString, Length, IsEnum } from "class-validator";
 
-import { Locale } from "@/common/locale.type";
+import { Locale } from "../../common/locale.type";
 
 export class ProblemTagLocalizedNameDto {
   @IsString()

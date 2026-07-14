@@ -1,8 +1,8 @@
 /* eslint-disable no-throw-literal */
 
-import { CodeLanguage } from "@/code-language/code-language.type";
-import { isValidFilename } from "@/common/validators";
-import { ProblemFileEntity } from "@/problem/problem-file.entity";
+import { CodeLanguage } from "../../code-language/code-language.type";
+import { isValidFilename } from "../../common/validators";
+import { ProblemFileEntity } from "../../problem/problem-file.entity";
 
 interface JudgeInfoWithExtraSourceFiles {
   extraSourceFiles?: Partial<Record<CodeLanguage, Record<string, string>>>;

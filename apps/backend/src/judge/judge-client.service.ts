@@ -8,10 +8,10 @@ import { Redis } from "ioredis";
 
 import { JudgeClientSystemInfo } from "@libreoj/judge-protocol";
 
-import { RedisService } from "@/redis/redis.service";
-
 import { JudgeClientEntity } from "./judge-client.entity";
 import { JudgeClientInfoDto } from "./dto/judge-client-info.dto";
+
+import { RedisService } from "../redis/redis.service";
 
 const JUDGE_CLIENT_KEY_BYTE_LENGTH = 30;
 

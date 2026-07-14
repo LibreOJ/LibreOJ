@@ -3,9 +3,9 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsString, Length, ValidateNested, ArrayNotEmpty } from "class-validator";
 import { Type } from "class-transformer";
 
-import { If } from "@/common/validators";
-
 import { ProblemTagLocalizedNameDto } from "./problem-tag-localized-name.dto";
+
+import { If } from "../../common/validators";
 
 export class CreateProblemTagRequestDto {
   @ApiProperty({ type: [ProblemTagLocalizedNameDto] })

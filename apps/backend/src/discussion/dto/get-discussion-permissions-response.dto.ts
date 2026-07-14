@@ -1,9 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { DiscussionPermissionLevel } from "@/discussion/discussion.service";
+import { DiscussionPermissionLevel } from "../discussion.service";
 
-import { UserMetaDto } from "@/user/dto";
-import { GroupMetaDto } from "@/group/dto";
+import { UserMetaDto } from "../../user/dto";
+import { GroupMetaDto } from "../../group/dto";
 
 export enum GetDiscussionPermissionsResponseError {
   PERMISSION_DENIED = "PERMISSION_DENIED",

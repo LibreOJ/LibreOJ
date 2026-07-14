@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { UserMetaDto } from "@/user/dto";
+import { UserMetaDto } from "../../user/dto";
 
 export enum GetGroupMemberListResponseError {
   NO_SUCH_GROUP = "NO_SUCH_GROUP",

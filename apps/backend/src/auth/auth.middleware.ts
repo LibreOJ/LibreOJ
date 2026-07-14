@@ -4,10 +4,10 @@ import { NestMiddleware, Injectable } from "@nestjs/common";
 
 import { Request, Response } from "express"; // eslint-disable-line import/no-extraneous-dependencies
 
-import { UserEntity } from "@/user/user.entity";
-import { UserPrivilegeService, UserPrivilegeType } from "@/user/user-privilege.service";
-
 import { AuthSessionService } from "./auth-session.service";
+
+import { UserEntity } from "../user/user.entity";
+import { UserPrivilegeService, UserPrivilegeType } from "../user/user-privilege.service";
 
 const asyncLocalStorage = new AsyncLocalStorage();
 

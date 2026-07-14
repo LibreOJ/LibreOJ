@@ -2,19 +2,21 @@ import { Injectable } from "@nestjs/common";
 
 import { ValidationError } from "class-validator";
 
-import { ConfigService } from "@/config/config.service";
-import { ProblemFileEntity } from "@/problem/problem-file.entity";
-import { SubmissionProgress } from "@/submission/submission-progress.interface";
-import { CodeLanguageService } from "@/code-language/code-language.service";
-import { validateMetaAndSubtasks } from "@/problem-type/common/meta-and-subtasks";
-import { validateChecker } from "@/problem-type/common/checker";
-import { autoMatchOutputToInput } from "@/problem-type/common/auto-match-input-output";
-import { FileEntity } from "@/file/file.entity";
-import { restrictProperties } from "@/problem-type/common/restrict-properties";
-
 import { SubmissionTestcaseResultSubmitAnswer } from "./submission-testcase-result.interface";
+
 import { SubmissionContentSubmitAnswer } from "./submission-content.interface";
+
 import { ProblemJudgeInfoSubmitAnswer } from "./problem-judge-info.interface";
+
+import { ConfigService } from "../../../config/config.service";
+import { ProblemFileEntity } from "../../../problem/problem-file.entity";
+import { SubmissionProgress } from "../../../submission/submission-progress.interface";
+import { CodeLanguageService } from "../../../code-language/code-language.service";
+import { validateMetaAndSubtasks } from "../../common/meta-and-subtasks";
+import { validateChecker } from "../../common/checker";
+import { autoMatchOutputToInput } from "../../common/auto-match-input-output";
+import { FileEntity } from "../../../file/file.entity";
+import { restrictProperties } from "../../common/restrict-properties";
 
 import { ProblemTypeServiceInterface } from "../../problem-type-service.interface";
 

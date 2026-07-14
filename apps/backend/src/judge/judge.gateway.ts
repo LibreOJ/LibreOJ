@@ -16,17 +16,19 @@ import proxyAddr from "proxy-addr";
 
 import { JudgeClientSystemInfo, JudgeTaskMeta } from "@libreoj/judge-protocol";
 
-import { logger } from "@/logger";
-import { MinioSignFor, FileService } from "@/file/file.service";
-import { SubmissionProgress } from "@/submission/submission-progress.interface";
-import { ConfigService } from "@/config/config.service";
-import { EventReportService, EventReportType } from "@/event-report/event-report.service";
-import { RedisService } from "@/redis/redis.service";
-import { LockService } from "@/redis/lock.service";
-
 import { JudgeClientService } from "./judge-client.service";
+
 import { JudgeClientEntity } from "./judge-client.entity";
+
 import { JudgeQueueService, JudgeTask, JudgeTaskExtraInfo } from "./judge-queue.service";
+
+import { logger } from "../logger";
+import { MinioSignFor, FileService } from "../file/file.service";
+import { SubmissionProgress } from "../submission/submission-progress.interface";
+import { ConfigService } from "../config/config.service";
+import { EventReportService, EventReportType } from "../event-report/event-report.service";
+import { RedisService } from "../redis/redis.service";
+import { LockService } from "../redis/lock.service";
 
 interface JudgeClientState {
   judgeClient: JudgeClientEntity;

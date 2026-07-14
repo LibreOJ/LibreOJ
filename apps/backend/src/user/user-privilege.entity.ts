@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, Index, ManyToOne, JoinColumn } from "typeorm";
 
-import { UserEntity } from "@/user/user.entity";
+import { UserEntity } from "./user.entity";
 
 export enum UserPrivilegeType {
   // Management privileges

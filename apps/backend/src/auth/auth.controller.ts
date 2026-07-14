@@ -3,23 +3,14 @@ import { ApiOperation, ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 import { Recaptcha } from "@nestlab/google-recaptcha";
 
-import { appGitRepoInfo } from "@/main";
-import { ConfigService } from "@/config/config.service";
-import { UserService } from "@/user/user.service";
-import { CurrentUser } from "@/common/user.decorator";
-import { UserEntity } from "@/user/user.entity";
-import { MailService, MailTemplate } from "@/mail/mail.service";
-import { UserPrivilegeService, UserPrivilegeType } from "@/user/user-privilege.service";
-import { GroupService } from "@/group/group.service";
-import { AuditLogObjectType, AuditService } from "@/audit/audit.service";
-import { UserMigrationService } from "@/migration/user-migration.service";
-import { UserMigrationInfoEntity } from "@/migration/user-migration-info.entity";
-import { delay, DELAY_FOR_SECURITY } from "@/common/delay";
-
 import { AuthEmailVerificationCodeService, EmailVerificationCodeType } from "./auth-email-verification-code.service";
+
 import { AuthSessionService } from "./auth-session.service";
+
 import { AuthIpLocationService } from "./auth-ip-location.service";
+
 import { RequestWithSession } from "./auth.middleware";
+
 import { AuthService } from "./auth.service";
 
 import {
@@ -46,6 +37,19 @@ import {
   RevokeUserSessionResponseDto,
   RevokeUserSessionResponseError
 } from "./dto";
+
+import { appGitRepoInfo } from "../main";
+import { ConfigService } from "../config/config.service";
+import { UserService } from "../user/user.service";
+import { CurrentUser } from "../common/user.decorator";
+import { UserEntity } from "../user/user.entity";
+import { MailService, MailTemplate } from "../mail/mail.service";
+import { UserPrivilegeService, UserPrivilegeType } from "../user/user-privilege.service";
+import { GroupService } from "../group/group.service";
+import { AuditLogObjectType, AuditService } from "../audit/audit.service";
+import { UserMigrationService } from "../migration/user-migration.service";
+import { UserMigrationInfoEntity } from "../migration/user-migration-info.entity";
+import { delay, DELAY_FOR_SECURITY } from "../common/delay";
 
 // Refer to auth.middleware.ts for req.session
 

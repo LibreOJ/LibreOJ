@@ -3,26 +3,31 @@ import fs from "fs";
 import { v4 as uuid } from "uuid";
 import { SandboxStatus } from "simple-sandbox";
 
-import { SubmissionTask, SubmissionStatus, ProblemSample } from "@/task/submission";
-import { compile, CompileResultSuccess } from "@/compile";
-import { startSandbox, SANDBOX_INSIDE_PATH_BINARY, SANDBOX_INSIDE_PATH_WORKING, CpuAffinityStrategy } from "@/sandbox";
-import getLanguage from "@/languages";
-import { serverSideConfig } from "@/config";
-import { safelyJoinPath, MappedPath, merge } from "@/utils";
+import { JudgeInfoInteraction, TestcaseConfig } from "./judgeInfo";
+
+import { SubmissionTask, SubmissionStatus, ProblemSample } from "..";
+import { compile, CompileResultSuccess } from "../../../compile";
+import {
+  startSandbox,
+  SANDBOX_INSIDE_PATH_BINARY,
+  SANDBOX_INSIDE_PATH_WORKING,
+  CpuAffinityStrategy
+} from "../../../sandbox";
+import getLanguage from "../../../languages";
+import { serverSideConfig } from "../../../config";
+import { safelyJoinPath, MappedPath, merge } from "../../../utils";
 import {
   readFileOmitted,
   stringToOmited,
   OmittableString,
   prependOmittableString,
   isOmittableString
-} from "@/omittableString";
-import { getFile } from "@/file";
-import { ConfigurationError } from "@/error";
-import { createPipe, createSharedMemory, Disposer } from "@/posixUtils";
-import { parseTestlibMessage } from "@/checkers";
-import * as fsNative from "@/fsNative";
-
-import { JudgeInfoInteraction, TestcaseConfig } from "./judgeInfo";
+} from "../../../omittableString";
+import { getFile } from "../../../file";
+import { ConfigurationError } from "../../../error";
+import { createPipe, createSharedMemory, Disposer } from "../../../posixUtils";
+import { parseTestlibMessage } from "../../../checkers";
+import * as fsNative from "../../../fsNative";
 
 import { runCommonTask, getExtraSourceFiles } from "../common";
 

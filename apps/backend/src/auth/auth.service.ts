@@ -4,17 +4,18 @@ import { InjectRepository, InjectDataSource } from "@nestjs/typeorm";
 import { Repository, DataSource, EntityManager } from "typeorm";
 import * as bcrypt from "bcrypt";
 
-import { UserEntity } from "@/user/user.entity";
-import { UserService } from "@/user/user.service";
-import { UserInformationEntity } from "@/user/user-information.entity";
-import { UserPreferenceEntity } from "@/user/user-preference.entity";
-import { ConfigService } from "@/config/config.service";
-import { delay, DELAY_FOR_SECURITY } from "@/common/delay";
-
 import { UserAuthEntity } from "./user-auth.entity";
+
 import { AuthEmailVerificationCodeService } from "./auth-email-verification-code.service";
 
 import { RegisterResponseError } from "./dto";
+
+import { UserEntity } from "../user/user.entity";
+import { UserService } from "../user/user.service";
+import { UserInformationEntity } from "../user/user-information.entity";
+import { UserPreferenceEntity } from "../user/user-preference.entity";
+import { ConfigService } from "../config/config.service";
+import { delay, DELAY_FOR_SECURITY } from "../common/delay";
 
 @Injectable()
 export class AuthService {

@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Index, ManyToOne, Column, JoinColumn } from "typeorm";
 
-import { UserEntity } from "@/user/user.entity";
-
 import { GroupEntity } from "./group.entity";
+
+import { UserEntity } from "../user/user.entity";
 
 @Entity("group_membership")
 @Index(["userId", "groupId"], { unique: true })

@@ -2,10 +2,10 @@
 
 import toposort from "toposort";
 
-import { ProblemFileEntity } from "@/problem/problem-file.entity";
-import { isValidFilename } from "@/common/validators";
-
 import { restrictProperties } from "./restrict-properties";
+
+import { ProblemFileEntity } from "../../problem/problem-file.entity";
+import { isValidFilename } from "../../common/validators";
 
 interface JudgeInfoWithMetaAndSubtasks {
   timeLimit?: number;

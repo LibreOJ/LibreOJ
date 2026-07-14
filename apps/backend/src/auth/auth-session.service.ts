@@ -6,10 +6,10 @@ import { Injectable } from "@nestjs/common";
 import jwt from "jsonwebtoken";
 import { Redis } from "ioredis";
 
-import { UserEntity } from "@/user/user.entity";
-import { ConfigService } from "@/config/config.service";
-import { UserService } from "@/user/user.service";
-import { RedisService } from "@/redis/redis.service";
+import { UserEntity } from "../user/user.entity";
+import { ConfigService } from "../config/config.service";
+import { UserService } from "../user/user.service";
+import { RedisService } from "../redis/redis.service";
 
 // Refer to scripts/session-manager.lua for session management details
 interface RedisWithSessionManager extends Redis {

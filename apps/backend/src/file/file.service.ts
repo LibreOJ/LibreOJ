@@ -8,12 +8,12 @@ import { Repository, EntityManager, In } from "typeorm";
 import { v4 as UUID } from "uuid";
 import { Client as MinioClient, ClientOptions } from "minio";
 
-import { logger } from "@/logger";
-import { ConfigService } from "@/config/config.service";
-
 import { FileEntity } from "./file.entity";
 
 import { FileUploadInfoDto, SignedFileUploadRequestDto } from "./dto";
+
+import { logger } from "../logger";
+import { ConfigService } from "../config/config.service";
 
 // 10 minutes upload expire time
 const FILE_UPLOAD_EXPIRE_TIME = 10 * 60;

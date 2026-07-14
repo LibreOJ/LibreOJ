@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, Index } from "typeorm";
 
-import { UserAuthEntity } from "@/auth/user-auth.entity";
+import { UserAuthEntity } from "../auth/user-auth.entity";
 
 @Entity("user")
 export class UserEntity {
