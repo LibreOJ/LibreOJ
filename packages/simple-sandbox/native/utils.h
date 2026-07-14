@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cerrno>
+#include <cstdio>
 #include <string>
 #include <vector>
 #include <stdexcept>
@@ -13,6 +15,14 @@
 template <> struct fmt::formatter<std::filesystem::path> : fmt::ostream_formatter {};
 
 #endif
+
+struct FileCloser
+{
+    void operator()(FILE *file) const noexcept
+    {
+        fclose(file);
+    }
+};
 
 std::string SignalToString(int signal);
 

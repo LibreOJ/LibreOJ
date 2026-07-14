@@ -70,7 +70,7 @@ map<string, vector<fs::path>> InitializeCgroup()
         controllers.push_back(string(subsys_name));
     }
 
-    std::unique_ptr<FILE, decltype(fclose) *> proc_mount(CHECKNULL(fopen("/proc/mounts", "re")), fclose);
+    std::unique_ptr<FILE, FileCloser> proc_mount(CHECKNULL(fopen("/proc/mounts", "re")));
     std::unique_ptr<mntent> temp_ent = std::make_unique<mntent>();
     mntent *ent;
     while ((ent = getmntent_r(proc_mount.get(), temp_ent.get(),

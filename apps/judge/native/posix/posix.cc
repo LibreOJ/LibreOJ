@@ -1,3 +1,6 @@
+#include <cerrno>
+#include <system_error>
+
 #include <napi.h>
 #include <unistd.h>
 #include <fcntl.h>

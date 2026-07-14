@@ -138,7 +138,7 @@ static void EnsureDirectoryExistance(fs::path dir) {
 
 void GetUserEntryInSandbox(const fs::path &rootfs, const std::string username, std::vector<char> &dataBuffer, passwd &entry) {
     auto passwdFilePath = rootfs / "etc" / "passwd";
-    std::unique_ptr<FILE, decltype(&fclose)> passwdFile(fopen(passwdFilePath.c_str(), "r"), &fclose);
+    std::unique_ptr<FILE, FileCloser> passwdFile(fopen(passwdFilePath.c_str(), "r"));
     if (passwdFile == nullptr)
         throw std::system_error(errno, std::system_category(), "Couldn't open /etc/passwd in rootfs");
 
@@ -283,6 +283,8 @@ static int ChildProcess(void *param_ptr)
     {
         assert(false);
     }
+
+    return 1;
 }
 
 // The child stack is only used before `execvpe`, so it does not need much space.

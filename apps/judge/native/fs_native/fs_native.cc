@@ -197,15 +197,15 @@ auto Init(Napi::Env env, Napi::Object exports) {
              changeOwner = !(parameterOwner.IsNull() || parameterOwner.IsUndefined()),
              changeGroup = !(parameterGroup.IsNull() || parameterGroup.IsUndefined());
 
-        mode_t mode;
-        uid_t owner;
-        gid_t group;
+        mode_t mode = 0;
+        uid_t owner = -1;
+        gid_t group = -1;
 
         if (changeMode) {
             mode = parameterMode.As<Napi::Number>().Int64Value();
         }
 
-        struct passwd pwd, *pwdResult;
+        struct passwd pwd, *pwdResult = nullptr;
         long bufferSize = sysconf(_SC_GETPW_R_SIZE_MAX);
         if (bufferSize == -1) {
             int err = errno;
@@ -238,16 +238,13 @@ auto Init(Napi::Env env, Napi::Object exports) {
             }
         }
 
-        if (!changeOwner)
-            owner = -1;
-
         if (changeGroup) {
             if (parameterGroup.IsNumber()) {
                 group = parameterGroup.As<Napi::Number>().Int64Value();
             } else if (parameterGroup.IsString()) {
-                std::string name = parameterOwner.As<Napi::String>().Utf8Value();
+                std::string name = parameterGroup.As<Napi::String>().Utf8Value();
 
-                struct group grp, *grpResult;
+                struct group grp, *grpResult = nullptr;
                 long bufferSize = sysconf(_SC_GETGR_R_SIZE_MAX);
                 if (bufferSize == -1) {
                     int err = errno;
@@ -259,7 +256,7 @@ auto Init(Napi::Env env, Napi::Object exports) {
                 char buffer[bufferSize];
 
                 if (getgrnam_r(name.c_str(), &grp, buffer, bufferSize, &grpResult) == 0) {
-                    if (!pwdResult)
+                    if (!grpResult)
                         throw std::invalid_argument("No such group by name: " + name);
                 } else {
                     int err = errno;
@@ -296,9 +293,6 @@ auto Init(Napi::Env env, Napi::Object exports) {
                 throw std::invalid_argument("Invalid type of parameter group");
             }
         }
-
-        if (!changeGroup)
-            group = -1;
 
         return [=] () {
             traverse(path, [=] (const std::string &entryPath) {

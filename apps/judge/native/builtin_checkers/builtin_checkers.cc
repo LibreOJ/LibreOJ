@@ -1,3 +1,10 @@
+#include <cerrno>
+#include <cstdint>
+#include <cstdlib>
+#include <functional>
+#include <string>
+#include <system_error>
+
 #include <testlib.h>
 #include <napi.h>
 #include <signal.h>
