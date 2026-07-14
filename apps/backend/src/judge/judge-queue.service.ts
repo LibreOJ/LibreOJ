@@ -72,7 +72,7 @@ export class JudgeQueueService {
   }
 
   private readonly metricJudgeTaskQueueTime = this.metricsService.histogram(
-    "syzoj_ng_judge_task_queue_time_seconds",
+    "libreoj_judge_task_queue_time_seconds",
     this.metricsService.histogram.BUCKETS_TIME_10M_30,
     ["type", "priority_type"]
   );

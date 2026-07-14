@@ -113,8 +113,7 @@ async function startApp(packageInfo: any, configService: ConfigService, app: Nes
 async function bootstrap() {
   const [packageInfo, configService, app] = await initialize();
 
-  // If the LYRIO_MIGRATION_CONFIG_FILE enviroment variable presents, start migration
-  const migrationConfigFile = process.env.LYRIO_MIGRATION_CONFIG_FILE;
+  const migrationConfigFile = process.env.LIBREOJ_MIGRATION_CONFIG_FILE;
   if (migrationConfigFile)
     // Start migration
     await runMigration(app, migrationConfigFile);

@@ -13,27 +13,28 @@ services:
     type: mariadb
     host: 127.0.0.1
     port: 3306
-    username: lyrio
-    password: lyrio
-    database: lyrio
+    username: libreoj
+    password: libreoj
+    database: libreoj
   minio:
     default:
-      endpoint: http://lyrio-minio.test
-      signEndpoint: null
-    forUser: null
+      endpoint: http://minio.libreoj.test
+      urlEndpoint: null
+    forUserUpload: null
+    forUserDownload: null
     forJudge: null
     accessKey: minioadmin
     secretKey: minioadmin
-    bucket: lyrio-files
+    bucket: libreoj-files
   redis: redis://127.0.0.1:6379
   mail:
-    address: no-reply@lyrio.test
-    transport: smtp://username:password@lyrio-smtp.test:25
+    address: no-reply@libreoj.test
+    transport: smtp://username:password@smtp.libreoj.test:25
 security:
   crossOrigin:
     enabled: true
     whiteList:
-      - http://lyrio-ui.test
+      - http://libreoj.test
   sessionSecret: don't leak this
   maintainceKey: also don't leak this
   recaptcha:
@@ -44,7 +45,7 @@ security:
     maxRequests: 200
     durationSeconds: 10
 preference:
-  siteName: Lyrio
+  siteName: LibreOJ
   security:
     recaptchaEnabled: false
     recaptchaKey: null

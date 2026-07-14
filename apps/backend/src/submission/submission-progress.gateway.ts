@@ -79,15 +79,15 @@ export class SubmissionProgressGateway implements OnGatewayConnection, OnGateway
   }
 
   private readonly metricCurrentClientCount = this.metricsService.gauge(
-    "syzoj_ng_submission_progress_current_client_count"
+    "libreoj_submission_progress_current_client_count"
   );
 
   private readonly metricTotalClientConnected = this.metricsService.gauge(
-    "syzoj_ng_submission_progress_total_client_connected"
+    "libreoj_submission_progress_total_client_connected"
   );
 
   private readonly metricTotalMessageDelivered = this.metricsService.counter(
-    "syzoj_ng_submission_progress_total_message_delivered"
+    "libreoj_submission_progress_total_message_delivered"
   );
 
   // A subscription key is send to the client to let it connect to the WebSocket gateway to subscribe some

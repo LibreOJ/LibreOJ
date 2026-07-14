@@ -1,6 +1,6 @@
-serverUrl: http://lyrio.test/
+serverUrl: http://api.libreoj.test/
 downloadEndpointOverride: null
-key: 40uXJPXzuO2Ha41iuh8Pjw1h0ahvP9i/zJk7Rtn/
+key: YOUR_JUDGE_CLIENT_KEY
 dataStore: /root/judge/data
 binaryCacheStore: /root/judge/cache
 binaryCacheMaxSize: 536870912

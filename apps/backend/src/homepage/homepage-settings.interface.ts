@@ -94,9 +94,9 @@ export class HomepageSettings {
       enabled: true,
       contents: {
         [Locale.en_US]:
-          "## Congratulations 🎉\n\nIf you see this notice, the Lyrio online judge system is successfully installed and working. Further configuration is required.\n\nYou can edit or disable this message in [Homepage Settings](/homepage-settings).\n\n**Thank you for using Lyrio.**",
+          "## Congratulations 🎉\n\nIf you see this notice, the LibreOJ online judge system is successfully installed and working. Further configuration is required.\n\nYou can edit or disable this message in [Homepage Settings](/homepage-settings).\n\n**Thank you for using LibreOJ.**",
         [Locale.zh_CN]:
-          "## 恭喜 🎉\n\n如果您看到该提示，说明 Lyrio 在线评测系统已经成功安装并正在工作。接下来您需要进行配置。\n\n您可以在[首页设置](/homepage-settings)中编辑或禁用该信息。\n\n**感谢您使用 Lyrio。**"
+          "## 恭喜 🎉\n\n如果您看到该提示，说明 LibreOJ 在线评测系统已经成功安装并正在工作。接下来您需要进行配置。\n\n您可以在[首页设置](/homepage-settings)中编辑或禁用该信息。\n\n**感谢您使用 LibreOJ。**"
       }
     },
     annnouncements: {

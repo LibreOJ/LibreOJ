@@ -15,7 +15,7 @@ export class ErrorFilter implements ExceptionFilter {
     private readonly metricsService: MetricsService
   ) {}
 
-  private readonly metricErrorCount = this.metricsService.counter("syzoj_ng_error_count", ["error"]);
+  private readonly metricErrorCount = this.metricsService.counter("libreoj_error_count", ["error"]);
 
   catch(error: Error, host: ArgumentsHost) {
     const contextType = host.getType();

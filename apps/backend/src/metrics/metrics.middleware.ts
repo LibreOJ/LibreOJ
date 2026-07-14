@@ -12,7 +12,7 @@ export class MetricsMiddleware implements NestMiddleware {
   constructor(private readonly metricsSerivce: MetricsService) {}
 
   private readonly metricRequestLatency = this.metricsSerivce.histogram(
-    "syzoj_ng_request_latency_seconds",
+    "libreoj_request_latency_seconds",
     this.metricsSerivce.histogram.BUCKETS_TIME_5S_10,
     ["api"]
   );

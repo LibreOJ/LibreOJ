@@ -1,5 +1,5 @@
 {
-  "rootfsRepo": "lyrio-dev/sandbox-rootfs",
+  "rootfsRepo": "LibreOJ/LibreOJ",
   "githubToken": "YOUR_GITHUB_TOKEN",
   "rootfsDir": "/rootfs",
   "rootfsOldDir": "/rootfs-old",

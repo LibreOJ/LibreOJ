@@ -101,6 +101,7 @@ chmod +x /usr/local/bin/ghc
 # Clean the APT cache
 apt-get clean
 
-# Install testlib
-git clone https://github.com/lyrio-dev/testlib /tmp/testlib
-cp /tmp/testlib/testlib.h /usr/include/
+# Install the same pinned testlib revision used by the judge's built-in checkers.
+curl --fail --silent --show-error --location \
+    https://raw.githubusercontent.com/MikeMirzayanov/testlib/e6cf1e23fdd81a47c2ceb924a547f3919efd6267/testlib.h \
+    --output /usr/include/testlib.h

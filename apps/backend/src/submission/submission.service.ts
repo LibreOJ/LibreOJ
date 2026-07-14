@@ -144,7 +144,7 @@ export class SubmissionService implements JudgeTaskService<SubmissionProgress, S
   }
 
   private readonly metricSubmissionJudgeTime = this.metricsService.histogram(
-    "syzoj_ng_submission_judge_time_seconds",
+    "libreoj_submission_judge_time_seconds",
     this.metricsService.histogram.BUCKETS_TIME_10M_30
   );
 
