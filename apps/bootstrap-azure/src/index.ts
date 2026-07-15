@@ -33,17 +33,16 @@ const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest) =>
   const clientIp = getClientIp(xForwardedForList);
   const clientIpRegion = geoip.lookup(clientIp)?.country;
 
-  const response = handleRequest(
-    new Request(req.url, {
-      headers: headers,
-      method: req.method,
-      body: req.body
-    }),
-    {
-      ip: clientIp,
-      ipRegion: clientIpRegion
-    }
-  );
+  const requestInit: RequestInit = {
+    headers,
+    method: req.method
+  };
+  if (req.method !== "GET" && req.method !== "HEAD") requestInit.body = req.body;
+
+  const response = handleRequest(new Request(req.url, requestInit), {
+    ip: clientIp,
+    ipRegion: clientIpRegion
+  });
 
   const responseHeaders: Record<string, string> = {};
   response.headers.forEach((value, key) => {
