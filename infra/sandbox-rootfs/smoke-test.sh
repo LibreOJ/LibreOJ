@@ -8,6 +8,7 @@ if [[ "$MODE" != build && "$MODE" != stage ]]; then
     exit 1
 fi
 
+SCRIPT_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKING_DIRECTORY="$(mktemp -d)"
 trap 'rm -rf "$WORKING_DIRECTORY"' EXIT
 cd "$WORKING_DIRECTORY"
@@ -109,7 +110,7 @@ EOF
 javac Main.java
 expect_output OK java Main
 mkdir judge-java
-class_name="$(bash /usr/local/libexec/compile-java.sh "$WORKING_DIRECTORY/Main.java" "$WORKING_DIRECTORY/judge-java" 2>judge-java/message.txt)"
+class_name="$(bash "$SCRIPT_DIRECTORY/compile-java.sh" "$WORKING_DIRECTORY/Main.java" "$WORKING_DIRECTORY/judge-java" 2>judge-java/message.txt)"
 expect_output OK java -classpath judge-java "$class_name"
 
 cat > Main.kt <<'EOF'
@@ -141,7 +142,7 @@ for python in python2.7 python3.9 python3.10; do
     mkdir "judge-$python"
     mkdir "source-$python"
     cp main.py "source-$python/"
-    bash /usr/local/libexec/compile-python.sh "$python" "$WORKING_DIRECTORY/source-$python" "$WORKING_DIRECTORY/judge-$python"
+    bash "$SCRIPT_DIRECTORY/compile-python.sh" "$python" "$WORKING_DIRECTORY/source-$python" "$WORKING_DIRECTORY/judge-$python"
     expect_output OK "$python" "judge-$python/main.py"
 done
 

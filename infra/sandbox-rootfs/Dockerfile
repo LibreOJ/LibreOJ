@@ -105,17 +105,17 @@ ARG ROOTFS_ID
 
 RUN [[ "$ROOTFS_ID" =~ ^[0-9a-f]{64}$ ]] \
     && useradd --system --uid 999 --home-dir /sandbox --create-home --shell /usr/sbin/nologin sandbox \
-    && mkdir -p /sandbox/binary /sandbox/source /sandbox/working /proc /usr/local/libexec \
+    && mkdir -p /sandbox/binary /sandbox/source /sandbox/working /proc \
     && chmod 0755 /sandbox /sandbox/binary /sandbox/source /sandbox/working \
     && chmod 1777 /tmp \
     && printf '%s\n' "$ROOTFS_ID" > /etc/libreoj-rootfs-id \
     && chmod 0755 /usr/local/bin/csc /usr/local/bin/fsharpc /usr/local/bin/mono \
     && rm -rf /tmp/* /root/.cache
 
-RUN --mount=type=bind,source=infra/sandbox-rootfs/smoke-test.sh,target=/usr/local/libexec/libreoj-rootfs-smoke-test,readonly \
-    --mount=type=bind,source=apps/judge/src/languages/compile-java.sh,target=/usr/local/libexec/compile-java.sh,readonly \
-    --mount=type=bind,source=apps/judge/src/languages/compile-python.sh,target=/usr/local/libexec/compile-python.sh,readonly \
-    /bin/bash /usr/local/libexec/libreoj-rootfs-smoke-test build \
+RUN --mount=type=bind,source=infra/sandbox-rootfs/smoke-test.sh,target=/run/libreoj-rootfs-validation/libreoj-rootfs-smoke-test,readonly \
+    --mount=type=bind,source=apps/judge/src/languages/compile-java.sh,target=/run/libreoj-rootfs-validation/compile-java.sh,readonly \
+    --mount=type=bind,source=apps/judge/src/languages/compile-python.sh,target=/run/libreoj-rootfs-validation/compile-python.sh,readonly \
+    /bin/bash /run/libreoj-rootfs-validation/libreoj-rootfs-smoke-test build \
     && rm -rf /tmp/* /root/.cache
 
 FROM build AS devices

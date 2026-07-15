@@ -78,7 +78,7 @@ if [[ "$(<"$TEMPORARY_DIRECTORY/etc/libreoj-rootfs-id")" != "$ROOTFS_ID" ]]; the
     echo "Embedded rootfs ID does not match $ARCHIVE_BASENAME" >&2
     exit 1
 fi
-for directory in proc dev usr/local/libexec; do
+for directory in proc dev run; do
     if [[ ! -d "$TEMPORARY_DIRECTORY/$directory" ]]; then
         echo "Missing directory in rootfs: /$directory" >&2
         exit 1
@@ -118,28 +118,32 @@ for link in "${!DEVICE_LINKS[@]}"; do
 done
 
 REPOSITORY_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+VALIDATION_DIRECTORY=/run/libreoj-rootfs-validation
+VALIDATION_DIRECTORY_OUTSIDE="$TEMPORARY_DIRECTORY$VALIDATION_DIRECTORY"
+mkdir "$VALIDATION_DIRECTORY_OUTSIDE"
 declare -A VALIDATION_FILES=(
     [libreoj-rootfs-smoke-test]="$REPOSITORY_ROOT/infra/sandbox-rootfs/smoke-test.sh"
     [compile-java.sh]="$REPOSITORY_ROOT/apps/judge/src/languages/compile-java.sh"
     [compile-python.sh]="$REPOSITORY_ROOT/apps/judge/src/languages/compile-python.sh"
 )
 for filename in "${!VALIDATION_FILES[@]}"; do
-    target="$TEMPORARY_DIRECTORY/usr/local/libexec/$filename"
+    target="$VALIDATION_DIRECTORY_OUTSIDE/$filename"
     touch "$target"
     mount --bind "${VALIDATION_FILES[$filename]}" "$target"
     mount -o remount,bind,ro "$target"
     mounted+=("$target")
 done
 
-chroot "$TEMPORARY_DIRECTORY" /bin/bash /usr/local/libexec/libreoj-rootfs-smoke-test stage
+chroot "$TEMPORARY_DIRECTORY" /bin/bash "$VALIDATION_DIRECTORY/libreoj-rootfs-smoke-test" stage
 
 if ! unmount_all; then
     echo "Unable to unmount validation filesystems under $TEMPORARY_DIRECTORY" >&2
     exit 1
 fi
 for filename in "${!VALIDATION_FILES[@]}"; do
-    rm "$TEMPORARY_DIRECTORY/usr/local/libexec/$filename"
+    rm "$VALIDATION_DIRECTORY_OUTSIDE/$filename"
 done
+rmdir "$VALIDATION_DIRECTORY_OUTSIDE"
 
 if [[ "$(stat -c %u "$TEMPORARY_DIRECTORY")" -ne 0 ]] ||
    [[ "$(stat -c %g "$TEMPORARY_DIRECTORY")" -ne 0 ]]; then

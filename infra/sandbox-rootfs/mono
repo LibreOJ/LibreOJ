@@ -1,5 +1,5 @@
 #!/bin/bash
 
-export MONO_PATH="/usr/lib/dotnet/sdk/10.0.109/FSharp${MONO_PATH:+:$MONO_PATH}"
+export MONO_PATH="/usr/lib/dotnet/sdk/10.0.109/FSharp"
 
 exec /usr/bin/mono "$@"
