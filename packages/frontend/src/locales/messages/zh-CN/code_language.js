@@ -171,7 +171,7 @@ return {
     name: "Rust",
     options: {
       version: {
-        name: "Edition",
+        name: "语言版本",
         values: {
           2015: "2015",
           2018: "2018",
