@@ -58,7 +58,22 @@ export const compileAndRunOptions: Record<CodeLanguage, CodeLanguageOption[]> = 
     {
       name: "std",
       type: CodeLanguageOptionType.Select,
-      values: ["c++03", "c++11", "c++14", "c++17", "c++20", "gnu++03", "gnu++11", "gnu++14", "gnu++17", "gnu++20"],
+      values: [
+        "c++03",
+        "c++11",
+        "c++14",
+        "c++17",
+        "c++20",
+        "c++23",
+        "c++26",
+        "gnu++03",
+        "gnu++11",
+        "gnu++14",
+        "gnu++17",
+        "gnu++20",
+        "gnu++23",
+        "gnu++26"
+      ],
       defaultValue: "c++11"
     },
     {
@@ -84,7 +99,7 @@ export const compileAndRunOptions: Record<CodeLanguage, CodeLanguageOption[]> = 
     {
       name: "std",
       type: CodeLanguageOptionType.Select,
-      values: ["c89", "c99", "c11", "c17", "gnu89", "gnu99", "gnu11", "gnu17"],
+      values: ["c89", "c99", "c11", "c17", "c23", "gnu89", "gnu99", "gnu11", "gnu17", "gnu23"],
       defaultValue: "c11"
     },
     {
@@ -106,7 +121,7 @@ export const compileAndRunOptions: Record<CodeLanguage, CodeLanguageOption[]> = 
       name: "version",
       type: CodeLanguageOptionType.Select,
       values: ["1.5", "1.6", "1.7", "1.8", "1.9"],
-      defaultValue: "1.8"
+      defaultValue: "1.9"
     },
     {
       name: "platform",
@@ -135,8 +150,8 @@ export const compileAndRunOptions: Record<CodeLanguage, CodeLanguageOption[]> = 
     {
       name: "version",
       type: CodeLanguageOptionType.Select,
-      values: ["2015", "2018", "2021"],
-      defaultValue: "2021"
+      values: ["2015", "2018", "2021", "2024"],
+      defaultValue: "2024"
     },
     {
       name: "optimize",
@@ -150,7 +165,7 @@ export const compileAndRunOptions: Record<CodeLanguage, CodeLanguageOption[]> = 
       name: "version",
       type: CodeLanguageOptionType.Select,
       values: ["4.2", "5", "6"],
-      defaultValue: "5"
+      defaultValue: "6"
     },
     {
       name: "optimize",
@@ -171,16 +186,16 @@ export const compileAndRunOptions: Record<CodeLanguage, CodeLanguageOption[]> = 
     {
       name: "version",
       type: CodeLanguageOptionType.Select,
-      values: ["98", "2010"],
-      defaultValue: "2010"
+      values: ["98", "2010", "GHC2021"],
+      defaultValue: "GHC2021"
     }
   ],
   [CodeLanguage.CSharp]: [
     {
       name: "version",
       type: CodeLanguageOptionType.Select,
-      values: ["7.3", "8", "9"],
-      defaultValue: "9"
+      values: ["7.3", "8", "9", "10", "11", "12", "13", "14"],
+      defaultValue: "14"
     }
   ],
   [CodeLanguage.FSharp]: []

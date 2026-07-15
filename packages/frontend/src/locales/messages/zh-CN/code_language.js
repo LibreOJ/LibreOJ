@@ -18,11 +18,15 @@ return {
           "c++14": "ISO C++ 14",
           "c++17": "ISO C++ 17",
           "c++20": "ISO C++ 20",
+          "c++23": "ISO C++ 23",
+          "c++26": "ISO C++ 26",
           "gnu++03": "GNU C++ 03",
           "gnu++11": "GNU C++ 11",
           "gnu++14": "GNU C++ 14",
           "gnu++17": "GNU C++ 17",
-          "gnu++20": "GNU C++ 20"
+          "gnu++20": "GNU C++ 20",
+          "gnu++23": "GNU C++ 23",
+          "gnu++26": "GNU C++ 26"
         }
       },
       O: {
@@ -62,10 +66,12 @@ return {
           c99: "ISO C99",
           c11: "ISO C11",
           c17: "ISO C17",
+          c23: "ISO C23",
           gnu89: "GNU C89",
           gnu99: "GNU C99",
           gnu11: "GNU C11",
-          gnu17: "GNU C17"
+          gnu17: "GNU C17",
+          gnu23: "GNU C23"
         }
       },
       O: {
@@ -95,7 +101,7 @@ return {
     name: "Kotlin",
     options: {
       version: {
-        name: "版本",
+        name: "语言版本",
         values: {
           1.5: "1.5",
           1.6: "1.6",
@@ -144,7 +150,7 @@ return {
     name: "Swift",
     options: {
       version: {
-        name: "版本",
+        name: "语言版本",
         values: {
           4.2: "4.2",
           5: "5",
@@ -165,11 +171,12 @@ return {
     name: "Rust",
     options: {
       version: {
-        name: "版本",
+        name: "Edition",
         values: {
           2015: "2015",
           2018: "2018",
-          2021: "2021"
+          2021: "2021",
+          2024: "2024"
         }
       },
       optimize: {
@@ -198,10 +205,11 @@ return {
     name: "Haskell",
     options: {
       version: {
-        name: "版本",
+        name: "语言版本",
         values: {
           98: "Haskell 98",
-          2010: "Haskell 2010"
+          2010: "Haskell 2010",
+          GHC2021: "GHC2021"
         }
       }
     }
@@ -210,11 +218,16 @@ return {
     name: "C#",
     options: {
       version: {
-        name: "版本",
+        name: "语言版本",
         values: {
           7.3: "7.3",
           8: "8",
-          9: "9"
+          9: "9",
+          10: "10",
+          11: "11",
+          12: "12",
+          13: "13",
+          14: "14"
         }
       }
     }

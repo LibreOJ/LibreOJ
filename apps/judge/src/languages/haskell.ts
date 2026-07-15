@@ -18,7 +18,7 @@ export const languageConfig: LanguageConfig<CompileAndRunOptionsHaskell> = {
       binaryDirectoryInside,
       "-o",
       `${binaryDirectoryInside}/a.out`,
-      `-XHaskell${compileAndRunOptions.version}`,
+      `-X${compileAndRunOptions.version === "GHC2021" ? "GHC2021" : `Haskell${compileAndRunOptions.version}`}`,
       `-O2`,
       "-dynamic",
       "-fdiagnostics-color=always",
