@@ -10,7 +10,7 @@ await esbuild.build({
   logLevel: "info",
   plugins: [
     nodeExternalsPlugin({
-      allowList: [/^@libreoj\/bootstrap-/]
+      allowList: ["@libreoj/bootstrap-core"]
     }),
     inlineImportPlugin()
   ]
