@@ -5,6 +5,7 @@
 #include <exception>
 #include <cstring>
 #include <filesystem>
+#include <stdexcept>
 
 #include <napi.h>
 #include <fmt/format.h>
@@ -19,76 +20,6 @@ std::string GetStringWithEmptyCheck(Napi::Value value) {
     return value.IsString() ? value.ToString().Utf8Value() : "";
 }
 
-Napi::Value NodeGetCgroupProperty2(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-
-    string controllerName = GetStringWithEmptyCheck(info[0]);
-    string cgroupName = GetStringWithEmptyCheck(info[1]);
-    string propertyName = GetStringWithEmptyCheck(info[2]);
-    string subPropertyName = GetStringWithEmptyCheck(info[3]);
-    try
-    {
-        CgroupInfo cginfo(controllerName, cgroupName);
-        // v8 doesn't support 64-bit integer, so let's use string.
-        return Napi::String::New(env, std::to_string(ReadGroupPropertyMap(cginfo, propertyName)[subPropertyName]));
-    }
-    catch (std::exception &ex)
-    {
-        Napi::Error::New(env, ex.what()).ThrowAsJavaScriptException();
-    }
-    catch (...)
-    {
-        Napi::Error::New(env, "Something unexpected happened while getting cgroup property.").ThrowAsJavaScriptException();
-    }
-    return Napi::Value();
-}
-
-Napi::Value NodeGetCgroupProperty(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-
-    string controllerName = GetStringWithEmptyCheck(info[0]);
-    string cgroupName = GetStringWithEmptyCheck(info[1]);
-    string propertyName = GetStringWithEmptyCheck(info[2]);
-    try
-    {
-        CgroupInfo cginfo(controllerName, cgroupName);
-        // v8 doesn't support 64-bit integer, so let's use string.
-        return Napi::String::New(env, std::to_string(ReadGroupProperty(cginfo, propertyName)));
-    }
-    catch (std::exception &ex)
-    {
-        Napi::Error::New(env, ex.what()).ThrowAsJavaScriptException();
-    }
-    catch (...)
-    {
-        Napi::Error::New(env, "Something unexpected happened while getting cgroup property.").ThrowAsJavaScriptException();
-    }
-    return Napi::Value();
-}
-
-void NodeRemoveCgroup(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-
-    string controllerName = GetStringWithEmptyCheck(info[0]);
-    string cgroupName = GetStringWithEmptyCheck(info[1]);
-    try
-    {
-        CgroupInfo cginfo(controllerName, cgroupName);
-        RemoveCgroup(cginfo);
-    }
-    catch (std::exception &ex)
-    {
-        Napi::Error::New(env, ex.what()).ThrowAsJavaScriptException();
-    }
-    catch (...)
-    {
-        Napi::Error::New(env, "Something unexpected happened while removing cgroup.").ThrowAsJavaScriptException();
-    }
-}
-
 std::vector<string> StringArrayToVector(const Napi::Array &array) {
     std::vector<string> result(array.Length());
     for (size_t i = 0; i < array.Length(); i++) result[i] = GetStringWithEmptyCheck(array[i]);
@@ -101,6 +32,21 @@ std::vector<int> IntArrayToVector(const Napi::Array &array) {
     return result;
 }
 
+SandboxExecutionHandle GetExecution(const Napi::Value &value)
+{
+    if (!value.IsExternal())
+        throw std::invalid_argument("Invalid sandbox execution handle");
+    const auto holder = value.As<Napi::External<SandboxExecutionHandle>>().Data();
+    if (holder == nullptr || !*holder)
+        throw std::invalid_argument("Expired sandbox execution handle");
+    return *holder;
+}
+
+int64_t GetEffectiveMemoryLimit(int64_t requested)
+{
+    return requested < 0 ? -1 : requested / 4 * 5;
+}
+
 Napi::Value NodeStartSandbox(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -109,7 +55,7 @@ Napi::Value NodeStartSandbox(const Napi::CallbackInfo &info)
     Napi::Object jsparam = info[0].As<Napi::Object>();
 
     // param.timeLimit = jsparam.Get("time").ToNumber().Int32Value();
-    param.memoryLimit = jsparam.Get("memory").ToNumber().Int64Value() / 4 * 5; // Reserve some space to detect memory limit exceeding.
+    param.memoryLimit = GetEffectiveMemoryLimit(jsparam.Get("memory").ToNumber().Int64Value());
     param.processLimit = jsparam.Get("process").ToNumber().Int32Value();
     param.redirectBeforeChroot = jsparam.Get("redirectBeforeChroot").ToBoolean().Value();
     param.mountProc = jsparam.Get("mountProc").ToBoolean().Value();
@@ -141,7 +87,6 @@ Napi::Value NodeStartSandbox(const Napi::CallbackInfo &info)
     auto user = jsparam.Get("user").ToObject();
     param.uid = user.Get("uid").ToNumber().Uint32Value();
     param.gid = user.Get("gid").ToNumber().Uint32Value();
-    param.cgroupName = GetStringWithEmptyCheck(jsparam.Get("cgroup"));
 
     param.stackSize = jsparam.Get("stackSize").ToNumber().Int64Value();
     if (param.stackSize <= 0) {
@@ -163,13 +108,13 @@ Napi::Value NodeStartSandbox(const Napi::CallbackInfo &info)
 
     try
     {
-        pid_t pid;
-        void *execParam = StartSandbox(param, pid);
+        auto holder = new SandboxExecutionHandle(StartSandbox(param));
         Napi::Object result = Napi::Object::New(env);
-        result.Set("pid", Napi::Number::New(env, pid));
-        Napi::ArrayBuffer pointerToExecParam = Napi::ArrayBuffer::New(env, sizeof(execParam));
-        *reinterpret_cast<void **>(pointerToExecParam.Data()) = execParam;
-        result.Set("execParam", pointerToExecParam);
+        result.Set("pid", Napi::Number::New(env, GetSandboxPid(*holder)));
+        result.Set(
+            "execution",
+            Napi::External<SandboxExecutionHandle>::New(
+                env, holder, [](Napi::Env, SandboxExecutionHandle *value) { delete value; }));
         return result;
     }
     catch (std::exception &ex)
@@ -186,19 +131,18 @@ Napi::Value NodeStartSandbox(const Napi::CallbackInfo &info)
 class WaitForProcessWorker : public Napi::AsyncWorker
 {
 private:
-    pid_t pid;
-    void *executionParameter;
+    SandboxExecutionHandle execution;
     ExecutionResult result;
 
 public:
-    WaitForProcessWorker(Napi::Function &callback, pid_t pid, void *executionParameter)
-        : Napi::AsyncWorker(callback), pid(pid), executionParameter(executionParameter) {}
+    WaitForProcessWorker(Napi::Function &callback, SandboxExecutionHandle execution)
+        : Napi::AsyncWorker(callback), execution(execution) {}
 
     void Execute()
     {
         try
         {
-            result = WaitForProcess(pid, executionParameter);
+            result = WaitForProcess(execution);
         }
         catch (std::exception &ex)
         {
@@ -228,12 +172,74 @@ void NodeWaitForProcess(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
 
-    pid_t pid = info[0].ToNumber().Int32Value();
-    void *executionParameter = *reinterpret_cast<void **>(info[1].As<Napi::ArrayBuffer>().Data());
-    Napi::Function callback = info[2].As<Napi::Function>();
+    SandboxExecutionHandle execution = GetExecution(info[0]);
+    Napi::Function callback = info[1].As<Napi::Function>();
 
-    WaitForProcessWorker *waitForProcessWorker = new WaitForProcessWorker(callback, pid, executionParameter);
+    WaitForProcessWorker *waitForProcessWorker = new WaitForProcessWorker(callback, execution);
     waitForProcessWorker->Queue();
+}
+
+Napi::Object EncodeStats(Napi::Env env, const CgroupStats &stats)
+{
+    auto result = Napi::Object::New(env);
+    result.Set("cpuTimeNanoseconds", std::to_string(stats.cpuTimeNanoseconds));
+    result.Set("memoryPeakBytes", std::to_string(stats.memoryPeakBytes));
+    result.Set("oomKillCount", std::to_string(stats.oomKillCount));
+    return result;
+}
+
+Napi::Value NodeReadSandboxStats(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    try
+    {
+        return EncodeStats(env, ReadSandboxStats(GetExecution(info[0])));
+    }
+    catch (std::exception &ex)
+    {
+        Napi::Error::New(env, ex.what()).ThrowAsJavaScriptException();
+    }
+    return Napi::Value();
+}
+
+Napi::Value NodeFinalizeSandboxCgroup(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    try
+    {
+        return EncodeStats(env, FinalizeSandboxCgroup(GetExecution(info[0])));
+    }
+    catch (std::exception &ex)
+    {
+        Napi::Error::New(env, ex.what()).ThrowAsJavaScriptException();
+    }
+    return Napi::Value();
+}
+
+void NodeKillSandbox(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    try
+    {
+        KillSandbox(GetExecution(info[0]));
+    }
+    catch (std::exception &ex)
+    {
+        Napi::Error::New(env, ex.what()).ThrowAsJavaScriptException();
+    }
+}
+
+void NodeRemoveSandboxCgroup(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    try
+    {
+        RemoveSandboxCgroup(GetExecution(info[0]));
+    }
+    catch (std::exception &ex)
+    {
+        Napi::Error::New(env, ex.what()).ThrowAsJavaScriptException();
+    }
 }
 
 Napi::Value NodeGetUidAndGidInSandbox(const Napi::CallbackInfo &info)
@@ -259,12 +265,21 @@ Napi::Value NodeGetUidAndGidInSandbox(const Napi::CallbackInfo &info)
 }
 
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
-    exports.Set("getCgroupProperty", Napi::Function::New(env, NodeGetCgroupProperty));
-    exports.Set("getCgroupProperty2", Napi::Function::New(env, NodeGetCgroupProperty2));
-    exports.Set("removeCgroup", Napi::Function::New(env, NodeRemoveCgroup));
-    exports.Set("getUidAndGidInSandbox", Napi::Function::New(env, NodeGetUidAndGidInSandbox));
-    exports.Set("startSandbox", Napi::Function::New(env, NodeStartSandbox));
-    exports.Set("waitForProcess", Napi::Function::New(env, NodeWaitForProcess));
+    try
+    {
+        InitializeCgroup();
+        exports.Set("readSandboxStats", Napi::Function::New(env, NodeReadSandboxStats));
+        exports.Set("finalizeSandboxCgroup", Napi::Function::New(env, NodeFinalizeSandboxCgroup));
+        exports.Set("killSandbox", Napi::Function::New(env, NodeKillSandbox));
+        exports.Set("removeSandboxCgroup", Napi::Function::New(env, NodeRemoveSandboxCgroup));
+        exports.Set("getUidAndGidInSandbox", Napi::Function::New(env, NodeGetUidAndGidInSandbox));
+        exports.Set("startSandbox", Napi::Function::New(env, NodeStartSandbox));
+        exports.Set("waitForProcess", Napi::Function::New(env, NodeWaitForProcess));
+    }
+    catch (std::exception &ex)
+    {
+        Napi::Error::New(env, ex.what()).ThrowAsJavaScriptException();
+    }
     return exports;
 }
 

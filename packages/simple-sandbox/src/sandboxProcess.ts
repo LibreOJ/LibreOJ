@@ -17,7 +17,7 @@ export class SandboxProcess {
     constructor(
         public readonly parameter: SandboxParameter,
         public readonly pid: number,
-        execParam: ArrayBuffer
+        private readonly execution: any
     ) {
         const myFather = this;
         // Stop the sandboxed process on Node.js exit.
@@ -34,7 +34,7 @@ export class SandboxProcess {
                 let current = new Date().getTime();
                 const spent = current - lastCheck;
                 lastCheck = current;
-                const val: number = Number(sandboxAddon.getCgroupProperty("cpuacct", myFather.parameter.cgroup, "cpuacct.usage"));
+                const val = Number(sandboxAddon.readSandboxStats(myFather.execution).cpuTimeNanoseconds);
                 myFather.countedCpuTime += Math.max(
                     val - myFather.actualCpuTime,  // The real time, or if less than 40%,
                     utils.milliToNano(spent) * 0.4 // 40% of actually elapsed time
@@ -51,65 +51,73 @@ export class SandboxProcess {
         }
 
         this.waitPromise = new Promise((res, rej) => {
-            sandboxAddon.waitForProcess(pid, execParam, (err, runResult) => {
+            sandboxAddon.waitForProcess(execution, (err, runResult) => {
                 if (err) {
                     try {
                         myFather.stop();
-                        myFather.cleanup();
+                        myFather.cleanup(true);
                     } catch (e) {
                         console.log("Error cleaning up error sandbox:", e);
                     }
-                    rej(err);    
+                    rej(err);
                 } else {
                     try {
-                        const memUsageWithCache: number = Number(sandboxAddon.getCgroupProperty("memory", myFather.parameter.cgroup, "memory.memsw.max_usage_in_bytes"));
-                        const cache: number = Number(sandboxAddon.getCgroupProperty2("memory", myFather.parameter.cgroup, "memory.stat", "cache"));
-                        const memUsage = memUsageWithCache - cache;
-    
-                        myFather.actualCpuTime = Number(sandboxAddon.getCgroupProperty("cpuacct", myFather.parameter.cgroup, "cpuacct.usage"));
-                        myFather.cleanup();
-    
+                        const stats = myFather.parseStats(sandboxAddon.finalizeSandboxCgroup(myFather.execution));
+                        myFather.cleanup(false);
+                        myFather.actualCpuTime = stats.cpuTime;
+
                         const result: SandboxResult = {
                             status: SandboxStatus.Unknown,
                             time: myFather.actualCpuTime,
-                            memory: memUsage,
+                            memory: stats.memoryPeak,
                             code: runResult.code
                         };
-    
-                        if (myFather.timeout || myFather.actualCpuTime > utils.milliToNano(myFather.parameter.time)) {
+
+                        if (
+                            myFather.timeout ||
+                            (myFather.parameter.time !== -1 &&
+                                myFather.actualCpuTime > utils.milliToNano(myFather.parameter.time))
+                        ) {
                             result.status = SandboxStatus.TimeLimitExceeded;
                         } else if (myFather.cancelled) {
                             result.status = SandboxStatus.Cancelled;
-                        } else if (myFather.parameter.memory != -1 && memUsage > myFather.parameter.memory) {
+                        } else if (
+                            stats.oomKills > 0 ||
+                            (myFather.parameter.memory != -1 && stats.memoryPeak > myFather.parameter.memory)
+                        ) {
                             result.status = SandboxStatus.MemoryLimitExceeded;
                         } else if (runResult.status === 'signaled') {
                             result.status = SandboxStatus.RuntimeError;
                         } else if (runResult.status === 'exited') {
                             result.status = SandboxStatus.OK;
                         }
-    
+
                         res(result);
                     } catch (e) {
                         rej(e);
-                    }    
+                    }
                 }
             })
         });
     }
 
-    private removeCgroup(): void {
-        sandboxAddon.removeCgroup("memory", this.parameter.cgroup);
-        sandboxAddon.removeCgroup("cpuacct", this.parameter.cgroup);
-        sandboxAddon.removeCgroup("pids", this.parameter.cgroup);
+    private parseStats(stats: any): { cpuTime: number; memoryPeak: number; oomKills: number } {
+        return {
+            cpuTime: Number(stats.cpuTimeNanoseconds),
+            memoryPeak: Number(stats.memoryPeakBytes),
+            oomKills: Number(stats.oomKillCount)
+        };
     }
 
-    private cleanup(): void {
+    private cleanup(removeCgroup: boolean): void {
         if (this.running) {
             if (this.cancellationToken) {
                 clearInterval(this.cancellationToken);
             }
             process.removeListener('exit', this.stopCallback);
-            this.removeCgroup();
+            if (removeCgroup) {
+                sandboxAddon.removeSandboxCgroup(this.execution);
+            }
             this.running = false;
         }
     }
@@ -117,7 +125,7 @@ export class SandboxProcess {
     stop(): void {
         this.cancelled = true;
         try {
-            process.kill(this.pid, "SIGKILL");
+            sandboxAddon.killSandbox(this.execution);
         } catch (err) {}
     }
 

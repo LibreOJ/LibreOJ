@@ -3,8 +3,11 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+#include <memory>
 #include <unistd.h>
 #include <pwd.h>
+
+#include "cgroup.h"
 
 enum RunStatus {
     EXITED = 0, // App exited normally.
@@ -32,7 +35,7 @@ struct MountInfo
 
 struct SandboxParameter
 {
-    // Time limit is done by querying cpuacct cgroup every 100ms. This is done in the js code.
+    // Time limit is enforced by querying cgroup v2 CPU accounting in the JS code.
 
     int64_t stackSize;
     // Memory limit in bytes.
@@ -88,9 +91,6 @@ struct SandboxParameter
     uid_t uid;
     gid_t gid;
 
-    // The cgroup name of the sandbox. Must be unique.
-    std::string cgroupName;
-
     // The hostname inside the sandbox, by default equals to the hostname outside.
     std::string hostname;
 
@@ -98,8 +98,15 @@ struct SandboxParameter
     std::vector<int> cpuAffinity;
 };
 
+class SandboxExecution;
+using SandboxExecutionHandle = std::shared_ptr<SandboxExecution>;
+
 void GetUserEntryInSandbox(const std::filesystem::path &rootfs, const std::string username, std::vector<char> &dataBuffer, passwd &entry);
 
-void *StartSandbox(const SandboxParameter &, pid_t &);
-
-ExecutionResult WaitForProcess(pid_t pid, void *executionParameter);
+SandboxExecutionHandle StartSandbox(const SandboxParameter &parameter);
+pid_t GetSandboxPid(const SandboxExecutionHandle &execution);
+ExecutionResult WaitForProcess(const SandboxExecutionHandle &execution);
+CgroupStats ReadSandboxStats(const SandboxExecutionHandle &execution);
+CgroupStats FinalizeSandboxCgroup(const SandboxExecutionHandle &execution);
+void KillSandbox(const SandboxExecutionHandle &execution);
+void RemoveSandboxCgroup(const SandboxExecutionHandle &execution);

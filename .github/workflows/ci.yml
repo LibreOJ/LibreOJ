@@ -74,8 +74,10 @@ jobs:
             apps/judge/package.json \
             apps/judge/vendor/testlib \
             packages/simple-sandbox/CMakeLists.txt \
+            packages/simple-sandbox/demo \
             packages/simple-sandbox/native \
-            packages/simple-sandbox/package.json; then
+            packages/simple-sandbox/package.json \
+            packages/simple-sandbox/src; then
             echo "native=false" >> "$GITHUB_OUTPUT"
           else
             echo "native=true" >> "$GITHUB_OUTPUT"
@@ -93,4 +95,17 @@ jobs:
       - if: steps.changes.outputs.native == 'true'
         run: pnpm install --frozen-lockfile
       - if: steps.changes.outputs.native == 'true'
+        run: pnpm --filter simple-sandbox build
+      - if: steps.changes.outputs.native == 'true'
         run: pnpm build:native
+      - if: steps.changes.outputs.native == 'true'
+        run: |
+          sudo systemd-run \
+            --wait \
+            --pipe \
+            --collect \
+            --property="Delegate=cpu memory pids" \
+            --property=DelegateSubgroup=supervisor \
+            --property=OOMPolicy=continue \
+            --working-directory="$GITHUB_WORKSPACE" \
+            "$(command -v node)" packages/simple-sandbox/demo/demo.js

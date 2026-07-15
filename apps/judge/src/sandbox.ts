@@ -195,7 +195,6 @@ export async function startSandbox(taskId: string, sandboxConfig: SandboxConfig)
     stdout: typeof sandboxConfig.stdout === "object" ? (sandboxConfig.stdout || {}).fd : sandboxConfig.stdout,
     stderr: typeof sandboxConfig.stderr === "object" ? (sandboxConfig.stderr || {}).fd : sandboxConfig.stderr,
     user: sandboxUser,
-    cgroup: "",
     parameters: [...parametersPrepend, ...(sandboxConfig.parameters || []).filter(x => x != null)],
     environments: Object.entries(environments).map(([key, value]) => `${key}=${value}`),
     workingDirectory: sandboxConfig.workingDirectory,

@@ -1,31 +1,39 @@
 #pragma once
-// This is a simple version of libcgroup.
-// The libcgroup itself is complicated and not very well documented, so here I implement a new one.
-// This one only fits the sandbox and does not have a general-purpose design.
 
-#include <string>
-#include <list>
-#include <map>
+#include <cstdint>
+#include <filesystem>
 
-struct CgroupInfo
+#include <sys/types.h>
+
+struct CgroupStats
 {
-    std::string Controller;
-    std::string Group;
-    CgroupInfo(const std::string &controller, const std::string &group); // : Controller(controller), Group(group)
+    uint64_t cpuTimeNanoseconds;
+    uint64_t memoryPeakBytes;
+    uint64_t oomKillCount;
 };
 
-// Look for controllers and their mount paths.
-std::map<std::string, std::vector<std::filesystem::path>> InitializeCgroup();
+class Cgroup
+{
+public:
+    Cgroup(int64_t memoryLimit, int64_t processLimit);
+    ~Cgroup();
 
-void CreateGroup(const CgroupInfo &info);
+    Cgroup(const Cgroup &) = delete;
+    Cgroup &operator=(const Cgroup &) = delete;
+    Cgroup(Cgroup &&) = delete;
+    Cgroup &operator=(Cgroup &&) = delete;
 
-int64_t ReadGroupProperty(const CgroupInfo &info, const std::string &property);
-std::list<int64_t> ReadGroupPropertyArray(const CgroupInfo &info, const std::string &property);
-std::map<std::string, int64_t> ReadGroupPropertyMap(const CgroupInfo &info, const std::string &property);
+    void Attach(pid_t pid) const;
+    CgroupStats ReadStats() const;
+    void Kill() const;
+    CgroupStats Finalize();
+    void Remove();
 
-void WriteGroupProperty(const CgroupInfo &info, const std::string &property, int64_t val, bool overwrite = true);
-void WriteGroupProperty(const CgroupInfo &info, const std::string &property, const std::string& val, bool overwrite = true);
-void RemoveCgroup(const CgroupInfo &info);
+private:
+    void RemoveEmpty();
 
-// Kill all existing tasks in a group.
-void KillGroupMembers(const CgroupInfo &info);
+    std::filesystem::path directory;
+    bool removed = false;
+};
+
+void InitializeCgroup();

@@ -73,11 +73,6 @@ export interface SandboxParameter {
         gid: number;
     };
 
-    // The Control Group (cgroup) name the sandbox will be put inside.
-    // Please specify a unique name to each sandbox (ideally the name of the sandbox).
-    // Currently, do not generate a random name each time, or there will be some junk files in the cgroup.
-    cgroup: string;
-
     // The parameters to be passed to the executable.
     // Typically, the first parameter should be the same to the executable path.
     // For example, if you want to run a Python script, you should specify `['python', '1.py']`.
