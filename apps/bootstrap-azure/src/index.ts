@@ -19,16 +19,7 @@ function getClientIp(xForwardedForList: string[]) {
 const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest) => {
   await initializationPromise;
 
-  const url = new URL(req.url);
   const headers = { ...req.headers };
-
-  // Proxy host
-  headers["host"] = headers["x-original-host"];
-  delete headers["x-original-host"];
-
-  // Proxy URL path
-  url.pathname = "/" + req.params.proxyPath;
-  url.host = headers["host"];
 
   // Remove first X-Forwarded-For host since it's prepended by proxy
   const xForwardedForList = headers["x-forwarded-for"].split(",").filter(host => !host.startsWith("127."));
@@ -43,7 +34,7 @@ const httpTrigger: AzureFunction = async (context: Context, req: HttpRequest) =>
   const clientIpRegion = geoip.lookup(clientIp)?.country;
 
   const response = handleRequest(
-    new Request(url.toString(), {
+    new Request(req.url, {
       headers: headers,
       method: req.method,
       body: req.body
