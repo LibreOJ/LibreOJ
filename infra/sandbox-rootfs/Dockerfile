@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.19
 
-FROM swift:6.3.3-noble@sha256:793035872d4e0d897bab8a000fa98405cb7c4cbb024ebb3c8f780aed25ef5352
+FROM swift:6.3.3-noble@sha256:793035872d4e0d897bab8a000fa98405cb7c4cbb024ebb3c8f780aed25ef5352 AS build
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -117,3 +117,20 @@ RUN --mount=type=bind,source=infra/sandbox-rootfs/smoke-test.sh,target=/usr/loca
     --mount=type=bind,source=apps/judge/src/languages/compile-python.sh,target=/usr/local/libexec/compile-python.sh,readonly \
     /bin/bash /usr/local/libexec/libreoj-rootfs-smoke-test build \
     && rm -rf /tmp/* /root/.cache
+
+FROM build AS devices
+
+RUN mkdir -p /rootfs-dev/pts /rootfs-dev/shm \
+    && mknod -m 0666 /rootfs-dev/full c 1 7 \
+    && mknod -m 0666 /rootfs-dev/null c 1 3 \
+    && mknod -m 0666 /rootfs-dev/random c 1 8 \
+    && mknod -m 0666 /rootfs-dev/urandom c 1 9 \
+    && mknod -m 0666 /rootfs-dev/zero c 1 5 \
+    && ln -s /proc/self/fd /rootfs-dev/fd \
+    && ln -s /proc/self/fd/0 /rootfs-dev/stdin \
+    && ln -s /proc/self/fd/1 /rootfs-dev/stdout \
+    && ln -s /proc/self/fd/2 /rootfs-dev/stderr
+
+FROM build
+
+COPY --from=devices /rootfs-dev/ /dev/

@@ -87,9 +87,35 @@ done
 
 mount -t proc proc "$TEMPORARY_DIRECTORY/proc"
 mounted+=("$TEMPORARY_DIRECTORY/proc")
-mount --rbind /dev "$TEMPORARY_DIRECTORY/dev"
-mount --make-rslave "$TEMPORARY_DIRECTORY/dev"
-mounted+=("$TEMPORARY_DIRECTORY/dev")
+
+declare -A DEVICES=(
+    [full]=1:7:666
+    [null]=1:3:666
+    [random]=1:8:666
+    [urandom]=1:9:666
+    [zero]=1:5:666
+)
+for device in "${!DEVICES[@]}"; do
+    path="$TEMPORARY_DIRECTORY/dev/$device"
+    if [[ ! -c "$path" ]] || [[ "$(stat -c '%t:%T:%a' "$path")" != "${DEVICES[$device]}" ]]; then
+        echo "Invalid device in rootfs: /dev/$device" >&2
+        exit 1
+    fi
+done
+
+declare -A DEVICE_LINKS=(
+    [fd]=/proc/self/fd
+    [stderr]=/proc/self/fd/2
+    [stdin]=/proc/self/fd/0
+    [stdout]=/proc/self/fd/1
+)
+for link in "${!DEVICE_LINKS[@]}"; do
+    path="$TEMPORARY_DIRECTORY/dev/$link"
+    if [[ ! -L "$path" ]] || [[ "$(readlink "$path")" != "${DEVICE_LINKS[$link]}" ]]; then
+        echo "Invalid device link in rootfs: /dev/$link" >&2
+        exit 1
+    fi
+done
 
 REPOSITORY_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 declare -A VALIDATION_FILES=(
