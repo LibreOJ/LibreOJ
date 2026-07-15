@@ -181,7 +181,7 @@ return {
         }
       },
       optimize: {
-        name: "[TBT] Optimize",
+        name: "[TBT] Optimization",
         values: {
           Onone: "[TBT] Disabled",
           O: "[TBT] Enabled",

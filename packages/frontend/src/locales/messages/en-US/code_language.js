@@ -181,7 +181,7 @@ return {
         }
       },
       optimize: {
-        name: "Optimize",
+        name: "Optimization",
         values: {
           Onone: "Disabled",
           O: "Enabled",
