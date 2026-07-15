@@ -19,6 +19,8 @@ export const languageConfig: LanguageConfig<CompileAndRunOptionsSwift> = {
       "-swift-version",
       compileAndRunOptions.version,
       `-${compileAndRunOptions.optimize}`,
+      "-module-cache-path",
+      "/tmp/swift-module-cache",
       "-color-diagnostics",
       "-print-educational-notes",
       "-DONLINE_JUDGE",
