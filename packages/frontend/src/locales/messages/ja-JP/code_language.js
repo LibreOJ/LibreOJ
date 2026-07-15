@@ -18,11 +18,15 @@ return {
           "c++14": "[TBT] ISO C++ 14",
           "c++17": "[TBT] ISO C++ 17",
           "c++20": "[TBT] ISO C++ 20",
+          "c++23": "[TBT] ISO C++ 23",
+          "c++26": "[TBT] ISO C++ 26",
           "gnu++03": "[TBT] GNU C++ 03",
           "gnu++11": "[TBT] GNU C++ 11",
           "gnu++14": "[TBT] GNU C++ 14",
           "gnu++17": "[TBT] GNU C++ 17",
-          "gnu++20": "[TBT] GNU C++ 20"
+          "gnu++20": "[TBT] GNU C++ 20",
+          "gnu++23": "[TBT] GNU C++ 23",
+          "gnu++26": "[TBT] GNU C++ 26"
         }
       },
       O: {
@@ -62,10 +66,12 @@ return {
           c99: "[TBT] ISO C99",
           c11: "[TBT] ISO C11",
           c17: "[TBT] ISO C17",
+          c23: "[TBT] ISO C23",
           gnu89: "[TBT] GNU C89",
           gnu99: "[TBT] GNU C99",
           gnu11: "[TBT] GNU C11",
-          gnu17: "[TBT] GNU C17"
+          gnu17: "[TBT] GNU C17",
+          gnu23: "[TBT] GNU C23"
         }
       },
       O: {
@@ -95,7 +101,7 @@ return {
     name: "[TBT] Kotlin",
     options: {
       version: {
-        name: "[TBT] Version",
+        name: "[TBT] Language version",
         values: {
           1.5: "1.5",
           1.6: "1.6",
@@ -144,11 +150,12 @@ return {
     name: "[TBT] Rust",
     options: {
       version: {
-        name: "[TBT] Version",
+        name: "[TBT] Edition",
         values: {
           2015: "[TBT] 2015",
           2018: "[TBT] 2018",
-          2021: "[TBT] 2021"
+          2021: "[TBT] 2021",
+          2024: "[TBT] 2024"
         }
       },
       optimize: {
@@ -166,7 +173,7 @@ return {
     name: "[TBT] Swift",
     options: {
       version: {
-        name: "[TBT] Version",
+        name: "[TBT] Language version",
         values: {
           4.2: "4.2",
           5: "5",
@@ -174,7 +181,7 @@ return {
         }
       },
       optimize: {
-        name: "[TBT] Optimize",
+        name: "[TBT] Optimization",
         values: {
           Onone: "[TBT] Disabled",
           O: "[TBT] Enabled",
@@ -198,10 +205,11 @@ return {
     name: "[TBT] Haskell",
     options: {
       version: {
-        name: "[TBT] Version",
+        name: "[TBT] Language edition",
         values: {
           98: "[TBT] Haskell 98",
-          2010: "[TBT] Haskell 2010"
+          2010: "[TBT] Haskell 2010",
+          GHC2021: "[TBT] GHC2021"
         }
       }
     }
@@ -210,11 +218,16 @@ return {
     name: "[TBT] C#",
     options: {
       version: {
-        name: "[TBT] Version",
+        name: "[TBT] Language version",
         values: {
           7.3: "7.3",
           8: "8",
-          9: "9"
+          9: "9",
+          10: "10",
+          11: "11",
+          12: "12",
+          13: "13",
+          14: "14"
         }
       }
     }

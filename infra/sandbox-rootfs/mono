@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export MONO_PATH="/usr/lib/dotnet/sdk/10.0.109/FSharp"
+
+exec /usr/bin/mono "$@"

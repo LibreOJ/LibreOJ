@@ -1,0 +1,18 @@
+#!/bin/bash
+
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+export DOTNET_NOLOGO=1
+export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+export DOTNET_CLI_HOME=/tmp/dotnet
+
+exec /usr/bin/dotnet \
+    /usr/lib/dotnet/sdk/10.0.109/FSharp/fsc.dll \
+    --target:exe \
+    --targetprofile:mscorlib \
+    --noframework \
+    -r:/usr/lib/mono/4.5/mscorlib.dll \
+    -r:/usr/lib/mono/4.5/System.dll \
+    -r:/usr/lib/mono/4.5/System.Core.dll \
+    -r:/usr/lib/mono/4.5/Facades/netstandard.dll \
+    -r:/usr/lib/dotnet/sdk/10.0.109/FSharp/FSharp.Core.dll \
+    "$@"
