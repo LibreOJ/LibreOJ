@@ -1,3 +1,5 @@
+# This example is not loaded automatically. Copy it to the deployment-specific
+# location and set LIBREOJ_CONFIG_FILE to that file's absolute path.
 server:
   hostname: 127.0.0.1
   port: 2002
@@ -37,10 +39,22 @@ security:
       - http://libreoj.test
   sessionSecret: don't leak this
   maintainceKey: also don't leak this
-  recaptcha:
-    secretKey: null
-    useRecaptchaNet: false
-    proxyUrl: null
+  captcha:
+    # Turnstile is attempted first. Configure the widget as invisible in the
+    # Cloudflare dashboard. Replace null with the mapping below to enable it.
+    turnstile: null
+    # turnstile:
+    #   siteKey: YOUR_TURNSTILE_SITE_KEY
+    #   secretKey: YOUR_TURNSTILE_SECRET_KEY
+
+    # Tencent Captcha is loaded only when Turnstile is unavailable. Replace
+    # null with the mapping below to enable it.
+    tencentCaptcha: null
+    # tencentCaptcha:
+    #   appSecretKey: CHANGE_THIS
+    #   appId: 123456789
+    #   secretId: CHANGE_THIS
+    #   secretKey: CHANGE_THIS
   rateLimit:
     maxRequests: 200
     durationSeconds: 10
@@ -48,8 +62,6 @@ preference:
   siteName: LibreOJ
   copyrightNotice: LibreOJ Open Source Project
   security:
-    recaptchaEnabled: false
-    recaptchaKey: null
     requireEmailVerification: true
     allowUserChangeUsername: true
     allowEveryoneCreateProblem: true

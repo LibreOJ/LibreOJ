@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "@libreoj/judge-protocol": "workspace:*",
-    "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "^9.0.7",
     "@nestjs/core": "^9.0.7",
     "@nestjs/platform-express": "^9.0.7",
@@ -37,7 +36,6 @@
     "@nestjs/swagger": "^6.0.4",
     "@nestjs/typeorm": "^9.0.0",
     "@nestjs/websockets": "^9.0.7",
-    "@nestlab/google-recaptcha": "^3.0.1",
     "@types/cheerio": "^0.22.31",
     "@types/deasync": "^0.1.2",
     "bcrypt": "^5.0.1",
@@ -77,6 +75,7 @@
     "streamsaver": "^2.0.6",
     "telegraf": "^4.8.6",
     "tempy": "^1.0.0",
+    "tencentcloud-sdk-nodejs-captcha": "^4.1.191",
     "terser": "^5.14.2",
     "toposort": "^2.0.2",
     "typeorm": "^0.3.7",

@@ -2,8 +2,10 @@ import axios from "axios";
 
 import { appState } from "./appState";
 import { makeToBeLocalizedText, ToBeLocalizedText } from "./locales";
+import type { CaptchaAction, CaptchaController, CaptchaResult } from "./utils/hooks/useCaptcha";
 
 export interface ApiResponse<T> {
+  requestCancelled?: boolean;
   requestError?: ToBeLocalizedText;
   response?: T;
 }
@@ -13,7 +15,7 @@ async function request<T>(
   method: "get" | "post",
   params?: any,
   body?: any,
-  recaptchaToken?: string
+  captchaResult?: CaptchaResult
 ): Promise<ApiResponse<T>> {
   let response: any;
   try {
@@ -24,7 +26,7 @@ async function request<T>(
       headers: {
         "Content-Type": "application/json",
         Authorization: appState.token && `Bearer ${appState.token}`,
-        ...(recaptchaToken ? { "X-Recaptcha-Token": recaptchaToken } : {})
+        ...(captchaResult ? { "X-Captcha-Result": JSON.stringify(captchaResult) } : {})
       },
       validateStatus: () => true
     });
@@ -42,7 +44,7 @@ async function request<T>(
       console.log("response:", response);
     }
 
-    if ([400, 401, 429, 500, 502, 503, 504].includes(response.status))
+    if ([400, 401, 403, 429, 500, 502, 503, 504].includes(response.status))
       return {
         requestError: makeToBeLocalizedText(`common.request_error.${response.status}`)
       };
@@ -62,27 +64,41 @@ async function request<T>(
 import * as api from "./api-generated";
 export default api;
 
+export function createPostApi<BodyType, ResponseType, Action extends CaptchaAction>(
+  path: string,
+  captchaAction: Action
+): (requestBody: BodyType, captcha: CaptchaController<Action>) => Promise<ApiResponse<ResponseType>>;
 export function createPostApi<BodyType, ResponseType>(
   path: string,
-  recaptcha: true
-): (requestBody: BodyType, recaptchaTokenPromise: Promise<string>) => Promise<ApiResponse<ResponseType>>;
-export function createPostApi<BodyType, ResponseType>(
-  path: string,
-  recaptcha: false
+  captchaAction: null
 ): (requestBody: BodyType) => Promise<ApiResponse<ResponseType>>;
 
-export function createPostApi<BodyType, ResponseType>(path: string, recaptcha: boolean) {
-  return async (requestBody: BodyType, recaptchaTokenPromise?: Promise<string>): Promise<ApiResponse<ResponseType>> => {
-    let recaptchaToken: string;
+export function createPostApi<BodyType, ResponseType>(path: string, captchaAction: CaptchaAction | null) {
+  return async (
+    requestBody: BodyType,
+    captcha?: CaptchaController<CaptchaAction>
+  ): Promise<ApiResponse<ResponseType>> => {
+    if (!captchaAction) return await request<ResponseType>(path, "post", null, requestBody);
+    if (!captcha || captcha.action !== captchaAction) {
+      throw new Error(`API ${path} requires captcha action ${captchaAction}`);
+    }
+
+    let acquisition;
     try {
-      recaptchaToken = await recaptchaTokenPromise;
-    } catch (e) {
+      acquisition = await captcha.acquireToken();
+    } catch (error) {
+      console.error("Captcha acquisition failed", error);
       return {
-        requestError: makeToBeLocalizedText("common.request_error.401")
+        requestError: makeToBeLocalizedText("common.request_error.403")
       };
     }
 
-    return await request<ResponseType>(path, "post", null, requestBody, recaptchaToken);
+    try {
+      if (acquisition.status === "cancelled") return { requestCancelled: true };
+      return await request<ResponseType>(path, "post", null, requestBody, acquisition.result);
+    } finally {
+      acquisition.consume();
+    }
   };
 }
 

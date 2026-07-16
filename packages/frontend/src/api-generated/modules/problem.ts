@@ -6,81 +6,83 @@ import { createGetApi, createPostApi } from "@/api";
 
 export const queryProblemSet = createPostApi<ApiTypes.QueryProblemSetRequestDto, ApiTypes.QueryProblemSetResponseDto>(
   "problem/queryProblemSet",
-  false
+  null
 );
-export const createProblem = createPostApi<ApiTypes.CreateProblemRequestDto, ApiTypes.CreateProblemResponseDto>(
-  "problem/createProblem",
-  true
-);
+export const createProblem = createPostApi<
+  ApiTypes.CreateProblemRequestDto,
+  ApiTypes.CreateProblemResponseDto,
+  "create_problem"
+>("problem/createProblem", "create_problem");
 export const updateStatement = createPostApi<
   ApiTypes.UpdateProblemStatementRequestDto,
   ApiTypes.UpdateProblemStatementResponseDto
->("problem/updateStatement", false);
+>("problem/updateStatement", null);
 export const getProblem = createPostApi<ApiTypes.GetProblemRequestDto, ApiTypes.GetProblemResponseDto>(
   "problem/getProblem",
-  false
+  null
 );
 export const setProblemPermissions = createPostApi<
   ApiTypes.SetProblemPermissionsRequestDto,
   ApiTypes.SetProblemPermissionsResponseDto
->("problem/setProblemPermissions", false);
+>("problem/setProblemPermissions", null);
 export const setProblemDisplayId = createPostApi<
   ApiTypes.SetProblemDisplayIdRequestDto,
   ApiTypes.SetProblemDisplayIdResponseDto
->("problem/setProblemDisplayId", false);
+>("problem/setProblemDisplayId", null);
 export const setProblemPublic = createPostApi<
   ApiTypes.SetProblemPublicRequestDto,
   ApiTypes.SetProblemPublicResponseDto
->("problem/setProblemPublic", false);
-export const addProblemFile = createPostApi<ApiTypes.AddProblemFileRequestDto, ApiTypes.AddProblemFileResponseDto>(
-  "problem/addProblemFile",
-  true
-);
+>("problem/setProblemPublic", null);
+export const addProblemFile = createPostApi<
+  ApiTypes.AddProblemFileRequestDto,
+  ApiTypes.AddProblemFileResponseDto,
+  "add_problem_file"
+>("problem/addProblemFile", "add_problem_file");
 export const removeProblemFiles = createPostApi<
   ApiTypes.RemoveProblemFilesRequestDto,
   ApiTypes.RemoveProblemFilesResponseDto
->("problem/removeProblemFiles", false);
+>("problem/removeProblemFiles", null);
 export const downloadProblemFiles = createPostApi<
   ApiTypes.DownloadProblemFilesRequestDto,
   ApiTypes.DownloadProblemFilesResponseDto
->("problem/downloadProblemFiles", false);
+>("problem/downloadProblemFiles", null);
 export const renameProblemFile = createPostApi<
   ApiTypes.RenameProblemFileRequestDto,
   ApiTypes.RenameProblemFileResponseDto
->("problem/renameProblemFile", false);
+>("problem/renameProblemFile", null);
 export const updateProblemJudgeInfo = createPostApi<
   ApiTypes.UpdateProblemJudgeInfoRequestDto,
   ApiTypes.UpdateProblemJudgeInfoResponseDto
->("problem/updateProblemJudgeInfo", false);
+>("problem/updateProblemJudgeInfo", null);
 export const getAllProblemTags = createPostApi<
   ApiTypes.GetAllProblemTagsRequestDto,
   ApiTypes.GetAllProblemTagsResponseDto
->("problem/getAllProblemTags", false);
+>("problem/getAllProblemTags", null);
 export const createProblemTag = createPostApi<
   ApiTypes.CreateProblemTagRequestDto,
   ApiTypes.CreateProblemTagResponseDto
->("problem/createProblemTag", false);
+>("problem/createProblemTag", null);
 export const getProblemTagDetail = createPostApi<
   ApiTypes.GetProblemTagDetailRequestDto,
   ApiTypes.GetProblemTagDetailResponseDto
->("problem/getProblemTagDetail", false);
+>("problem/getProblemTagDetail", null);
 export const updateProblemTag = createPostApi<
   ApiTypes.UpdateProblemTagRequestDto,
   ApiTypes.UpdateProblemTagResponseDto
->("problem/updateProblemTag", false);
+>("problem/updateProblemTag", null);
 export const deleteProblemTag = createPostApi<
   ApiTypes.DeleteProblemTagRequestDto,
   ApiTypes.DeleteProblemTagResponseDto
->("problem/deleteProblemTag", false);
+>("problem/deleteProblemTag", null);
 export const getAllProblemTagsOfAllLocales = createPostApi<void, ApiTypes.GetAllProblemTagsOfAllLocalesResponseDto>(
   "problem/getAllProblemTagsOfAllLocales",
-  false
+  null
 );
 export const deleteProblem = createPostApi<ApiTypes.DeleteProblemRequestDto, ApiTypes.DeleteProblemResponseDto>(
   "problem/deleteProblem",
-  false
+  null
 );
 export const changeProblemType = createPostApi<
   ApiTypes.ChangeProblemTypeRequestDto,
   ApiTypes.ChangeProblemTypeResponseDto
->("problem/changeProblemType", false);
+>("problem/changeProblemType", null);

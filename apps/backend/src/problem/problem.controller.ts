@@ -1,8 +1,6 @@
 import { Controller, Post, Body } from "@nestjs/common";
 import { ApiOperation, ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-import { Recaptcha } from "@nestlab/google-recaptcha";
-
 import { SubmissionStatus } from "@libreoj/judge-protocol";
 
 import { ProblemFileType } from "./problem-file.entity";
@@ -71,6 +69,9 @@ import {
   ChangeProblemTypeResponseDto,
   ChangeProblemTypeResponseError
 } from "./dto";
+
+import { Captcha } from "../captcha/captcha.decorator";
+import { CaptchaAction } from "../captcha/captcha-action.enum";
 
 import { ConfigService } from "../config/config.service";
 import { UserService } from "../user/user.service";
@@ -208,12 +209,11 @@ export class ProblemController {
     };
   }
 
-  @Recaptcha()
+  @Captcha(CaptchaAction.CreateProblem)
   @Post("createProblem")
   @ApiBearerAuth()
   @ApiOperation({
-    summary: "Create a problem with given statement and default judge info.",
-    description: "Recaptcha required."
+    summary: "Create a problem with given statement and default judge info."
   })
   async createProblem(
     @CurrentUser() currentUser: UserEntity,
@@ -676,12 +676,11 @@ export class ProblemController {
     return {};
   }
 
-  @Recaptcha()
+  @Captcha(CaptchaAction.AddProblemFile)
   @Post("addProblemFile")
   @ApiBearerAuth()
   @ApiOperation({
-    summary: "Upload or add an existing file to a problem as its testdata or additional file.",
-    description: "Recaptcha required."
+    summary: "Upload or add an existing file to a problem as its testdata or additional file."
   })
   async addProblemFile(
     @CurrentUser() currentUser: UserEntity,

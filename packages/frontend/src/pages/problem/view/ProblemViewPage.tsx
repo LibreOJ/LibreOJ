@@ -31,7 +31,8 @@ import {
   useLoginOrRegisterNavigation,
   useDialog,
   useAsyncCallbackPending,
-  useRecaptcha,
+  CaptchaAction,
+  useCaptcha,
   useScreenWidthWithin,
   useNavigationChecked,
   Link,
@@ -147,7 +148,7 @@ let ProblemViewPage: React.FC<ProblemViewPageProps> = props => {
     appState.enterNewPage(`${all} - ${_(".title")}`, "problem_set");
   }, [appState.locale, props.problem]);
 
-  const recaptcha = useRecaptcha();
+  const captcha = useCaptcha(CaptchaAction.SubmitProblem);
 
   // Begin toggle tags
   const [showTags, setShowTags] = useState(appState.showTagsInProblemSet);
@@ -368,16 +369,20 @@ let ProblemViewPage: React.FC<ProblemViewPageProps> = props => {
     if (submitPending) return;
     setSubmitPending(true);
 
-    const { uploadError, requestError, response } = await callApiWithFileUpload(
+    const { uploadCancelled, uploadError, requestError, response } = await callApiWithFileUpload(
       api.submission.submit,
       {
         problemId: props.problem.meta.id,
         content: submissionContent
       },
-      () => recaptcha("SubmitProblem"),
+      captcha,
       onGetSubmitFile ? await onGetSubmitFile() : null
     );
 
+    if (uploadCancelled) {
+      setSubmitPending(false);
+      return;
+    }
     if (uploadError) toast.error(_(".upload_error", { error: String(uploadError) }));
     else if (requestError) toast.error(requestError(_));
     else if (response.error) {

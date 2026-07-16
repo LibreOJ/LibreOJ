@@ -9,6 +9,7 @@ import * as ImportedGroupApi from "./modules/group";
 import * as ImportedJudgeClientApi from "./modules/judge-client";
 import * as ImportedDiscussionApi from "./modules/discussion";
 import * as ImportedHomepageApi from "./modules/homepage";
+import * as ImportedCaptchaApi from "./modules/captcha";
 
 export const user = ImportedUserApi;
 export const auth = ImportedAuthApi;
@@ -19,3 +20,4 @@ export const group = ImportedGroupApi;
 export const judgeClient = ImportedJudgeClientApi;
 export const discussion = ImportedDiscussionApi;
 export const homepage = ImportedHomepageApi;
+export const captcha = ImportedCaptchaApi;

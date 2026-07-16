@@ -1,8 +1,6 @@
 import { Controller, Get, Post, Body, Query, Req } from "@nestjs/common";
 import { ApiOperation, ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-import { Recaptcha } from "@nestlab/google-recaptcha";
-
 import { AuthEmailVerificationCodeService, EmailVerificationCodeType } from "./auth-email-verification-code.service";
 
 import { AuthSessionService } from "./auth-session.service";
@@ -37,6 +35,9 @@ import {
   RevokeUserSessionResponseDto,
   RevokeUserSessionResponseError
 } from "./dto";
+
+import { CaptchaAction } from "../captcha/captcha-action.enum";
+import { Captcha } from "../captcha/captcha.decorator";
 
 import { appGitRepoInfo } from "../main";
 import { ConfigService } from "../config/config.service";
@@ -101,12 +102,12 @@ export class AuthController {
     return result;
   }
 
-  @Recaptcha()
+  @Captcha(CaptchaAction.Login)
   @Post("login")
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Login with given credentials.",
-    description: "Recaptcha required. Return session token if success."
+    description: "Return session token if success."
   })
   async login(
     @Req() req: RequestWithSession,
@@ -203,12 +204,11 @@ export class AuthController {
     return result;
   }
 
-  @Recaptcha()
+  @Captcha(CaptchaAction.SendEmailVerificationCode)
   @Post("sendEmailVerificationCode")
   @ApiBearerAuth()
   @ApiOperation({
-    summary: "Send email verification code for registering or changing email",
-    description: "Recaptcha required."
+    summary: "Send email verification code for registering or changing email"
   })
   async sendEmailVerificationCode(
     @CurrentUser() currentUser: UserEntity,
@@ -286,12 +286,12 @@ export class AuthController {
     return {};
   }
 
-  @Recaptcha()
+  @Captcha(CaptchaAction.Register)
   @Post("register")
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Register then login.",
-    description: "Recaptcha required. Return the session token if success."
+    description: "Return the session token if success."
   })
   async register(
     @Req() req: RequestWithSession,
@@ -325,12 +325,11 @@ export class AuthController {
     };
   }
 
-  @Recaptcha()
+  @Captcha(CaptchaAction.ResetPassword)
   @Post("resetPassword")
   @ApiBearerAuth()
   @ApiOperation({
-    summary: "Reset a user's password with email verification code and then login.",
-    description: "Recaptcha required."
+    summary: "Reset a user's password with email verification code and then login."
   })
   async resetPassword(
     @Req() req: RequestWithSession,

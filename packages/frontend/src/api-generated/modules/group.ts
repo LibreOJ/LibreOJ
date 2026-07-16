@@ -10,30 +10,30 @@ export const searchGroup = createGetApi<{ query: string; wildcard?: string }, Ap
 );
 export const createGroup = createPostApi<ApiTypes.CreateGroupRequestDto, ApiTypes.CreateGroupResponseDto>(
   "group/createGroup",
-  false
+  null
 );
 export const deleteGroup = createPostApi<ApiTypes.DeleteGroupRequestDto, ApiTypes.DeleteGroupResponseDto>(
   "group/deleteGroup",
-  false
+  null
 );
 export const renameGroup = createPostApi<ApiTypes.RenameGroupRequestDto, ApiTypes.RenameGroupResponseDto>(
   "group/renameGroup",
-  false
+  null
 );
 export const addMember = createPostApi<ApiTypes.AddUserToGroupRequestDto, ApiTypes.AddUserToGroupResponseDto>(
   "group/addMember",
-  false
+  null
 );
 export const removeMember = createPostApi<
   ApiTypes.RemoveUserFromGroupRequestDto,
   ApiTypes.RemoveUserFromGroupResponseDto
->("group/removeMember", false);
+>("group/removeMember", null);
 export const setGroupAdmin = createPostApi<ApiTypes.SetGroupAdminRequestDto, ApiTypes.SetGroupAdminResponseDto>(
   "group/setGroupAdmin",
-  false
+  null
 );
 export const getGroupList = createGetApi<void, ApiTypes.GetGroupListResponseDto>("group/getGroupList");
 export const getGroupMemberList = createPostApi<
   ApiTypes.GetGroupMemberListRequestDto,
   ApiTypes.GetGroupMemberListResponseDto
->("group/getGroupMemberList", false);
+>("group/getGroupMemberList", null);

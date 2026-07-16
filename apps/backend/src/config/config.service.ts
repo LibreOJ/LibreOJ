@@ -45,6 +45,11 @@ export class ConfigService {
   private getPreferenceConfigToBeSentToUser(): PreferenceConfig {
     const preference = JSON.parse(JSON.stringify(this.config.preference)) as PreferenceConfig;
 
+    Object.assign(preference.security, {
+      captchaEnabled: !!(this.config.security.captcha.turnstile || this.config.security.captcha.tencentCaptcha),
+      turnstileSiteKey: this.config.security.captcha.turnstile?.siteKey
+    });
+
     // Delete some properties unnessesary to send to user to save bandwidth
     delete preference.serverSideOnly;
 

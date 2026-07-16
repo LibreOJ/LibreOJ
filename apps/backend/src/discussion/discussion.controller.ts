@@ -1,8 +1,6 @@
 import { Controller, Post, Body } from "@nestjs/common";
 import { ApiOperation, ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-import { Recaptcha } from "@nestlab/google-recaptcha";
-
 import {
   DiscussionPermissionType,
   DiscussionReactionType,
@@ -59,6 +57,9 @@ import {
   GetDiscussionPermissionsResponseError
 } from "./dto";
 
+import { Captcha } from "../captcha/captcha.decorator";
+import { CaptchaAction } from "../captcha/captcha-action.enum";
+
 import { ConfigService } from "../config/config.service";
 import { CurrentUser } from "../common/user.decorator";
 import { UserEntity } from "../user/user.entity";
@@ -93,12 +94,11 @@ export class DiscussionController {
       .map((value: string) => (value.startsWith("/") && value.endsWith("/") ? new RegExp(value.slice(1, -1)) : value));
   }
 
-  @Recaptcha()
+  @Captcha(CaptchaAction.CreateDiscussion)
   @Post("createDiscussion")
   @ApiBearerAuth()
   @ApiOperation({
-    summary: "Create a new discussion.",
-    description: "Recaptcha required."
+    summary: "Create a new discussion."
   })
   async createDiscussion(
     @CurrentUser() currentUser: UserEntity,
@@ -135,12 +135,11 @@ export class DiscussionController {
     };
   }
 
-  @Recaptcha()
+  @Captcha(CaptchaAction.CreateDiscussionReply)
   @Post("createDiscussionReply")
   @ApiBearerAuth()
   @ApiOperation({
-    summary: "Create a new discussion.",
-    description: "Recaptcha required."
+    summary: "Create a new discussion."
   })
   async createDiscussionReply(
     @CurrentUser() currentUser: UserEntity,

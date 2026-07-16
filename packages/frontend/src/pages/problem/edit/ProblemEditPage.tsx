@@ -32,7 +32,8 @@ import {
   useLocalizer,
   useConfirmNavigation,
   useAsyncCallbackPending,
-  useRecaptcha,
+  CaptchaAction,
+  useCaptcha,
   useNavigationChecked
 } from "@/utils/hooks";
 import { observer } from "mobx-react";
@@ -602,7 +603,7 @@ let ProblemEditPage: React.FC<ProblemEditPageProps> = props => {
     appState.enterNewPage(props.new ? `${_(".title_new")}` : `${_(".title_edit")} ${idString}`, "problem_set", false);
   }, [appState.locale, props.new, props.problem]);
 
-  const recaptcha = useRecaptcha();
+  const captcha = useCaptcha(CaptchaAction.CreateProblem);
 
   const [localizedContents, setLocalizedContents] = useState(
     (() => {
@@ -678,7 +679,7 @@ let ProblemEditPage: React.FC<ProblemEditPageProps> = props => {
     }));
 
     if (props.new) {
-      const { requestError, response } = await api.problem.createProblem(
+      const { requestCancelled, requestError, response } = await api.problem.createProblem(
         {
           type: newProblemType,
           statement: {
@@ -687,9 +688,10 @@ let ProblemEditPage: React.FC<ProblemEditPageProps> = props => {
             problemTagIds: tagIds
           }
         },
-        recaptcha("CreateProblem")
+        captcha
       );
 
+      if (requestCancelled) return;
       if (requestError) toast.error(requestError(_));
       else if (response.error) {
         toast.error(_(`.error.${response.error}`));
