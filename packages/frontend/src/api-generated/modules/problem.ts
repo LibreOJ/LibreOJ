@@ -2,7 +2,7 @@
 
 /// <reference path="../types.d.ts" />
 
-import { createPostApi } from "@/api";
+import { createGetApi, createPostApi } from "@/api";
 
 export const queryProblemSet = createPostApi<ApiTypes.QueryProblemSetRequestDto, ApiTypes.QueryProblemSetResponseDto>(
   "problem/queryProblemSet",

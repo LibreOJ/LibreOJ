@@ -48,7 +48,10 @@ import { isValidFilename } from "@/utils/validators";
 import { Localizer, makeToBeLocalizedText } from "@/locales";
 import { EmojiRenderer } from "@/components/EmojiRenderer";
 
-(streamsaver as any).WritableStream = (await import("web-streams-polyfill/ponyfill/es6")).WritableStream;
+// Firefox have no WritableStream
+if (!window.WritableStream || true) {
+  (streamsaver as any).WritableStream = (await import("web-streams-polyfill/ponyfill/es6")).WritableStream;
+}
 if (window.apiEndpoint.toLowerCase().startsWith("https://")) {
   (streamsaver as any).mitm = `${window.apiEndpoint}api/cors/streamsaver/mitm.html`;
 }
@@ -666,7 +669,8 @@ let FileTable: React.FC<FileTableProps> = props => {
 FileTable = observer(FileTable);
 
 interface ProblemFilesPageProps {
-  problem: ApiTypes.GetProblemResponseDto;
+  idType?: "id" | "displayId";
+  problem?: ApiTypes.GetProblemResponseDto;
 }
 
 let ProblemFilesPage: React.FC<ProblemFilesPageProps> = props => {
@@ -678,7 +682,7 @@ let ProblemFilesPage: React.FC<ProblemFilesPageProps> = props => {
     appState.enterNewPage(`${_(".title")} ${idString}`, "problem_set");
   }, [appState.locale, props.problem]);
 
-  const captcha = useCaptcha(CaptchaAction.AddProblemFile, props.problem.permissionOfCurrentUser.includes("Modify"));
+  const captcha = useCaptcha(CaptchaAction.AddProblemFile);
 
   function transformResponseToFileTableItems(fileList: ApiTypes.ProblemFileDto[]): FileTableItem[] {
     return fileList.map(file => ({
@@ -947,12 +951,12 @@ export default {
     const id = parseInt(request.params["id"]);
     const problem = await fetchData("id", id);
 
-    return <ProblemFilesPage key={uuid()} problem={problem} />;
+    return <ProblemFilesPage key={uuid()} idType="id" problem={problem} />;
   }),
   byDisplayId: defineRoute(async request => {
     const displayId = parseInt(request.params["displayId"]);
     const problem = await fetchData("displayId", displayId);
 
-    return <ProblemFilesPage key={uuid()} problem={problem} />;
+    return <ProblemFilesPage key={uuid()} idType="displayId" problem={problem} />;
   })
 };

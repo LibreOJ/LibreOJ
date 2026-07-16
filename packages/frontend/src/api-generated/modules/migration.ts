@@ -2,7 +2,7 @@
 
 /// <reference path="../types.d.ts" />
 
-import { createPostApi } from "@/api";
+import { createGetApi, createPostApi } from "@/api";
 
 export const migrateUser = createPostApi<ApiTypes.MigrateUserRequestDto, ApiTypes.MigrateUserResponseDto>(
   "migration/migrateUser",

@@ -107,7 +107,7 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Login with given credentials.",
-    description: "Return session token if successful."
+    description: "Return session token if success."
   })
   async login(
     @Req() req: RequestWithSession,
@@ -208,7 +208,7 @@ export class AuthController {
   @Post("sendEmailVerificationCode")
   @ApiBearerAuth()
   @ApiOperation({
-    summary: "Send email verification code for registering or changing email."
+    summary: "Send email verification code for registering or changing email"
   })
   async sendEmailVerificationCode(
     @CurrentUser() currentUser: UserEntity,
@@ -291,7 +291,7 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Register then login.",
-    description: "Return the session token if successful."
+    description: "Return the session token if success."
   })
   async register(
     @Req() req: RequestWithSession,

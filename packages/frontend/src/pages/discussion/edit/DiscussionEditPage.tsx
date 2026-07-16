@@ -30,7 +30,7 @@ let DiscussionEditPage: React.FC<DiscussionEditPageProps> = props => {
     appState.enterNewPage(props.discussion ? `${_(".title_update")} #${props.discussion.meta.id}` : _(".title_new"));
   }, [appState.locale, props.discussion]);
 
-  const captcha = useCaptcha(CaptchaAction.CreateDiscussion, !props.discussion);
+  const captcha = useCaptcha(CaptchaAction.CreateDiscussion);
 
   const [title, setTitle] = useState(props.discussion ? props.discussion.meta.title : "");
   const [content, setContent] = useState(props.discussion ? props.discussion.content : "");

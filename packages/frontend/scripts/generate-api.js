@@ -6,6 +6,11 @@ const apiUrl =
   process.argv.filter(arg => arg.toLowerCase().startsWith("http://") || arg.toLowerCase().startsWith("https://"))[0] ||
   "http://api.libreoj.test/docs-json";
 
+if (!apiUrl) {
+  console.error("Usage: node scripts/generate-api.js <url>");
+  process.exit(2);
+}
+
 const skipTags = ["App", "CORS"];
 const namespaceName = "ApiTypes";
 const generatedMessage = "// This file is generated automatically, do NOT modify it.\n\n";
@@ -51,6 +56,7 @@ function normalizeModuleName(moduleName, forFilename) {
 
     if (!tags[tag])
       tags[tag] = {
+        schemas: new Set(),
         operations: {}
       };
 
@@ -63,6 +69,8 @@ function normalizeModuleName(moduleName, forFilename) {
           operation.get.parameters && operation.get.parameters.map(({ name, required }) => ({ name, required })),
         response
       };
+
+      if (response) tags[tag].schemas.add(response);
     } else {
       const body = getRequestBodySchemaName(operation.post.requestBody),
         response = getResponseSchemaName(operation.post.responses);
@@ -73,22 +81,21 @@ function normalizeModuleName(moduleName, forFilename) {
         response,
         captchaAction: operation.post["x-captcha-action"] ?? null
       };
+
+      if (body) tags[tag].schemas.add(body);
+      if (response) tags[tag].schemas.add(response);
     }
   }
 
   // Generate ts files
   for (const moduleName in tags) {
+    const types = Array.from(tags[moduleName].schemas);
     let code = "";
 
     code += generatedMessage;
     code += '/// <reference path="../types.d.ts" />\n\n';
 
-    const apiFactories = ["createGetApi", "createPostApi"].filter(factory =>
-      Object.values(tags[moduleName].operations).some(
-        operation => factory === (operation.type === "get" ? "createGetApi" : "createPostApi")
-      )
-    );
-    code += `import { ${apiFactories.join(", ")} } from "@/api";\n\n`;
+    code += 'import { createGetApi, createPostApi } from "@/api";\n\n';
 
     for (const operationName in tags[moduleName].operations) {
       const operation = tags[moduleName].operations[operationName];

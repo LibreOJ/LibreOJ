@@ -1,8 +1,8 @@
 import axios from "axios";
 
 import { appState } from "./appState";
-import type { CaptchaAction, CaptchaController, CaptchaResult } from "./captcha";
 import { makeToBeLocalizedText, ToBeLocalizedText } from "./locales";
+import type { CaptchaAction, CaptchaController, CaptchaResult } from "./utils/hooks/useCaptcha";
 
 export interface ApiResponse<T> {
   requestCancelled?: boolean;

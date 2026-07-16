@@ -139,7 +139,7 @@ export class DiscussionController {
   @Post("createDiscussionReply")
   @ApiBearerAuth()
   @ApiOperation({
-    summary: "Create a new discussion reply."
+    summary: "Create a new discussion."
   })
   async createDiscussionReply(
     @CurrentUser() currentUser: UserEntity,

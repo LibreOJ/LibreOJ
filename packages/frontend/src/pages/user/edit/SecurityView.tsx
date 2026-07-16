@@ -17,38 +17,35 @@ import fixChineseSpace from "@/utils/fixChineseSpace";
 import formatDateTime from "@/utils/formatDateTime";
 import { makeToBeLocalizedText } from "@/locales";
 
-interface SecurityViewData {
-  meta: ApiTypes.UserMetaDto;
-  sessions: ApiTypes.UserSessionDto[];
-  currentSessionId: number | null;
-}
+export async function fetchData(username: string) {
+  const result = {};
 
-export async function fetchData(username: string): Promise<SecurityViewData> {
-  const [securitySettingsResult, sessionsResult] = await Promise.all([
+  for (const { requestError, response } of await Promise.all([
     api.user.getUserSecuritySettings({ username }),
     api.auth.listUserSessions({ username })
-  ]);
-
-  for (const { requestError, response } of [securitySettingsResult, sessionsResult]) {
+  ])) {
     if (requestError) throw new RouteError(requestError, { showRefresh: true, showBack: true });
     else if (response.error) throw new RouteError(makeToBeLocalizedText(`user_edit.errors.${response.error}`));
+    Object.assign(result, response);
   }
 
-  return {
-    meta: securitySettingsResult.response.meta,
-    sessions: sessionsResult.response.sessions,
-    currentSessionId: sessionsResult.response.currentSessionId
-  };
+  return result;
 }
 
-const SecurityView: React.FC<SecurityViewData> = props => {
+interface SecurityViewProps {
+  meta?: ApiTypes.UserMetaDto;
+  sessions?: ApiTypes.UserSessionDto[];
+  currentSessionId?: number;
+}
+
+const SecurityView: React.FC<SecurityViewProps> = props => {
   const _ = useLocalizer("user_edit.security");
 
   useEffect(() => {
     appState.enterNewPage(`${_(`.title`)} - ${props.meta.username}`, null, false);
   }, [appState.locale, props.meta]);
 
-  const captcha = useCaptcha(CaptchaAction.SendEmailVerificationCode, props.meta.id === appState.currentUser.id);
+  const captcha = useCaptcha(CaptchaAction.SendEmailVerificationCode);
 
   const hasPrivilege = appState.currentUser.isAdmin || appState.currentUserPrivileges.includes("ManageUser");
 

@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 import { ApiResponse } from "@/api";
-import { CaptchaAction, CaptchaController } from "@/captcha";
+import type { CaptchaAction, CaptchaController } from "@/utils/hooks/useCaptcha";
 
 export interface ApiResponseWithUploadResult<T extends { error?: string }> {
   uploadCancelled?: boolean;

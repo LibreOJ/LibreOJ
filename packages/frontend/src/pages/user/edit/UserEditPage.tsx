@@ -25,7 +25,7 @@ enum EditType {
 interface UserEditPageProps {
   username: string;
   type: EditType;
-  data: object;
+  data: Record<string, unknown>;
   view: React.FC<any>;
 }
 

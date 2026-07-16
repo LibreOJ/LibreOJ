@@ -2,13 +2,52 @@ import { useEffect, useMemo } from "react";
 import type { TurnstileObject } from "turnstile-types";
 
 import api from "@/api";
-import { CaptchaAction } from "@/captcha";
-import type { CaptchaAcquisition, CaptchaController, CaptchaResult } from "@/captcha";
 import { appState } from "@/appState";
 import localeMeta from "@/locales/meta";
 import { defaultDarkTheme } from "@/themes";
 
-export { CaptchaAction } from "@/captcha";
+export const CaptchaAction = {
+  Login: "login",
+  SendEmailVerificationCode: "email_verification",
+  Register: "register",
+  ResetPassword: "reset_password",
+  CreateDiscussion: "create_discussion",
+  CreateDiscussionReply: "reply_discussion",
+  CreateProblem: "create_problem",
+  AddProblemFile: "add_problem_file",
+  SubmitProblem: "submit_problem"
+} as const;
+
+export type CaptchaAction = typeof CaptchaAction[keyof typeof CaptchaAction];
+
+export type CaptchaResult =
+  | {
+      turnstile: {
+        token: string;
+      };
+    }
+  | {
+      tencentCaptcha: {
+        ticket: string;
+        randStr: string;
+      };
+    };
+
+export type CaptchaAcquisition =
+  | {
+      status: "success";
+      result?: CaptchaResult;
+      consume(): void;
+    }
+  | {
+      status: "cancelled";
+      consume(): void;
+    };
+
+export interface CaptchaController<Action extends CaptchaAction = CaptchaAction> {
+  readonly action: Action;
+  acquireToken(): Promise<CaptchaAcquisition>;
+}
 
 const TURNSTILE_INITIALIZATION_TIMEOUT = 5000;
 const TURNSTILE_ACQUISITION_TIMEOUT = 1500;
@@ -151,133 +190,128 @@ type TurnstileState =
   | { status: "ready"; token: string }
   | { status: "unavailable" };
 
-class BrowserCaptchaController<Action extends CaptchaAction> implements CaptchaController<Action> {
-  private turnstileState: TurnstileState = { status: "initializing" };
+export const useCaptcha = <Action extends CaptchaAction>(action: Action): CaptchaController<Action> => {
+  const captcha = useMemo(() => {
+    let turnstileState: TurnstileState = { status: "initializing" };
+    let turnstile: TurnstileObject | undefined;
+    let turnstileWidgetId: string | undefined;
+    let container: HTMLDivElement;
+    let mountEpoch = 0;
+    let acquisitionQueue = Promise.resolve();
 
-  private turnstile?: TurnstileObject;
+    const resetTurnstile = () => {
+      if (!turnstile || !turnstileWidgetId) return;
+      turnstile.reset(turnstileWidgetId);
+      turnstileState = { status: "acquiring" };
+    };
 
-  private turnstileWidgetId?: string;
+    const mount = () => {
+      turnstileState = { status: "initializing" };
+      const currentMountEpoch = ++mountEpoch;
+      container = document.createElement("div");
+      container.hidden = true;
+      document.body.appendChild(container);
 
-  private container: HTMLDivElement;
+      void loadTurnstile().then(loadedTurnstile => {
+        if (currentMountEpoch !== mountEpoch) return;
+        if (!loadedTurnstile) {
+          turnstileState = { status: "unavailable" };
+          return;
+        }
 
-  private mountEpoch = 0;
+        turnstile = loadedTurnstile;
+        try {
+          turnstileState = { status: "acquiring" };
+          turnstileWidgetId = turnstile.render(container, {
+            sitekey: appState.serverPreference.security.turnstileSiteKey,
+            action,
+            size: "invisible",
+            execution: "render",
+            "response-field": false,
+            callback: token => {
+              turnstileState = { status: "ready", token };
+            },
+            "error-callback": errorCode => {
+              console.warn(`Turnstile failed with code ${errorCode}`);
+              turnstileState = { status: "unavailable" };
+            },
+            "timeout-callback": () => {
+              turnstileState = { status: "unavailable" };
+            },
+            "unsupported-callback": () => {
+              turnstileState = { status: "unavailable" };
+            },
+            "expired-callback": resetTurnstile
+          });
+        } catch (error) {
+          console.warn("Failed to render Turnstile", error);
+          turnstileState = { status: "unavailable" };
+        }
+      });
+    };
 
-  private acquisitionQueue = Promise.resolve();
+    const unmount = () => {
+      mountEpoch += 1;
+      if (turnstile && turnstileWidgetId) turnstile.remove(turnstileWidgetId);
+      container.remove();
+      turnstile = undefined;
+      turnstileWidgetId = undefined;
+    };
 
-  constructor(readonly action: Action, private readonly enabled: boolean) {}
+    const acquireToken = async (): Promise<CaptchaAcquisition> => {
+      const previousAcquisition = acquisitionQueue;
+      let releaseAcquisition: () => void;
+      acquisitionQueue = new Promise(resolve => {
+        releaseAcquisition = resolve;
+      });
+      await previousAcquisition;
 
-  mount(): void {
-    this.turnstileState = { status: "initializing" };
-    const mountEpoch = ++this.mountEpoch;
-    this.container = document.createElement("div");
-    this.container.hidden = true;
-    document.body.appendChild(this.container);
-
-    void loadTurnstile().then(turnstile => {
-      if (mountEpoch !== this.mountEpoch) return;
-      if (!turnstile) {
-        this.turnstileState = { status: "unavailable" };
-        return;
-      }
-
-      this.turnstile = turnstile;
       try {
-        this.turnstileState = { status: "acquiring" };
-        this.turnstileWidgetId = turnstile.render(this.container, {
-          sitekey: appState.serverPreference.security.turnstileSiteKey,
-          action: this.action,
-          size: "invisible",
-          execution: "render",
-          "response-field": false,
-          callback: token => {
-            this.turnstileState = { status: "ready", token };
-          },
-          "error-callback": errorCode => {
-            console.warn(`Turnstile failed with code ${errorCode}`);
-            this.turnstileState = { status: "unavailable" };
-          },
-          "timeout-callback": () => {
-            this.turnstileState = { status: "unavailable" };
-          },
-          "unsupported-callback": () => {
-            this.turnstileState = { status: "unavailable" };
-          },
-          "expired-callback": () => this.resetTurnstile()
-        });
+        let acquisition: PendingCaptchaAcquisition;
+        if (!appState.serverPreference.security.captchaEnabled || appState.currentUserHasPrivilege("SkipRecaptcha")) {
+          acquisition = { status: "success" };
+        } else {
+          const startedAt = Date.now();
+          while (Date.now() - startedAt <= TURNSTILE_ACQUISITION_TIMEOUT) {
+            if (turnstileState.status === "ready") {
+              acquisition = {
+                status: "success",
+                result: { turnstile: { token: turnstileState.token } }
+              };
+              break;
+            }
+            if (turnstileState.status === "unavailable") break;
+            await new Promise(resolve => setTimeout(resolve, 50));
+          }
+
+          acquisition ??= await acquireTencentCaptchaToken();
+        }
+
+        return {
+          ...acquisition,
+          consume: () => {
+            if (acquisition.status === "success" && acquisition.result && "turnstile" in acquisition.result) {
+              resetTurnstile();
+            }
+            releaseAcquisition();
+          }
+        } as CaptchaAcquisition;
       } catch (error) {
-        console.warn("Failed to render Turnstile", error);
-        this.turnstileState = { status: "unavailable" };
+        releaseAcquisition();
+        throw error;
       }
-    });
-  }
+    };
 
-  unmount(): void {
-    this.mountEpoch += 1;
-    if (this.turnstile && this.turnstileWidgetId) this.turnstile.remove(this.turnstileWidgetId);
-    this.container.remove();
-    this.turnstile = undefined;
-    this.turnstileWidgetId = undefined;
-  }
+    return {
+      controller: { action, acquireToken },
+      mount,
+      unmount
+    };
+  }, [action]);
 
-  async acquireToken(): Promise<CaptchaAcquisition> {
-    if (!this.enabled) throw new Error(`Captcha action ${this.action} is not enabled`);
-
-    const previousAcquisition = this.acquisitionQueue;
-    let releaseAcquisition: () => void;
-    this.acquisitionQueue = new Promise(resolve => {
-      releaseAcquisition = resolve;
-    });
-    await previousAcquisition;
-
-    try {
-      let acquisition: PendingCaptchaAcquisition;
-      if (!appState.serverPreference.security.captchaEnabled || appState.currentUserHasPrivilege("SkipRecaptcha")) {
-        acquisition = { status: "success" };
-      } else {
-        const startedAt = Date.now();
-        while (Date.now() - startedAt <= TURNSTILE_ACQUISITION_TIMEOUT) {
-          if (this.turnstileState.status === "ready") {
-            acquisition = {
-              status: "success",
-              result: { turnstile: { token: this.turnstileState.token } }
-            };
-            break;
-          }
-          if (this.turnstileState.status === "unavailable") break;
-          await new Promise(resolve => setTimeout(resolve, 50));
-        }
-
-        acquisition ??= await acquireTencentCaptchaToken();
-      }
-
-      return {
-        ...acquisition,
-        consume: () => {
-          if (acquisition.status === "success" && acquisition.result && "turnstile" in acquisition.result) {
-            this.resetTurnstile();
-          }
-          releaseAcquisition();
-        }
-      } as CaptchaAcquisition;
-    } catch (error) {
-      releaseAcquisition();
-      throw error;
-    }
-  }
-
-  private resetTurnstile(): void {
-    if (!this.turnstile || !this.turnstileWidgetId) return;
-    this.turnstile.reset(this.turnstileWidgetId);
-    this.turnstileState = { status: "acquiring" };
-  }
-}
-
-export const useCaptcha = <Action extends CaptchaAction>(action: Action, enabled = true): CaptchaController<Action> => {
-  const controller = useMemo(() => new BrowserCaptchaController(action, enabled), [action, enabled]);
   useEffect(() => {
-    if (!enabled) return;
-    controller.mount();
-    return () => controller.unmount();
-  }, [controller, enabled]);
-  return controller;
+    captcha.mount();
+    return captcha.unmount;
+  }, [captcha]);
+  return captcha.controller;
 };

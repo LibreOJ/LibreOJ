@@ -603,7 +603,7 @@ let ProblemEditPage: React.FC<ProblemEditPageProps> = props => {
     appState.enterNewPage(props.new ? `${_(".title_new")}` : `${_(".title_edit")} ${idString}`, "problem_set", false);
   }, [appState.locale, props.new, props.problem]);
 
-  const captcha = useCaptcha(CaptchaAction.CreateProblem, !!props.new);
+  const captcha = useCaptcha(CaptchaAction.CreateProblem);
 
   const [localizedContents, setLocalizedContents] = useState(
     (() => {

@@ -2,7 +2,7 @@
 
 /// <reference path="../types.d.ts" />
 
-import { createGetApi } from "@/api";
+import { createGetApi, createPostApi } from "@/api";
 
 export const getTencentCaptchaAppId = createGetApi<void, ApiTypes.GetTencentCaptchaAppIdResponseDto>(
   "captcha/getTencentCaptchaAppId"

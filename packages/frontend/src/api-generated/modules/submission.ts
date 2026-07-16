@@ -2,7 +2,7 @@
 
 /// <reference path="../types.d.ts" />
 
-import { createPostApi } from "@/api";
+import { createGetApi, createPostApi } from "@/api";
 
 export const submit = createPostApi<ApiTypes.SubmitRequestDto, ApiTypes.SubmitResponseDto, "submit_problem">(
   "submission/submit",
