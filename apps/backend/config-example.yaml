@@ -1,3 +1,5 @@
+# This example is not loaded automatically. Copy it to the deployment-specific
+# location and set LIBREOJ_CONFIG_FILE to that file's absolute path.
 server:
   hostname: 127.0.0.1
   port: 2002
