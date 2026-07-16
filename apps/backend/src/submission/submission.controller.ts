@@ -1,8 +1,6 @@
 import { Controller, Post, Body, BadRequestException } from "@nestjs/common";
 import { ApiOperation, ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-import { Recaptcha } from "@nestlab/google-recaptcha";
-
 import { SubmissionStatus } from "@libreoj/judge-protocol";
 
 import { SubmissionStatisticsService } from "./submission-statistics.service";
@@ -44,6 +42,9 @@ import {
   DeleteSubmissionResponseError
 } from "./dto";
 
+import { Captcha } from "../captcha/captcha.decorator";
+import { CaptchaAction } from "../captcha/captcha-action.enum";
+
 import { CurrentUser } from "../common/user.decorator";
 import { UserEntity } from "../user/user.entity";
 import { ProblemService, ProblemPermissionType } from "../problem/problem.service";
@@ -72,10 +73,9 @@ export class SubmissionController {
     private readonly fileService: FileService
   ) {}
 
-  @Recaptcha()
+  @Captcha(CaptchaAction.SubmitProblem)
   @ApiOperation({
-    summary: "Submit code to a problem.",
-    description: "Recaptcha required."
+    summary: "Submit code to a problem."
   })
   @ApiBearerAuth()
   @Post("submit")

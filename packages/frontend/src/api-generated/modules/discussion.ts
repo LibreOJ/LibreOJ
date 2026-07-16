@@ -2,57 +2,59 @@
 
 /// <reference path="../types.d.ts" />
 
-import { createGetApi, createPostApi } from "@/api";
+import { createPostApi } from "@/api";
 
 export const createDiscussion = createPostApi<
   ApiTypes.CreateDiscussionRequestDto,
-  ApiTypes.CreateDiscussionResponseDto
->("discussion/createDiscussion", true);
+  ApiTypes.CreateDiscussionResponseDto,
+  "create_discussion"
+>("discussion/createDiscussion", "create_discussion");
 export const createDiscussionReply = createPostApi<
   ApiTypes.CreateDiscussionReplyRequestDto,
-  ApiTypes.CreateDiscussionReplyResponseDto
->("discussion/createDiscussionReply", true);
+  ApiTypes.CreateDiscussionReplyResponseDto,
+  "reply_discussion"
+>("discussion/createDiscussionReply", "reply_discussion");
 export const toggleReaction = createPostApi<ApiTypes.ToggleReactionRequestDto, ApiTypes.ToggleReactionResponseDto>(
   "discussion/toggleReaction",
-  false
+  null
 );
 export const queryDiscussions = createPostApi<
   ApiTypes.QueryDiscussionsRequestDto,
   ApiTypes.QueryDiscussionsResponseDto
->("discussion/queryDiscussion", false);
+>("discussion/queryDiscussion", null);
 export const getDiscussionPermissions = createPostApi<
   ApiTypes.GetDiscussionPermissionsRequestDto,
   ApiTypes.GetDiscussionPermissionsResponseDto
->("discussion/getDiscussionPermissions", false);
+>("discussion/getDiscussionPermissions", null);
 export const getDiscussionAndReplies = createPostApi<
   ApiTypes.GetDiscussionAndRepliesRequestDto,
   ApiTypes.GetDiscussionAndRepliesResponseDto
->("discussion/getDiscussionAndReplies", false);
+>("discussion/getDiscussionAndReplies", null);
 export const updateDiscussion = createPostApi<
   ApiTypes.UpdateDiscussionRequestDto,
   ApiTypes.UpdateDiscussionResponseDto
->("discussion/updateDiscussion", false);
+>("discussion/updateDiscussion", null);
 export const updateDiscussionReply = createPostApi<
   ApiTypes.UpdateDiscussionReplyRequestDto,
   ApiTypes.UpdateDiscussionReplyResponseDto
->("discussion/updateDiscussionReply", false);
+>("discussion/updateDiscussionReply", null);
 export const deleteDiscussion = createPostApi<
   ApiTypes.DeleteDiscussionRequestDto,
   ApiTypes.DeleteDiscussionResponseDto
->("discussion/deleteDiscussion", false);
+>("discussion/deleteDiscussion", null);
 export const deleteDiscussionReply = createPostApi<
   ApiTypes.DeleteDiscussionReplyRequestDto,
   ApiTypes.DeleteDiscussionReplyResponseDto
->("discussion/deleteDiscussionReply", false);
+>("discussion/deleteDiscussionReply", null);
 export const setDiscussionPublic = createPostApi<
   ApiTypes.SetDiscussionPublicRequestDto,
   ApiTypes.SetDiscussionPublicResponseDto
->("discussion/setDiscussionPublic", false);
+>("discussion/setDiscussionPublic", null);
 export const setDiscussionReplyPublic = createPostApi<
   ApiTypes.SetDiscussionReplyPublicRequestDto,
   ApiTypes.SetDiscussionReplyPublicResponseDto
->("discussion/setDiscussionReplyPublic", false);
+>("discussion/setDiscussionReplyPublic", null);
 export const setDiscussionPermissions = createPostApi<
   ApiTypes.SetDiscussionPermissionsRequestDto,
   ApiTypes.SetDiscussionPermissionsResponseDto
->("discussion/setDiscussionPermissions", false);
+>("discussion/setDiscussionPermissions", null);

@@ -8,7 +8,7 @@ import style from "./DiscussionEditPage.module.less";
 import { defineRoute, RouteError } from "@/AppRouter";
 import api from "@/api";
 import { appState } from "@/appState";
-import { useLocalizer, useRecaptcha, useNavigationChecked } from "@/utils/hooks";
+import { CaptchaAction, useLocalizer, useCaptcha, useNavigationChecked } from "@/utils/hooks";
 import { DiscussionEditor } from "../view/DiscussionViewPage";
 import { getBreadcrumb } from "../discussions/DiscussionsPage";
 import toast from "@/utils/toast";
@@ -30,13 +30,13 @@ let DiscussionEditPage: React.FC<DiscussionEditPageProps> = props => {
     appState.enterNewPage(props.discussion ? `${_(".title_update")} #${props.discussion.meta.id}` : _(".title_new"));
   }, [appState.locale, props.discussion]);
 
-  const recaptcha = useRecaptcha();
+  const captcha = useCaptcha(CaptchaAction.CreateDiscussion, !props.discussion);
 
   const [title, setTitle] = useState(props.discussion ? props.discussion.meta.title : "");
   const [content, setContent] = useState(props.discussion ? props.discussion.content : "");
 
   async function onSubmit() {
-    const { requestError, response } = props.discussion
+    const { requestCancelled, requestError, response } = props.discussion
       ? await api.discussion.updateDiscussion({
           discussionId: props.discussion.meta.id,
           title,
@@ -48,9 +48,10 @@ let DiscussionEditPage: React.FC<DiscussionEditPageProps> = props => {
             title,
             content
           },
-          recaptcha("CreateDiscussion")
+          captcha
         );
 
+    if (requestCancelled) return false;
     if (requestError) toast.error(requestError(_));
     else if (response.error) toast.error(_(`.errors.${response.error}`));
     else {

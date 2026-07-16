@@ -10,42 +10,45 @@ import style from "./UserEdit.module.less";
 import api from "@/api";
 import { appState } from "@/appState";
 import toast from "@/utils/toast";
-import { useLocalizer, useFieldCheckSimple, useAsyncCallbackPending, useRecaptcha } from "@/utils/hooks";
+import { CaptchaAction, useLocalizer, useFieldCheckSimple, useAsyncCallbackPending, useCaptcha } from "@/utils/hooks";
 import { isValidPassword, stripInvalidCharactersInEmailVerificationCode } from "@/utils/validators";
 import { RouteError } from "@/AppRouter";
 import fixChineseSpace from "@/utils/fixChineseSpace";
 import formatDateTime from "@/utils/formatDateTime";
 import { makeToBeLocalizedText } from "@/locales";
 
-export async function fetchData(username: string) {
-  const result = {};
+interface SecurityViewData {
+  meta: ApiTypes.UserMetaDto;
+  sessions: ApiTypes.UserSessionDto[];
+  currentSessionId: number | null;
+}
 
-  for (const { requestError, response } of await Promise.all([
+export async function fetchData(username: string): Promise<SecurityViewData> {
+  const [securitySettingsResult, sessionsResult] = await Promise.all([
     api.user.getUserSecuritySettings({ username }),
     api.auth.listUserSessions({ username })
-  ])) {
+  ]);
+
+  for (const { requestError, response } of [securitySettingsResult, sessionsResult]) {
     if (requestError) throw new RouteError(requestError, { showRefresh: true, showBack: true });
     else if (response.error) throw new RouteError(makeToBeLocalizedText(`user_edit.errors.${response.error}`));
-    Object.assign(result, response);
   }
 
-  return result;
+  return {
+    meta: securitySettingsResult.response.meta,
+    sessions: sessionsResult.response.sessions,
+    currentSessionId: sessionsResult.response.currentSessionId
+  };
 }
 
-interface SecurityViewProps {
-  meta?: ApiTypes.UserMetaDto;
-  sessions?: ApiTypes.UserSessionDto[];
-  currentSessionId?: number;
-}
-
-const SecurityView: React.FC<SecurityViewProps> = props => {
+const SecurityView: React.FC<SecurityViewData> = props => {
   const _ = useLocalizer("user_edit.security");
 
   useEffect(() => {
     appState.enterNewPage(`${_(`.title`)} - ${props.meta.username}`, null, false);
   }, [appState.locale, props.meta]);
 
-  const recaptcha = useRecaptcha();
+  const captcha = useCaptcha(CaptchaAction.SendEmailVerificationCode, props.meta.id === appState.currentUser.id);
 
   const hasPrivilege = appState.currentUser.isAdmin || appState.currentUserPrivileges.includes("ManageUser");
 
@@ -117,14 +120,15 @@ const SecurityView: React.FC<SecurityViewProps> = props => {
   const [sendEmailVerificationCodePending, onSendEmailVerificationCode] = useAsyncCallbackPending(async () => {
     if (emailInvalid || email.toLowerCase() === appState.currentUser.email.toLowerCase()) {
     } else {
-      const { requestError, response } = await api.auth.sendEmailVerificationCode(
+      const { requestCancelled, requestError, response } = await api.auth.sendEmailVerificationCode(
         {
           email: email,
           type: "ChangeEmail",
           locale: appState.locale
         },
-        recaptcha("SendEmailVerifactionCode_ChangeEmail")
+        captcha
       );
+      if (requestCancelled) return;
       if (requestError) toast.error(requestError(_));
       else if (response.error === "DUPLICATE_EMAIL") setDuplicateEmail(true);
       else if (response.error)

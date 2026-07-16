@@ -6,16 +6,16 @@ import { createGetApi, createPostApi } from "@/api";
 
 export const addJudgeClient = createPostApi<ApiTypes.AddJudgeClientRequestDto, ApiTypes.AddJudgeClientResponseDto>(
   "judgeClient/addJudgeClient",
-  false
+  null
 );
 export const deleteJudgeClient = createPostApi<
   ApiTypes.DeleteJudgeClientRequestDto,
   ApiTypes.DeleteJudgeClientResponseDto
->("judgeClient/deleteJudgeClient", false);
+>("judgeClient/deleteJudgeClient", null);
 export const resetJudgeClientKey = createPostApi<
   ApiTypes.ResetJudgeClientKeyRequestDto,
   ApiTypes.ResetJudgeClientKeyResponseDto
->("judgeClient/resetJudgeClientKey", false);
+>("judgeClient/resetJudgeClientKey", null);
 export const listJudgeClients = createGetApi<void, ApiTypes.ListJudgeClientsResponseDto>(
   "judgeClient/listJudgeClients"
 );

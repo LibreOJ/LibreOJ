@@ -15,7 +15,7 @@ export interface Session {
   sessionKey?: string;
   sessionId?: number;
   user?: UserEntity;
-  userCanSkipRecaptcha: () => Promise<boolean>;
+  userCanSkipCaptcha: () => Promise<boolean>;
 }
 
 export interface RequestWithSession extends Request {
@@ -39,7 +39,7 @@ export class AuthMiddleware implements NestMiddleware {
           sessionKey,
           sessionId,
           user,
-          userCanSkipRecaptcha: () => this.userPrivilegeService.userHasPrivilege(user, UserPrivilegeType.SkipRecaptcha)
+          userCanSkipCaptcha: () => this.userPrivilegeService.userHasPrivilege(user, UserPrivilegeType.SkipRecaptcha)
         };
       }
     }

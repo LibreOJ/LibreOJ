@@ -13,7 +13,9 @@ import {
   IsArray,
   ArrayNotEmpty,
   ArrayUnique,
-  IsUrl
+  IsUrl,
+  IsNotEmpty,
+  Matches
 } from "class-validator";
 import { Type } from "class-transformer";
 
@@ -145,17 +147,44 @@ class SecurityConfigCrossOrigin {
   readonly whiteList: string[];
 }
 
-class SecurityConfigRecaptcha {
+class SecurityConfigTurnstile {
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
+  readonly siteKey: string;
+
+  @IsString()
+  @IsNotEmpty()
   readonly secretKey: string;
+}
 
-  @IsBoolean()
-  readonly useRecaptchaNet: boolean;
+class SecurityConfigTencentCaptcha {
+  @IsString()
+  @Matches(/^[\x21-\x7e]{1,32}$/)
+  readonly appSecretKey: string;
+
+  @IsInt()
+  @Min(1)
+  readonly appId: number;
 
   @IsString()
+  @IsNotEmpty()
+  readonly secretId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly secretKey: string;
+}
+
+class SecurityConfigCaptcha {
+  @ValidateNested()
+  @Type(() => SecurityConfigTurnstile)
   @IsOptional()
-  readonly proxyUrl: string;
+  readonly turnstile?: SecurityConfigTurnstile | null;
+
+  @ValidateNested()
+  @Type(() => SecurityConfigTencentCaptcha)
+  @IsOptional()
+  readonly tencentCaptcha?: SecurityConfigTencentCaptcha | null;
 }
 
 class SecurityConfigRateLimit {
@@ -174,8 +203,8 @@ class SecurityConfig {
   readonly maintainceKey: string;
 
   @ValidateNested()
-  @Type(() => SecurityConfigRecaptcha)
-  readonly recaptcha: SecurityConfigRecaptcha;
+  @Type(() => SecurityConfigCaptcha)
+  readonly captcha: SecurityConfigCaptcha;
 
   @ValidateNested()
   @Type(() => SecurityConfigCrossOrigin)
@@ -190,13 +219,14 @@ class SecurityConfig {
 // These config items will be sent to client
 class PreferenceConfigSecurity {
   @IsBoolean()
+  @IsOptional()
   @ApiProperty()
-  readonly recaptchaEnabled: boolean;
+  readonly captchaEnabled: boolean;
 
   @IsString()
   @IsOptional()
-  @ApiProperty()
-  readonly recaptchaKey: string;
+  @ApiProperty({ required: false })
+  readonly turnstileSiteKey?: string;
 
   @IsBoolean()
   @ApiProperty()

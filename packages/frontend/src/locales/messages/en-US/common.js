@@ -38,6 +38,7 @@ return {
   request_error: {
     400: "Invalid request.",
     401: "Verification failed. Please refresh and try again.",
+    403: "Human verification failed. Please try again.",
     429: "Too many requests. Please try again later.",
     500: "Server error. Please try again later.",
     502: "Couldn't connect to the server. Please try again later.",
@@ -45,9 +46,5 @@ return {
     504: "Timeout connecting to the server. Please try again later.",
     unknown: "Request error: {text}"
   },
-  confirm_navigation: "Be sure to leave this page? Your changes will not be saved.",
-  recaptcha: {
-    copyright:
-      'This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer noopener">Terms of Service</a> apply.'
-  }
+  confirm_navigation: "Be sure to leave this page? Your changes will not be saved."
 };

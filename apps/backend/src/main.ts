@@ -21,7 +21,6 @@ import { AppModule } from "./app.module";
 import { ConfigService } from "./config/config.service";
 import { MigrationService } from "./migration/migration.service";
 import { ErrorFilter } from "./error.filter";
-import { RecaptchaFilter } from "./recaptcha.filter";
 import { ClusterService } from "./cluster/cluster.service";
 
 // eslint-disable-next-line no-extend-native
@@ -51,7 +50,7 @@ async function initialize(): Promise<[packageInfo: any, configService: ConfigSer
   });
   const configService = app.get(ConfigService);
   app.setGlobalPrefix("api");
-  app.useGlobalFilters(app.get(ErrorFilter), app.get(RecaptchaFilter));
+  app.useGlobalFilters(app.get(ErrorFilter));
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }));
   app.use(json({ limit: "1024mb" }));
   if (configService.config.security.rateLimit) {

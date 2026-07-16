@@ -25,7 +25,14 @@ import style from "./ProblemFilesPage.module.less";
 import api from "@/api";
 import { appState } from "@/appState";
 import toast from "@/utils/toast";
-import { useAsyncCallbackPending, useLocalizer, useRecaptcha, useScreenWidthWithin, Link } from "@/utils/hooks";
+import {
+  CaptchaAction,
+  useAsyncCallbackPending,
+  useLocalizer,
+  useCaptcha,
+  useScreenWidthWithin,
+  Link
+} from "@/utils/hooks";
 import getFileIcon from "@/utils/getFileIcon";
 import formatFileSize from "@/utils/formatFileSize";
 import downloadFile from "@/utils/downloadFile";
@@ -41,10 +48,7 @@ import { isValidFilename } from "@/utils/validators";
 import { Localizer, makeToBeLocalizedText } from "@/locales";
 import { EmojiRenderer } from "@/components/EmojiRenderer";
 
-// Firefox have no WritableStream
-if (!window.WritableStream || true) {
-  (streamsaver as any).WritableStream = (await import("web-streams-polyfill/ponyfill/es6")).WritableStream;
-}
+(streamsaver as any).WritableStream = (await import("web-streams-polyfill/ponyfill/es6")).WritableStream;
 if (window.apiEndpoint.toLowerCase().startsWith("https://")) {
   (streamsaver as any).mitm = `${window.apiEndpoint}api/cors/streamsaver/mitm.html`;
 }
@@ -662,8 +666,7 @@ let FileTable: React.FC<FileTableProps> = props => {
 FileTable = observer(FileTable);
 
 interface ProblemFilesPageProps {
-  idType?: "id" | "displayId";
-  problem?: ApiTypes.GetProblemResponseDto;
+  problem: ApiTypes.GetProblemResponseDto;
 }
 
 let ProblemFilesPage: React.FC<ProblemFilesPageProps> = props => {
@@ -675,7 +678,7 @@ let ProblemFilesPage: React.FC<ProblemFilesPageProps> = props => {
     appState.enterNewPage(`${_(".title")} ${idString}`, "problem_set");
   }, [appState.locale, props.problem]);
 
-  const recaptcha = useRecaptcha();
+  const captcha = useCaptcha(CaptchaAction.AddProblemFile, props.problem.permissionOfCurrentUser.includes("Modify"));
 
   function transformResponseToFileTableItems(fileList: ApiTypes.ProblemFileDto[]): FileTableItem[] {
     return fileList.map(file => ({
@@ -800,7 +803,7 @@ let ProblemFilesPage: React.FC<ProblemFilesPageProps> = props => {
             type,
             filename: item.filename
           },
-          () => recaptcha("AddProblemFile"),
+          captcha,
           item.upload.file,
           progress =>
             updateFileUploadInfo(item.uuid, {
@@ -944,12 +947,12 @@ export default {
     const id = parseInt(request.params["id"]);
     const problem = await fetchData("id", id);
 
-    return <ProblemFilesPage key={uuid()} idType="id" problem={problem} />;
+    return <ProblemFilesPage key={uuid()} problem={problem} />;
   }),
   byDisplayId: defineRoute(async request => {
     const displayId = parseInt(request.params["displayId"]);
     const problem = await fetchData("displayId", displayId);
 
-    return <ProblemFilesPage key={uuid()} idType="displayId" problem={problem} />;
+    return <ProblemFilesPage key={uuid()} problem={problem} />;
   })
 };

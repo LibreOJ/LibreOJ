@@ -11,4 +11,4 @@ export const getHomepageSettings = createGetApi<void, ApiTypes.GetHomepageSettin
 export const updateHomepageSettings = createPostApi<
   ApiTypes.UpdateHomepageSettingsRequestDto,
   ApiTypes.UpdateHomepageSettingsResponseDto
->("homepage/updateHomepageSettings", false);
+>("homepage/updateHomepageSettings", null);

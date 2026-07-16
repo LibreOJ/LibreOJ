@@ -211,8 +211,8 @@ return {
           "View, edit all discussions and replies, manage discussions' permissions and delete discussions or replies."
       },
       SkipRecaptcha: {
-        name: "Skip reCAPTCHA",
-        notes: "Submit any requests without verifying reCAPTCHA (if enabled). Useful for robots and virtual judge."
+        name: "Skip human verification",
+        notes: "Submit protected requests without human verification. Useful for robots and virtual judges."
       }
     },
     admin_only: "Only admins can change user's privileges.",

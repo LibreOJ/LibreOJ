@@ -9,7 +9,7 @@ import style from "../common.module.less";
 import { appState } from "@/appState";
 
 import api from "@/api";
-import { useLocalizer, useFieldCheck, useRecaptcha, useNavigationChecked } from "@/utils/hooks";
+import { CaptchaAction, useLocalizer, useFieldCheck, useCaptcha, useNavigationChecked } from "@/utils/hooks";
 import toast from "@/utils/toast";
 import { isValidEmail, isValidPassword, stripInvalidCharactersInEmailVerificationCode } from "@/utils/validators";
 import { refreshSession } from "@/initApp";
@@ -32,7 +32,8 @@ let ForgetPage: React.FC = () => {
     appState.enterNewPage(_(".title"));
   }, [appState.locale]);
 
-  const recaptcha = useRecaptcha();
+  const resetPasswordCaptcha = useCaptcha(CaptchaAction.ResetPassword);
+  const emailVerificationCaptcha = useCaptcha(CaptchaAction.SendEmailVerificationCode);
 
   const [successMessage, setSuccessMessage] = useState<string>(null);
 
@@ -96,15 +97,19 @@ let ForgetPage: React.FC = () => {
       refRetypePasswordInput.current.focus();
       refRetypePasswordInput.current.select();
     } else {
-      const { requestError, response } = await api.auth.resetPassword(
+      const { requestCancelled, requestError, response } = await api.auth.resetPassword(
         {
           email: email,
           emailVerificationCode: emailVerificationCode,
           newPassword: password
         },
-        recaptcha("ResetPassword")
+        resetPasswordCaptcha
       );
 
+      if (requestCancelled) {
+        setResetPasswordPending(false);
+        return;
+      }
       if (requestError) toast.error(requestError(_));
       else if (response.error) {
         switch (response.error) {
@@ -157,14 +162,18 @@ let ForgetPage: React.FC = () => {
       refEmailInput.current.focus();
       refEmailInput.current.select();
     } else {
-      const { requestError, response } = await api.auth.sendEmailVerificationCode(
+      const { requestCancelled, requestError, response } = await api.auth.sendEmailVerificationCode(
         {
           email: email,
           type: "ResetPassword",
           locale: appState.locale
         },
-        recaptcha("SendEmailVerifactionCode_ResetPassword")
+        emailVerificationCaptcha
       );
+      if (requestCancelled) {
+        setSendEmailVerificationCodePending(false);
+        return;
+      }
       if (requestError) toast.error(requestError(_));
       else if (response.error) toast.error(_(`.errors.${response.error}`, { errorMessage: response.errorMessage }));
       else {
@@ -300,8 +309,6 @@ let ForgetPage: React.FC = () => {
                 })}
               />
             </Ref>
-
-            {recaptcha.getCopyrightMessage(style.recaptchaCopyright)}
 
             <Button
               className={successMessage && style.successButton}

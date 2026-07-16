@@ -1,6 +1,7 @@
 import Axios from "axios";
 
 import { ApiResponse } from "@/api";
+import { CaptchaAction, CaptchaController } from "@/captcha";
 
 export interface ApiResponseWithUploadResult<T extends { error?: string }> {
   uploadCancelled?: boolean;
@@ -20,12 +21,13 @@ export interface FileUploadApiProgress {
 if (FormData.prototype[Symbol.toStringTag] !== "FormData") FormData.prototype[Symbol.toStringTag] = "FormData";
 
 export async function callApiWithFileUpload<
+  Action extends CaptchaAction,
   Request extends { uploadInfo?: ApiTypes.FileUploadInfoDto },
   Response extends { error?: string; signedUploadRequest?: ApiTypes.SignedFileUploadRequestDto }
 >(
-  api: (request: Request, recaptchaTokenPromise: Promise<string>) => Promise<ApiResponse<Response>>,
+  api: (request: Request, captcha: CaptchaController<Action>) => Promise<ApiResponse<Response>>,
   request: Omit<Request, "uploadInfo">,
-  getRecaptchaToken: () => Promise<string>,
+  captcha: CaptchaController<Action>,
   file: Blob,
   progressCallback?: (progress: FileUploadApiProgress) => void,
   cancelFunctionReceiver?: (cancelFunction: () => void) => void
@@ -42,8 +44,9 @@ export async function callApiWithFileUpload<
           }
         : null
     } as Request,
-    getRecaptchaToken()
+    captcha
   );
+  if (result.requestCancelled) return { uploadCancelled: true };
   if (result.requestError) return result;
 
   if (result.response.signedUploadRequest) {
@@ -114,7 +117,7 @@ export async function callApiWithFileUpload<
 
     if (progressCallback) progressCallback({ status: "Requesting", progress: 0 });
 
-    return await api(
+    const completionResult = await api(
       {
         ...request,
         uploadInfo: {
@@ -122,8 +125,9 @@ export async function callApiWithFileUpload<
           uuid: result.response.signedUploadRequest.uuid
         }
       } as Request,
-      getRecaptchaToken()
+      captcha
     );
+    return completionResult.requestCancelled ? { uploadCancelled: true } : completionResult;
   }
   // Upload is not required
   else return result;

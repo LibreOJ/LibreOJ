@@ -213,9 +213,8 @@ return {
           "[TBT] View, edit all discussions and replies, manage discussions' permissions and delete discussions or replies."
       },
       SkipRecaptcha: {
-        name: "[TBT] Skip reCAPTCHA",
-        notes:
-          "[TBT] Submit any requests without verifying reCAPTCHA (if enabled). Useful for robots and virtual judge."
+        name: "[TBT] Skip human verification",
+        notes: "[TBT] Submit protected requests without human verification. Useful for robots and virtual judges."
       }
     },
     admin_only: "[TBT] Only admins can change user's privileges.",
