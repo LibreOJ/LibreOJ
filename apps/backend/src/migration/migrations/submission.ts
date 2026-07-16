@@ -296,6 +296,7 @@ export const migrationSubmission: MigrationInterface = {
           : Buffer.byteLength(oldSubmission.code, "utf-8");
         submission.score = Math.max(0, Math.min(oldSubmission.score, 100));
         submission.status = convertSubmissionStatus(oldSubmission.status);
+        submission.totalOccupiedTime = 0;
         submission.submitTime = new Date(oldSubmission.submit_time * 1000);
         submission.problemId = oldSubmission.problem_id;
         submission.submitterId = oldSubmission.user_id;
@@ -339,15 +340,19 @@ export const migrationSubmission: MigrationInterface = {
         }
 
         submissionDetail.result =
-          submission.status === SubmissionStatus.Pending ? null : { progressType: SubmissionProgressType.Finished };
+          submission.status === SubmissionStatus.Pending
+            ? null
+            : {
+                progressType: SubmissionProgressType.Finished,
+                status: submission.status,
+                score: submission.score,
+                totalOccupiedTime: submission.totalOccupiedTime
+              };
         const { result } = submissionDetail;
         if (result) {
           try {
             const oldResult: OldSubmissionResult = JSON.parse(oldSubmission.result);
             if (oldResult.systemMessage) result.systemMessage = parseOmittedString(oldResult.systemMessage);
-
-            result.score = submission.score;
-            result.status = submission.status;
 
             if (oldResult.compile) {
               let oldCompileMessage = oldResult.compile.message || "";

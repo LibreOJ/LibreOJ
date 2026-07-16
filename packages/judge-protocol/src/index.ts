@@ -37,6 +37,49 @@ export enum SubmissionStatus {
   JudgementFailed = "JudgementFailed"
 }
 
+export enum SubmissionProgressType {
+  Preparing = "Preparing",
+  Compiling = "Compiling",
+  Running = "Running",
+  Finished = "Finished"
+}
+
+export interface SubmissionTestcaseProgressReference {
+  waiting?: boolean;
+  running?: boolean;
+  testcaseHash?: string;
+}
+
+export interface SubmissionProgressDetails<TestcaseResult> {
+  compile?: {
+    success: boolean;
+    message: OmittableString;
+  };
+  systemMessage?: OmittableString;
+  testcaseResult?: Record<string, TestcaseResult>;
+  samples?: SubmissionTestcaseProgressReference[];
+  subtasks?: {
+    score: number;
+    fullScore: number;
+    testcases: SubmissionTestcaseProgressReference[];
+  }[];
+}
+
+export type SubmissionActiveProgress<TestcaseResult> = SubmissionProgressDetails<TestcaseResult> & {
+  progressType: SubmissionProgressType.Preparing | SubmissionProgressType.Compiling | SubmissionProgressType.Running;
+};
+
+export type SubmissionFinishedProgress<TestcaseResult> = SubmissionProgressDetails<TestcaseResult> & {
+  progressType: SubmissionProgressType.Finished;
+  status: SubmissionStatus;
+  score: number;
+  totalOccupiedTime: number;
+};
+
+export type SubmissionProgress<TestcaseResult = unknown> =
+  | SubmissionActiveProgress<TestcaseResult>
+  | SubmissionFinishedProgress<TestcaseResult>;
+
 export interface JudgeClientSystemInfo {
   os: string;
   kernel: string;

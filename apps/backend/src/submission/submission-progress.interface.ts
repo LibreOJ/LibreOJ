@@ -1,47 +1,14 @@
-import { SubmissionStatus, OmittableString } from "@libreoj/judge-protocol";
+import {
+  SubmissionFinishedProgress as ProtocolSubmissionFinishedProgress,
+  SubmissionProgress as ProtocolSubmissionProgress
+} from "@libreoj/judge-protocol";
 
-import { JudgeTaskProgress } from "../judge/judge-task-progress.interface";
-
-export enum SubmissionProgressType {
-  Preparing = "Preparing",
-  Compiling = "Compiling",
-  Running = "Running",
-  Finished = "Finished"
-}
+export { SubmissionProgressType } from "@libreoj/judge-protocol";
 
 export interface SubmissionTestcaseResult {}
 
-interface TestcaseProgressReference {
-  // If !waiting && !running && !testcaseHash, it's "Skipped"
-  waiting?: boolean;
-  running?: boolean;
-  testcaseHash?: string;
-}
+export type SubmissionProgress<TestcaseResult extends SubmissionTestcaseResult = SubmissionTestcaseResult> =
+  ProtocolSubmissionProgress<TestcaseResult>;
 
-export interface SubmissionProgress<TestcaseResult extends SubmissionTestcaseResult = SubmissionTestcaseResult>
-  extends JudgeTaskProgress {
-  progressType: SubmissionProgressType;
-
-  // Only valid when finished
-  status?: SubmissionStatus;
-  score?: number;
-  totalOccupiedTime?: number;
-
-  compile?: {
-    success: boolean;
-    message: OmittableString;
-  };
-
-  systemMessage?: OmittableString;
-
-  // testcaseHash
-  // ->
-  // result
-  testcaseResult?: Record<string, TestcaseResult>;
-  samples?: TestcaseProgressReference[];
-  subtasks?: {
-    score: number;
-    fullScore: number;
-    testcases: TestcaseProgressReference[];
-  }[];
-}
+export type SubmissionFinishedProgress<TestcaseResult extends SubmissionTestcaseResult = SubmissionTestcaseResult> =
+  ProtocolSubmissionFinishedProgress<TestcaseResult>;

@@ -1,5 +1,10 @@
 import winston from "winston";
-import { SubmissionStatus } from "@libreoj/judge-protocol";
+import {
+  SubmissionProgress,
+  SubmissionProgressDetails,
+  SubmissionProgressType,
+  SubmissionStatus
+} from "@libreoj/judge-protocol";
 
 import { SubmissionFile, SubmissionFileInfo } from "./submissionFile";
 
@@ -36,49 +41,7 @@ export interface SubmissionExtraInfo<JudgeInfo, SubmissionContent> {
   file?: SubmissionFileInfo;
 }
 
-export enum SubmissionProgressType {
-  Preparing = "Preparing",
-  Compiling = "Compiling",
-  Running = "Running",
-  Finished = "Finished"
-}
-
-export { SubmissionStatus } from "@libreoj/judge-protocol";
-
-interface TestcaseProgressReference {
-  // If !waiting && !running && !testcaseHash, it's "Skipped"
-  waiting?: boolean;
-  running?: boolean;
-  testcaseHash?: string;
-}
-
-export interface SubmissionProgress<TestcaseResult> {
-  progressType: SubmissionProgressType;
-
-  // Only valid when finished
-  status?: SubmissionStatus;
-  score?: number;
-  totalOccupiedTime?: number;
-
-  compile?: {
-    success: boolean;
-    message: OmittableString;
-  };
-
-  systemMessage?: OmittableString;
-
-  // testcaseHash = hash(IF, OF, TL, ML) for traditional
-  //                hash(ID, OD, TL, ML) for samples
-  // ->
-  // result
-  testcaseResult?: Record<string, TestcaseResult>;
-  samples?: TestcaseProgressReference[];
-  subtasks?: {
-    score: number;
-    fullScore: number;
-    testcases: TestcaseProgressReference[];
-  }[];
-}
+export { SubmissionProgressType, SubmissionStatus } from "@libreoj/judge-protocol";
 
 export interface SubmissionTask<JudgeInfo, SubmissionContent, TestcaseResult, ExtraParameters>
   extends Task<SubmissionExtraInfo<JudgeInfo, SubmissionContent>, SubmissionProgress<TestcaseResult>> {
@@ -154,8 +117,29 @@ function getTestcaseCountOfSubtask(judgeInfo: JudgeInfoCommon, subtaskIndex: num
 export default async function onSubmission<JudgeInfo, SubmissionContent, TestcaseResult, ExtraParameters>(
   task: SubmissionTask<JudgeInfo, SubmissionContent, TestcaseResult, ExtraParameters>
 ): Promise<void> {
-  // Calculate the total wall time time occupied by this submission
-  const startTime = new Date();
+  const startTime = Date.now();
+  const progress: SubmissionProgressDetails<TestcaseResult> = {};
+  let finished = false;
+
+  const finish = (status: SubmissionStatus, score: number, systemMessage?: OmittableString) => {
+    if (finished) return;
+    finished = true;
+    task.reportProgressRaw({
+      ...progress,
+      progressType: SubmissionProgressType.Finished,
+      status,
+      score,
+      totalOccupiedTime: Date.now() - startTime,
+      ...(systemMessage === undefined ? {} : { systemMessage })
+    });
+  };
+
+  const reportRunningProgress = () => {
+    task.reportProgressRaw({
+      ...progress,
+      progressType: SubmissionProgressType.Running
+    });
+  };
 
   try {
     if (!(task.extraInfo.problemType in ProblemType)) {
@@ -185,14 +169,9 @@ export default async function onSubmission<JudgeInfo, SubmissionContent, Testcas
 
     const { judgeInfo } = task.extraInfo;
 
-    const progress: SubmissionProgress<TestcaseResult> = {
-      progressType: null
-    };
-
     const sampleTestcaseHashes: string[] = [];
     const testcaseHashes: string[][] = [];
 
-    let finished = false;
     task.events = {
       compiling() {
         if (finished) return;
@@ -206,7 +185,6 @@ export default async function onSubmission<JudgeInfo, SubmissionContent, Testcas
       },
       startedRunning(samplesCount, subtaskFullScores) {
         if (finished) return;
-        progress.progressType = SubmissionProgressType.Running;
         progress.testcaseResult = {};
         if (samplesCount) {
           progress.samples = [...new Array(samplesCount)].map(() => ({
@@ -220,7 +198,7 @@ export default async function onSubmission<JudgeInfo, SubmissionContent, Testcas
             waiting: true
           }))
         }));
-        task.reportProgressRaw(progress);
+        reportRunningProgress();
       },
       async sampleTestcaseWillEnqueue(sampleId, sample, extraParameters) {
         if (finished) return null;
@@ -236,7 +214,7 @@ export default async function onSubmission<JudgeInfo, SubmissionContent, Testcas
         if (finished) return;
         delete progress.samples[sampleId].waiting;
         progress.samples[sampleId].running = true;
-        task.reportProgressRaw(progress);
+        reportRunningProgress();
       },
       sampleTestcaseFinished(sampleId, sample, result) {
         if (finished) return;
@@ -248,7 +226,7 @@ export default async function onSubmission<JudgeInfo, SubmissionContent, Testcas
           progress.samples[sampleId].testcaseHash = testcaseHash;
           progress.testcaseResult[testcaseHash] = result;
         }
-        task.reportProgressRaw(progress);
+        reportRunningProgress();
       },
       async testcaseWillEnqueue(subtaskIndex, testcaseIndex, extraParameters) {
         if (finished) return null;
@@ -271,7 +249,7 @@ export default async function onSubmission<JudgeInfo, SubmissionContent, Testcas
         if (finished) return;
         delete progress.subtasks[subtaskIndex].testcases[testcaseIndex].waiting;
         progress.subtasks[subtaskIndex].testcases[testcaseIndex].running = true;
-        task.reportProgressRaw(progress);
+        reportRunningProgress();
       },
       testcaseFinished(subtaskIndex, testcaseIndex, result) {
         if (finished) return;
@@ -283,21 +261,15 @@ export default async function onSubmission<JudgeInfo, SubmissionContent, Testcas
           progress.subtasks[subtaskIndex].testcases[testcaseIndex].testcaseHash = testcaseHash;
           progress.testcaseResult[testcaseHash] = result;
         }
-        task.reportProgressRaw(progress);
+        reportRunningProgress();
       },
       subtaskScoreUpdated(subtaskIndex, newScore) {
         if (finished) return;
         progress.subtasks[subtaskIndex].score = (newScore * progress.subtasks[subtaskIndex].fullScore) / 100;
-        task.reportProgressRaw(progress);
+        reportRunningProgress();
       },
       finished(status, score) {
-        if (finished) return;
-        finished = true;
-        progress.progressType = SubmissionProgressType.Finished;
-        progress.status = status;
-        progress.score = score;
-        progress.totalOccupiedTime = +new Date() - +startTime;
-        task.reportProgressRaw(progress);
+        finish(status, score);
       }
     };
 
@@ -310,11 +282,11 @@ export default async function onSubmission<JudgeInfo, SubmissionContent, Testcas
     }
 
     const isConfigurationError = e instanceof ConfigurationError;
-    task.reportProgressRaw({
-      progressType: SubmissionProgressType.Finished,
-      status: isConfigurationError ? SubmissionStatus.ConfigurationError : SubmissionStatus.SystemError,
-      systemMessage: isConfigurationError ? e.originalMessage : e.stack || String(e)
-    });
+    finish(
+      isConfigurationError ? SubmissionStatus.ConfigurationError : SubmissionStatus.SystemError,
+      0,
+      isConfigurationError ? e.originalMessage : e.stack || String(e)
+    );
     if (!isConfigurationError) winston.error(`Error on submission task ${task.taskId}, ${e.stack || e}`);
   } finally {
     // Remove downloaded submission file
