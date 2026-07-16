@@ -44,6 +44,7 @@ if [[ "$ACTUAL_SHA256" != "$EXPECTED_SHA256" ]]; then
 fi
 
 TEMPORARY_DIRECTORY="$(mktemp -d "$DESTINATION_PARENT/.rootfs-staging-XXXXXXXX")"
+chmod 0755 "$TEMPORARY_DIRECTORY"
 mounted=()
 
 unmount_all() {
@@ -134,7 +135,8 @@ for filename in "${!VALIDATION_FILES[@]}"; do
     mounted+=("$target")
 done
 
-chroot "$TEMPORARY_DIRECTORY" /bin/bash "$VALIDATION_DIRECTORY/libreoj-rootfs-smoke-test" stage
+chroot --userspec=999:999 "$TEMPORARY_DIRECTORY" \
+    /bin/bash "$VALIDATION_DIRECTORY/libreoj-rootfs-smoke-test" stage
 
 if ! unmount_all; then
     echo "Unable to unmount validation filesystems under $TEMPORARY_DIRECTORY" >&2
@@ -161,7 +163,6 @@ if [[ -e "$DESTINATION" ]]; then
     exit 1
 fi
 
-chmod 0755 "$TEMPORARY_DIRECTORY"
 mv "$TEMPORARY_DIRECTORY" "$DESTINATION"
 trap - EXIT
 

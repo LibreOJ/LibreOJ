@@ -15,7 +15,8 @@ import {
   IsArray,
   ArrayMinSize,
   IsOptional,
-  IsObject
+  IsObject,
+  Matches
 } from "class-validator";
 import winston from "winston";
 import yaml from "js-yaml";
@@ -33,6 +34,9 @@ winston.add(
 export class SandboxConfig {
   @IsString()
   rootfs: string;
+
+  @Matches(/^[0-9a-f]{64}$/)
+  rootfsId: string;
 
   @IsString()
   @IsOptional()
@@ -141,6 +145,12 @@ if (errors.length > 0) {
 // Check config (errors)
 if (new Set(config.taskWorkingDirectories.map(path => resolve(path))).size !== config.taskWorkingDirectories.length) {
   winston.error(`Duplicated paths in config.taskWorkingDirectories, please check the config file.`);
+  process.exit(1);
+}
+
+const actualRootfsId = fs.readFileSync(resolve(config.sandbox.rootfs, "etc/libreoj-rootfs-id"), "utf-8").trim();
+if (actualRootfsId !== config.sandbox.rootfsId) {
+  winston.error(`Configured RootFS ID ${config.sandbox.rootfsId} doesn't match installed RootFS ID ${actualRootfsId}`);
   process.exit(1);
 }
 

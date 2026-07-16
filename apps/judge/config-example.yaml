@@ -16,6 +16,7 @@ downloadTimeout: 20000
 downloadRetry: 3
 sandbox:
   rootfs: /opt/rootfs-ng
+  rootfsId: YOUR_ROOTFS_ID
   user: sandbox
   hostname: null
   environments:

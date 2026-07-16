@@ -8,7 +8,11 @@ import moment from "moment-timezone";
 
 import { JudgeTaskType, SubmissionStatus } from "@libreoj/judge-protocol";
 
-import { SubmissionProgress, SubmissionProgressType } from "./submission-progress.interface";
+import {
+  SubmissionFinishedProgress,
+  SubmissionProgress,
+  SubmissionProgressType
+} from "./submission-progress.interface";
 
 import { SubmissionContent } from "./submission-content.interface";
 
@@ -667,7 +671,7 @@ export class SubmissionService implements JudgeTaskService<SubmissionProgress, S
   private async onSubmissionFinished(
     submission: SubmissionEntity,
     problem: ProblemEntity,
-    progress: SubmissionProgress
+    progress: SubmissionFinishedProgress
   ): Promise<void> {
     const oldSubmission = { ...submission };
 
@@ -678,8 +682,6 @@ export class SubmissionService implements JudgeTaskService<SubmissionProgress, S
     submission.status = progress.status;
     submission.score = progress.score;
     submission.totalOccupiedTime = progress.totalOccupiedTime;
-
-    this.metricSubmissionJudgeTime.observe(submission.totalOccupiedTime);
 
     const timeAndMemory = this.problemTypeFactoryService
       .type(problem.type)
@@ -723,6 +725,8 @@ export class SubmissionService implements JudgeTaskService<SubmissionProgress, S
 
       await this.submissionProgressService.emitSubmissionEvent(submission.id, SubmissionEventType.Progress, progress);
     });
+
+    if (finished) this.metricSubmissionJudgeTime.observe(progress.totalOccupiedTime / 1000);
 
     return true;
   }
