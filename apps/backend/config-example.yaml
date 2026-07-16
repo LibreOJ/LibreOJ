@@ -46,6 +46,7 @@ security:
     durationSeconds: 10
 preference:
   siteName: LibreOJ
+  copyrightNotice: LibreOJ Open Source Project
   security:
     recaptchaEnabled: false
     recaptchaKey: null

@@ -392,6 +392,10 @@ export class PreferenceConfig {
   @ApiProperty()
   readonly siteName: string;
 
+  @IsString()
+  @ApiProperty()
+  readonly copyrightNotice: string;
+
   @ValidateNested()
   @Type(() => PreferenceConfigSecurity)
   @ApiProperty()

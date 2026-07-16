@@ -179,7 +179,7 @@ let AppLayout: React.FC<React.PropsWithChildren> = props => {
       <Segment vertical className={className}>
         <Container textAlign="center">
           <EmojiRenderer>
-            <div>{appState.serverPreference.siteName} Powered by LibreOJ</div>
+            <div>{appState.serverPreference.copyrightNotice}</div>
           </EmojiRenderer>
           <div id={style.footerVersion} className="monospace">
             <span>

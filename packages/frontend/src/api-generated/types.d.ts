@@ -569,6 +569,7 @@ declare namespace ApiTypes {
   }
   export interface PreferenceConfig {
     siteName: string;
+    copyrightNotice: string;
     security: ApiTypes.PreferenceConfigSecurity;
     pagination: ApiTypes.PreferenceConfigPagination;
     misc: ApiTypes.PreferenceConfigMisc;
