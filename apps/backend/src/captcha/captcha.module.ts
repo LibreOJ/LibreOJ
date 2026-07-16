@@ -12,6 +12,6 @@ import { ConfigModule } from "../config/config.module";
   imports: [ConfigModule],
   controllers: [CaptchaController],
   providers: [CaptchaGuard, CaptchaService, TencentCaptchaService, TurnstileService],
-  exports: [CaptchaGuard]
+  exports: [CaptchaGuard, CaptchaService]
 })
 export class CaptchaModule {}
