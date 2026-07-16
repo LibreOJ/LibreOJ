@@ -51,6 +51,7 @@ export interface CaptchaController<Action extends CaptchaAction = CaptchaAction>
 
 const TURNSTILE_INITIALIZATION_TIMEOUT = 5000;
 const TURNSTILE_ACQUISITION_TIMEOUT = 1500;
+const TURNSTILE_RETRY_TIMEOUT = 8000;
 const TENCENT_CAPTCHA_INITIALIZATION_TIMEOUT = 5000;
 
 const poll = async (condition: () => boolean, timeout: number): Promise<boolean> => {
@@ -188,6 +189,7 @@ type TurnstileState =
   | { status: "initializing" }
   | { status: "acquiring" }
   | { status: "ready"; token: string }
+  | { status: "retryableError" }
   | { status: "unavailable" };
 
 export const useCaptcha = <Action extends CaptchaAction>(action: Action): CaptchaController<Action> => {
@@ -201,8 +203,27 @@ export const useCaptcha = <Action extends CaptchaAction>(action: Action): Captch
 
     const resetTurnstile = () => {
       if (!turnstile || !turnstileWidgetId) return;
-      turnstile.reset(turnstileWidgetId);
       turnstileState = { status: "acquiring" };
+      turnstile.reset(turnstileWidgetId);
+    };
+
+    const waitForTurnstileToken = async (timeout: number): Promise<string | undefined> => {
+      const deadline = Date.now() + timeout;
+      while (true) {
+        if (turnstileState.status === "ready") return turnstileState.token;
+        if (turnstileState.status === "retryableError" || turnstileState.status === "unavailable") return undefined;
+        if (Date.now() >= deadline) return undefined;
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+    };
+
+    const acquireTurnstileToken = async (): Promise<string | undefined> => {
+      let token = await waitForTurnstileToken(TURNSTILE_ACQUISITION_TIMEOUT);
+      if (token || turnstileState.status !== "retryableError") return token;
+
+      resetTurnstile();
+      token = await waitForTurnstileToken(TURNSTILE_RETRY_TIMEOUT);
+      return token;
     };
 
     const mount = () => {
@@ -227,16 +248,23 @@ export const useCaptcha = <Action extends CaptchaAction>(action: Action): Captch
             action,
             size: "invisible",
             execution: "render",
+            retry: "never",
             "response-field": false,
             callback: token => {
               turnstileState = { status: "ready", token };
             },
             "error-callback": errorCode => {
               console.warn(`Turnstile failed with code ${errorCode}`);
-              turnstileState = { status: "unavailable" };
+              const retryable =
+                errorCode.startsWith("300") ||
+                errorCode.startsWith("600") ||
+                ["110600", "110620", "200500"].includes(errorCode);
+              turnstileState = {
+                status: retryable ? "retryableError" : "unavailable"
+              };
             },
             "timeout-callback": () => {
-              turnstileState = { status: "unavailable" };
+              turnstileState = { status: "retryableError" };
             },
             "unsupported-callback": () => {
               turnstileState = { status: "unavailable" };
@@ -271,20 +299,10 @@ export const useCaptcha = <Action extends CaptchaAction>(action: Action): Captch
         if (!appState.serverPreference.security.captchaEnabled || appState.currentUserHasPrivilege("SkipRecaptcha")) {
           acquisition = { status: "success" };
         } else {
-          const startedAt = Date.now();
-          while (Date.now() - startedAt <= TURNSTILE_ACQUISITION_TIMEOUT) {
-            if (turnstileState.status === "ready") {
-              acquisition = {
-                status: "success",
-                result: { turnstile: { token: turnstileState.token } }
-              };
-              break;
-            }
-            if (turnstileState.status === "unavailable") break;
-            await new Promise(resolve => setTimeout(resolve, 50));
-          }
-
-          acquisition ??= await acquireTencentCaptchaToken();
+          const turnstileToken = await acquireTurnstileToken();
+          acquisition = turnstileToken
+            ? { status: "success", result: { turnstile: { token: turnstileToken } } }
+            : await acquireTencentCaptchaToken();
         }
 
         return {
