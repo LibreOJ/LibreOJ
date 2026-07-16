@@ -1,5 +1,18 @@
+diff --git a/dist/index.js b/dist/index.js
+index 9c664233af3074f62234a63d9badcb385484a556..78be30cc4f08a6440d58c6576a9e6fb57e21fcc7 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -68,7 +68,7 @@ function builtinsResolver(opts) {
+ // @ts-ignore
+ function index (opts = {}) {
+     const injectPlugin = inject({
+-        include: opts.include === undefined ? 'node_modules/**/*.js' : undefined,
++        include: opts.include === undefined ? 'node_modules/**/*.js' : opts.include,
+         exclude: opts.exclude,
+         sourceMap: opts.sourceMap,
+         modules: {
 diff --git a/dist/types/index.d.ts b/dist/types/index.d.ts
-index fdc8d97..5dbd529 100644
+index fdc8d97b25d399a470ef6b62dc0b752685e44f19..5dbd5292bc788b636b5b2fc805ce4654bc29a478 100644
 --- a/dist/types/index.d.ts
 +++ b/dist/types/index.d.ts
 @@ -1,7 +1,7 @@

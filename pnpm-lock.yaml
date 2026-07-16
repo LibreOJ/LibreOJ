@@ -22,7 +22,7 @@ patchedDependencies:
   fomantic-ui-css@2.8.8: 25974e10929356d55fd8ea9639b74ae59534d765c834d482aa3d3149583699d3
   markdown-it-mentions@1.0.0: 103ff5c1042911b30ab1f0dd4c2f2155c31d0a37448fb6c30e24a7d3e12bbd8b
   react-navi@0.15.0: 3dd26aa0b31e9b900dfc3b63fdfbc717ea9c43518e2ffd2228c7263aa09e1a79
-  rollup-plugin-node-polyfills@0.2.1: d5c2c2e255fecaad939b8b8ce436048bc8ece16db1391436d167e86b640c9f4f
+  rollup-plugin-node-polyfills@0.2.1: 689cd0dfbdadb7f27596cdea452abeb4339049ce76d13dfea4b7f398a620d60b
   vite-plugin-html-minifier-terser@2.0.3: e4725d9e7390d74c0e6f18ec980745323d3642ea35ce1bada5155489ec5d7e46
   vite-plugin-public-path@1.0.0: fa517ae04caf37b2819bb91d971847be11e1d2bb77b687e3a3fc50b4a6e8a514
 
@@ -924,7 +924,7 @@ importers:
         version: 8.3.4(@types/react@18.0.15)(react@18.2.0)
       rollup-plugin-node-polyfills:
         specifier: 0.2.1
-        version: 0.2.1(patch_hash=d5c2c2e255fecaad939b8b8ce436048bc8ece16db1391436d167e86b640c9f4f)
+        version: 0.2.1(patch_hash=689cd0dfbdadb7f27596cdea452abeb4339049ce76d13dfea4b7f398a620d60b)
       rollup-plugin-visualizer:
         specifier: ^5.7.1
         version: 5.7.1(rollup@2.78.1)
@@ -8219,7 +8219,7 @@ snapshots:
     dependencies:
       esbuild: 0.14.54
       escape-string-regexp: 4.0.0
-      rollup-plugin-node-polyfills: 0.2.1(patch_hash=d5c2c2e255fecaad939b8b8ce436048bc8ece16db1391436d167e86b640c9f4f)
+      rollup-plugin-node-polyfills: 0.2.1(patch_hash=689cd0dfbdadb7f27596cdea452abeb4339049ce76d13dfea4b7f398a620d60b)
 
   '@esbuild/aix-ppc64@0.28.1':
     optional: true
@@ -13726,7 +13726,7 @@ snapshots:
 
   rollup-plugin-memory@2.0.0: {}
 
-  rollup-plugin-node-polyfills@0.2.1(patch_hash=d5c2c2e255fecaad939b8b8ce436048bc8ece16db1391436d167e86b640c9f4f):
+  rollup-plugin-node-polyfills@0.2.1(patch_hash=689cd0dfbdadb7f27596cdea452abeb4339049ce76d13dfea4b7f398a620d60b):
     dependencies:
       rollup-plugin-inject: 3.0.2
 

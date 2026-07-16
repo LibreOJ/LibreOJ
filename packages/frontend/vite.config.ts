@@ -258,7 +258,7 @@ export default defineConfig({
     minify: "terser",
     target: resolveToEsbuildTarget(normalizeBrowserslist(modernTargets), { printUnknownTargets: false }),
     rollupOptions: {
-      plugins: [rollupNodePolyFill()]
+      plugins: [rollupNodePolyFill({ include: /[/\\]node_modules[/\\].*\.js$/ })]
     }
   },
   esbuild: {
