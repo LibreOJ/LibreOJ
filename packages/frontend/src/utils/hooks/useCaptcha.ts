@@ -7,14 +7,6 @@ import localeMeta from "@/locales/meta";
 import { defaultDarkTheme } from "@/themes";
 
 export const CaptchaAction = {
-  Login: "login",
-  SendEmailVerificationCode: "email_verification",
-  Register: "register",
-  ResetPassword: "reset_password",
-  CreateDiscussion: "create_discussion",
-  CreateDiscussionReply: "reply_discussion",
-  CreateProblem: "create_problem",
-  AddProblemFile: "add_problem_file",
   SubmitProblem: "submit_problem"
 } as const;
 
@@ -108,7 +100,7 @@ type TencentCaptchaConstructor = new (
     userLanguage: string;
     enableDarkMode: boolean | "force";
     aidEncrypted: string;
-    aidEncryptedType: "cbc";
+    aidEncryptedType: "gcm";
     loading: boolean;
     type: "popup";
   }
@@ -147,7 +139,6 @@ const acquireTencentCaptchaToken = async (): Promise<PendingCaptchaAcquisition> 
   ]);
   if (requestError) throw new Error("Failed to acquire Tencent Captcha application ID");
   if (!response) throw new Error("Tencent Captcha application ID endpoint returned no response");
-  if (!response.appId || !response.encryptedAppId) throw new Error("Tencent Captcha is not configured");
   if (!TencentCaptcha) throw new Error("Failed to initialize Tencent Captcha");
 
   return await new Promise((resolve, reject) => {
@@ -176,7 +167,7 @@ const acquireTencentCaptchaToken = async (): Promise<PendingCaptchaAcquisition> 
         userLanguage: localeMeta[appState.locale].tencentCaptchaLanguageCode,
         enableDarkMode: appState.theme === defaultDarkTheme ? "force" : false,
         aidEncrypted: response.encryptedAppId,
-        aidEncryptedType: "cbc",
+        aidEncryptedType: response.encryptedAppIdType,
         loading: true,
         type: "popup"
       }

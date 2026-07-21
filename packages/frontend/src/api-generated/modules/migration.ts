@@ -6,9 +6,9 @@ import { createGetApi, createPostApi } from "@/api";
 
 export const migrateUser = createPostApi<ApiTypes.MigrateUserRequestDto, ApiTypes.MigrateUserResponseDto>(
   "migration/migrateUser",
-  null
+  {}
 );
 export const queryUserMigrationInfo = createPostApi<
   ApiTypes.QueryUserMigrationInfoRequestDto,
   ApiTypes.QueryUserMigrationInfoResponseDto
->("migration/queryUserMigrationInfo", null);
+>("migration/queryUserMigrationInfo", {});

@@ -1,5 +1,7 @@
 // This file is generated automatically, do NOT modify it.
 
+import * as ImportedCaptchaApi from "./modules/captcha";
+import * as ImportedProofofWorkApi from "./modules/proof-of-work";
 import * as ImportedUserApi from "./modules/user";
 import * as ImportedAuthApi from "./modules/auth";
 import * as ImportedSubmissionApi from "./modules/submission";
@@ -9,8 +11,9 @@ import * as ImportedGroupApi from "./modules/group";
 import * as ImportedJudgeClientApi from "./modules/judge-client";
 import * as ImportedDiscussionApi from "./modules/discussion";
 import * as ImportedHomepageApi from "./modules/homepage";
-import * as ImportedCaptchaApi from "./modules/captcha";
 
+export const captcha = ImportedCaptchaApi;
+export const proofofWork = ImportedProofofWorkApi;
 export const user = ImportedUserApi;
 export const auth = ImportedAuthApi;
 export const submission = ImportedSubmissionApi;
@@ -20,4 +23,3 @@ export const group = ImportedGroupApi;
 export const judgeClient = ImportedJudgeClientApi;
 export const discussion = ImportedDiscussionApi;
 export const homepage = ImportedHomepageApi;
-export const captcha = ImportedCaptchaApi;

@@ -57,8 +57,8 @@ import {
   GetDiscussionPermissionsResponseError
 } from "./dto";
 
-import { Captcha } from "../captcha/captcha.decorator";
-import { CaptchaAction } from "../captcha/captcha-action.enum";
+import { ProofOfWork } from "../proof-of-work/proof-of-work.decorator";
+import { ProofOfWorkAction } from "../proof-of-work/proof-of-work-action.enum";
 
 import { ConfigService } from "../config/config.service";
 import { CurrentUser } from "../common/user.decorator";
@@ -94,7 +94,7 @@ export class DiscussionController {
       .map((value: string) => (value.startsWith("/") && value.endsWith("/") ? new RegExp(value.slice(1, -1)) : value));
   }
 
-  @Captcha(CaptchaAction.CreateDiscussion)
+  @ProofOfWork(ProofOfWorkAction.CreateDiscussion)
   @Post("createDiscussion")
   @ApiBearerAuth()
   @ApiOperation({
@@ -135,7 +135,7 @@ export class DiscussionController {
     };
   }
 
-  @Captcha(CaptchaAction.CreateDiscussionReply)
+  @ProofOfWork(ProofOfWorkAction.CreateDiscussionReply)
   @Post("createDiscussionReply")
   @ApiBearerAuth()
   @ApiOperation({

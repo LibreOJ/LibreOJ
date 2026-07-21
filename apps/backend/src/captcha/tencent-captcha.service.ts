@@ -28,24 +28,26 @@ export class TencentCaptchaService {
     return !!this.configService.config.security.captcha.tencentCaptcha;
   }
 
-  acquireEncryptedAppId(): { appId: string; encryptedAppId: string } {
+  acquireEncryptedAppId(): { appId: string; encryptedAppId: string; encryptedAppIdType: "gcm" } {
     const config = this.configService.config.security.captcha.tencentCaptcha;
     if (!config) throw new Error("Tencent Captcha is not configured");
 
-    // aidEncrypted is Base64(IV + AES-256-CBC(payload)): https://cloud.tencent.com/document/product/1110/128489
+    // Tencent accepts Base64(IV + ciphertext + tag) for AES-256-GCM and can reject reused IVs:
+    // https://cloud.tencent.com/document/product/1110/128489
     const sourceKey = Buffer.from(config.appSecretKey, "ascii");
     const key = Buffer.alloc(32);
     for (let index = 0; index < key.length; index += 1) key[index] = sourceKey[index % sourceKey.length];
 
-    const iv = crypto.randomBytes(16);
+    const iv = crypto.randomBytes(12);
     const timestamp = Math.floor(Date.now() / 1000);
     const plaintext = `${config.appId}&${timestamp}&60`;
-    const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+    const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
     const encrypted = Buffer.concat([cipher.update(plaintext, "utf8"), cipher.final()]);
 
     return {
       appId: String(config.appId),
-      encryptedAppId: Buffer.concat([iv, encrypted]).toString("base64")
+      encryptedAppId: Buffer.concat([iv, encrypted, cipher.getAuthTag()]).toString("base64"),
+      encryptedAppIdType: "gcm"
     };
   }
 

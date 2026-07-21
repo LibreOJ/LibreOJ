@@ -369,15 +369,20 @@ let ProblemViewPage: React.FC<ProblemViewPageProps> = props => {
     if (submitPending) return;
     setSubmitPending(true);
 
-    const { uploadCancelled, uploadError, requestError, response } = await callApiWithFileUpload(
-      api.submission.submit,
-      {
+    const { uploadCancelled, uploadError, requestError, response } = await callApiWithFileUpload({
+      api: (request: ApiTypes.SubmitRequestDto) => api.submission.submit(request, captcha),
+      prepareUploadApi: (request, file) =>
+        api.submission.prepareFileUpload({
+          problemId: request.problemId,
+          content: request.content,
+          fileSize: file.size
+        }),
+      request: {
         problemId: props.problem.meta.id,
         content: submissionContent
       },
-      captcha,
-      onGetSubmitFile ? await onGetSubmitFile() : null
-    );
+      file: onGetSubmitFile ? await onGetSubmitFile() : null
+    });
 
     if (uploadCancelled) {
       setSubmitPending(false);

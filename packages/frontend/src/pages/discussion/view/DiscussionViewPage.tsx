@@ -30,8 +30,6 @@ import {
   useDialog,
   useFocusWithin,
   useConfirmNavigation,
-  CaptchaAction,
-  useCaptcha,
   useScreenWidthWithin,
   useNavigationChecked,
   Link
@@ -648,8 +646,6 @@ let DiscussionViewPage: React.FC<DiscussionViewPageProps> = props => {
     };
   });
 
-  const captcha = useCaptcha(CaptchaAction.CreateDiscussionReply);
-
   const [items, setItems] = useState<ReplyOrLoadMore[]>(
     (() => {
       const head = props.response.repliesHead.map<ReplyOrLoadMore>(reply => ({
@@ -879,15 +875,11 @@ let DiscussionViewPage: React.FC<DiscussionViewPageProps> = props => {
 
   const [newReplyContent, setNewReplyContent] = useState("");
   async function onAddNewReply(content: string) {
-    const { requestCancelled, requestError, response } = await api.discussion.createDiscussionReply(
-      {
-        discussionId: discussion.meta.id,
-        content: content
-      },
-      captcha
-    );
+    const { requestError, response } = await api.discussion.createDiscussionReply({
+      discussionId: discussion.meta.id,
+      content: content
+    });
 
-    if (requestCancelled) return;
     if (requestError) toast.error(requestError(_));
     else if (response.error) toast.error(_(`.errors.${response.error}`));
     else {

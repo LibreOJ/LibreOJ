@@ -4,6 +4,8 @@
 
 import { createGetApi, createPostApi } from "@/api";
 
-export const getTencentCaptchaAppId = createGetApi<void, ApiTypes.GetTencentCaptchaAppIdResponseDto>(
-  "captcha/getTencentCaptchaAppId"
-);
+export const getTencentCaptchaAppId = createPostApi<
+  void,
+  ApiTypes.GetTencentCaptchaAppIdResponseDto,
+  { proofOfWorkAction: "acquire_tencent_captcha" }
+>("captcha/getTencentCaptchaAppId", { proofOfWorkAction: "acquire_tencent_captcha" });

@@ -25,14 +25,7 @@ import style from "./ProblemFilesPage.module.less";
 import api from "@/api";
 import { appState } from "@/appState";
 import toast from "@/utils/toast";
-import {
-  CaptchaAction,
-  useAsyncCallbackPending,
-  useLocalizer,
-  useCaptcha,
-  useScreenWidthWithin,
-  Link
-} from "@/utils/hooks";
+import { useAsyncCallbackPending, useLocalizer, useScreenWidthWithin, Link } from "@/utils/hooks";
 import getFileIcon from "@/utils/getFileIcon";
 import formatFileSize from "@/utils/formatFileSize";
 import downloadFile from "@/utils/downloadFile";
@@ -682,8 +675,6 @@ let ProblemFilesPage: React.FC<ProblemFilesPageProps> = props => {
     appState.enterNewPage(`${_(".title")} ${idString}`, "problem_set");
   }, [appState.locale, props.problem]);
 
-  const captcha = useCaptcha(CaptchaAction.AddProblemFile);
-
   function transformResponseToFileTableItems(fileList: ApiTypes.ProblemFileDto[]): FileTableItem[] {
     return fileList.map(file => ({
       uuid: uuid(),
@@ -800,25 +791,24 @@ let ProblemFilesPage: React.FC<ProblemFilesPageProps> = props => {
     const uploadTasks: Array<() => Promise<void>> = [];
     for (const item of uploadingFileList) {
       uploadTasks.push(async () => {
-        const { uploadCancelled, uploadError, requestError, response } = await callApiWithFileUpload(
-          api.problem.addProblemFile,
-          {
+        const { uploadCancelled, uploadError, requestError, response } = await callApiWithFileUpload({
+          api: api.problem.addProblemFile,
+          request: {
             problemId: props.problem.meta.id,
             type,
             filename: item.filename
           },
-          captcha,
-          item.upload.file,
-          progress =>
+          file: item.upload.file,
+          onProgress: progress =>
             updateFileUploadInfo(item.uuid, {
               progressType: progress.status,
               progress: progress.progress * 100
             }),
-          cancelFunction =>
+          onCancelAvailable: cancelFunction =>
             updateFileUploadInfo(item.uuid, {
               cancel: cancelFunction
             })
-        );
+        });
 
         if (uploadCancelled) {
           updateFileUploadInfo(item.uuid, {

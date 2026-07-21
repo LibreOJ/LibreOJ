@@ -9,49 +9,49 @@ export const searchUser = createGetApi<{ query: string; wildcard?: string }, Api
 );
 export const getUserMeta = createPostApi<ApiTypes.GetUserMetaRequestDto, ApiTypes.GetUserMetaResponseDto>(
   "user/getUserMeta",
-  null
+  {}
 );
 export const setUserPrivileges = createPostApi<
   ApiTypes.SetUserPrivilegesRequestDto,
   ApiTypes.SetUserPrivilegesResponseDto
->("user/setUserPrivileges", null);
+>("user/setUserPrivileges", {});
 export const updateUserProfile = createPostApi<
   ApiTypes.UpdateUserProfileRequestDto,
   ApiTypes.UpdateUserProfileResponseDto
->("user/updateUserProfile", null);
+>("user/updateUserProfile", {});
 export const getUserList = createPostApi<ApiTypes.GetUserListRequestDto, ApiTypes.GetUserListResponseDto>(
   "user/getUserList",
-  null
+  {}
 );
 export const getUserDetail = createPostApi<ApiTypes.GetUserDetailRequestDto, ApiTypes.GetUserDetailResponseDto>(
   "user/getUserDetail",
-  null
+  {}
 );
 export const getUserProfile = createPostApi<ApiTypes.GetUserProfileRequestDto, ApiTypes.GetUserProfileResponseDto>(
   "user/getUserProfile",
-  null
+  {}
 );
 export const getUserPreference = createPostApi<
   ApiTypes.GetUserPreferenceRequestDto,
   ApiTypes.GetUserPreferenceResponseDto
->("user/getUserPreference", null);
+>("user/getUserPreference", {});
 export const updateUserPreference = createPostApi<
   ApiTypes.UpdateUserPreferenceRequestDto,
   ApiTypes.UpdateUserPreferenceResponseDto
->("user/updateUserPreference", null);
+>("user/updateUserPreference", {});
 export const getUserSecuritySettings = createPostApi<
   ApiTypes.GetUserSecuritySettingsRequestDto,
   ApiTypes.GetUserSecuritySettingsResponseDto
->("user/getUserSecuritySettings", null);
+>("user/getUserSecuritySettings", {});
 export const queryAuditLogs = createPostApi<ApiTypes.QueryAuditLogsRequestDto, ApiTypes.QueryAuditLogsResponseDto>(
   "user/queryAuditLogs",
-  null
+  {}
 );
 export const updateUserPassword = createPostApi<
   ApiTypes.UpdateUserPasswordRequestDto,
   ApiTypes.UpdateUserPasswordResponseDto
->("user/updateUserPassword", null);
+>("user/updateUserPassword", {});
 export const updateUserSelfEmail = createPostApi<
   ApiTypes.UpdateUserSelfEmailRequestDto,
   ApiTypes.UpdateUserSelfEmailResponseDto
->("user/updateUserSelfEmail", null);
+>("user/updateUserSelfEmail", {});

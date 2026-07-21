@@ -14,8 +14,6 @@ import {
   useDialog,
   useLocalizer,
   useLoginOrRegisterNavigation,
-  CaptchaAction,
-  useCaptcha,
   useNavigationChecked
 } from "@/utils/hooks";
 import { isValidUsername } from "@/utils/validators";
@@ -43,8 +41,6 @@ let LoginPage: React.FC = () => {
   useEffect(() => {
     appState.enterNewPage(_(".title"));
   }, [appState.locale]);
-
-  const captcha = useCaptcha(CaptchaAction.Login);
 
   const [formError, setFormError] = useState<{ type: "usernameOrEmail" | "password"; message: string }>({
     type: null,
@@ -196,15 +192,11 @@ let LoginPage: React.FC = () => {
       setError("password", _(".empty_password"));
     } else {
       // Send login request
-      const { requestCancelled, requestError, response } = await api.auth.login(
-        { [isEmail(usernameOrEmail) ? "email" : "username"]: usernameOrEmail, password },
-        captcha
-      );
+      const { requestError, response } = await api.auth.login({
+        [isEmail(usernameOrEmail) ? "email" : "username"]: usernameOrEmail,
+        password
+      });
 
-      if (requestCancelled) {
-        setPending(false);
-        return;
-      }
       if (requestError) toast.error(requestError(_));
       else if (response.error && response.error !== "USER_NOT_MIGRATED") handleCommonError(response.error);
       else {

@@ -324,6 +324,26 @@ export class SubmissionService implements JudgeTaskService<SubmissionProgress, S
   /**
    * @param problem Should be locked by `ProblemService.lockProblemById(id, "Read")`.
    */
+  async validateSubmissionContent(problem: ProblemEntity, content: SubmissionContent): Promise<ValidationError[]> {
+    return await this.problemTypeFactoryService.type(problem.type).validateSubmissionContent(content);
+  }
+
+  async prepareSubmissionFileUpload(
+    problem: ProblemEntity,
+    size: number
+  ): Promise<"FILE_TOO_LARGE" | SignedFileUploadRequestDto> {
+    if (!this.problemTypeFactoryService.type(problem.type).shouldUploadAnswerFile()) {
+      throw new Error("Cannot prepare a submission file upload for a problem that does not accept answer files");
+    }
+    return await this.fileService.prepareUploadRequest(size, fileSize =>
+      fileSize <= this.configService.config.resourceLimit.submissionFileSize ? null : "FILE_TOO_LARGE"
+    );
+  }
+
+  /**
+   * @param problem Should be locked by `ProblemService.lockProblemById(id, "Read")`.
+   * @param content Should be validated with `validateSubmissionContent` before calling this method.
+   */
   async createSubmission(
     submitter: UserEntity,
     problem: ProblemEntity,
@@ -331,7 +351,6 @@ export class SubmissionService implements JudgeTaskService<SubmissionProgress, S
     uploadInfo: FileUploadInfoDto
   ): Promise<
     [
-      errors: ValidationError[],
       fileUploadErrorOrRequest:
         | "FILE_UUID_EXISTS"
         | "FILE_NOT_UPLOADED"
@@ -341,9 +360,6 @@ export class SubmissionService implements JudgeTaskService<SubmissionProgress, S
     ]
   > {
     const problemTypeService = this.problemTypeFactoryService.type(problem.type);
-
-    const validationError = await problemTypeService.validateSubmissionContent(content);
-    if (validationError && validationError.length > 0) return [validationError, null, null];
 
     const [fileUploadErrorOrRequest, submission] = await this.connection.transaction<
       [
@@ -400,10 +416,10 @@ export class SubmissionService implements JudgeTaskService<SubmissionProgress, S
         logger.error(`Failed to start judge for submission ${submission.id}: ${e}`);
       }
 
-      return [null, null, submission];
+      return [null, submission];
     }
 
-    return [null, fileUploadErrorOrRequest, null];
+    return [fileUploadErrorOrRequest, null];
   }
 
   async getSubmissionBasicMeta(submission: SubmissionEntity): Promise<SubmissionBasicMetaDto> {

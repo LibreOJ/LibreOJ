@@ -79,7 +79,8 @@ function normalizeModuleName(moduleName, forFilename) {
         path,
         body,
         response,
-        captchaAction: operation.post["x-captcha-action"] ?? null
+        captchaAction: operation.post["x-captcha-action"] ?? null,
+        proofOfWorkAction: operation.post["x-proof-of-work-action"] ?? null
       };
 
       if (body) tags[tag].schemas.add(body);
@@ -105,14 +106,20 @@ function normalizeModuleName(moduleName, forFilename) {
       if (operation.type === "post") {
         const bodyType = operation.body ? `ApiTypes.${operation.body}` : "void",
           responseType = operation.response ? `ApiTypes.${operation.response}` : "void";
-        const typeParameters = [
-          bodyType,
-          responseType,
-          ...(operation.captchaAction !== null ? [JSON.stringify(operation.captchaAction)] : [])
-        ].join(", ");
-        code += `export const ${functionName} = createPostApi<${typeParameters}>(${JSON.stringify(
+        const options = {};
+        if (operation.captchaAction !== null) options.captchaAction = operation.captchaAction;
+        if (operation.proofOfWorkAction !== null) options.proofOfWorkAction = operation.proofOfWorkAction;
+
+        const typeParameters = [bodyType, responseType];
+        const optionEntries = Object.entries(options);
+        if (optionEntries.length > 0) {
+          typeParameters.push(
+            `{ ${optionEntries.map(([key, value]) => `${key}: ${JSON.stringify(value)}`).join("; ")} }`
+          );
+        }
+        code += `export const ${functionName} = createPostApi<${typeParameters.join(", ")}>(${JSON.stringify(
           path
-        )}, ${JSON.stringify(operation.captchaAction)});\n`;
+        )}, ${JSON.stringify(options)});\n`;
       } else {
         const parameterTypes =
             operation.parameters &&

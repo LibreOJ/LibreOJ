@@ -9,7 +9,7 @@ import style from "../common.module.less";
 import { appState } from "@/appState";
 
 import api from "@/api";
-import { CaptchaAction, useLocalizer, useFieldCheck, useCaptcha, useNavigationChecked } from "@/utils/hooks";
+import { useLocalizer, useFieldCheck, useNavigationChecked } from "@/utils/hooks";
 import toast from "@/utils/toast";
 import { isValidEmail, isValidPassword, stripInvalidCharactersInEmailVerificationCode } from "@/utils/validators";
 import { refreshSession } from "@/initApp";
@@ -31,9 +31,6 @@ let ForgetPage: React.FC = () => {
   useEffect(() => {
     appState.enterNewPage(_(".title"));
   }, [appState.locale]);
-
-  const resetPasswordCaptcha = useCaptcha(CaptchaAction.ResetPassword);
-  const emailVerificationCaptcha = useCaptcha(CaptchaAction.SendEmailVerificationCode);
 
   const [successMessage, setSuccessMessage] = useState<string>(null);
 
@@ -97,19 +94,12 @@ let ForgetPage: React.FC = () => {
       refRetypePasswordInput.current.focus();
       refRetypePasswordInput.current.select();
     } else {
-      const { requestCancelled, requestError, response } = await api.auth.resetPassword(
-        {
-          email: email,
-          emailVerificationCode: emailVerificationCode,
-          newPassword: password
-        },
-        resetPasswordCaptcha
-      );
+      const { requestError, response } = await api.auth.resetPassword({
+        email: email,
+        emailVerificationCode: emailVerificationCode,
+        newPassword: password
+      });
 
-      if (requestCancelled) {
-        setResetPasswordPending(false);
-        return;
-      }
       if (requestError) toast.error(requestError(_));
       else if (response.error) {
         switch (response.error) {
@@ -162,18 +152,11 @@ let ForgetPage: React.FC = () => {
       refEmailInput.current.focus();
       refEmailInput.current.select();
     } else {
-      const { requestCancelled, requestError, response } = await api.auth.sendEmailVerificationCode(
-        {
-          email: email,
-          type: "ResetPassword",
-          locale: appState.locale
-        },
-        emailVerificationCaptcha
-      );
-      if (requestCancelled) {
-        setSendEmailVerificationCodePending(false);
-        return;
-      }
+      const { requestError, response } = await api.auth.sendEmailVerificationCode({
+        email: email,
+        type: "ResetPassword",
+        locale: appState.locale
+      });
       if (requestError) toast.error(requestError(_));
       else if (response.error) toast.error(_(`.errors.${response.error}`, { errorMessage: response.errorMessage }));
       else {

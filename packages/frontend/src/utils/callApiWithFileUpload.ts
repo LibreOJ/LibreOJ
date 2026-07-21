@@ -1,7 +1,6 @@
 import Axios from "axios";
 
 import { ApiResponse } from "@/api";
-import type { CaptchaAction, CaptchaController } from "@/utils/hooks/useCaptcha";
 
 export interface ApiResponseWithUploadResult<T extends { error?: string }> {
   uploadCancelled?: boolean;
@@ -15,37 +14,41 @@ export interface FileUploadApiProgress {
   progress: number;
 }
 
+interface CallApiWithFileUploadOptions<
+  Request extends { uploadInfo?: ApiTypes.FileUploadInfoDto },
+  Response extends { error?: string; signedUploadRequest?: ApiTypes.SignedFileUploadRequestDto }
+> {
+  api: (request: Request) => Promise<ApiResponse<Response>>;
+  prepareUploadApi?: (request: Omit<Request, "uploadInfo">, file: Blob) => Promise<ApiResponse<Response>>;
+  request: Omit<Request, "uploadInfo">;
+  file: Blob;
+  onProgress?: (progress: FileUploadApiProgress) => void;
+  onCancelAvailable?: (cancel: () => void) => void;
+}
+
 // Workaround: xdomain's FormData doesn't set [Symbol.toStringTag] to "FormData"
 //             so axios doesn't treat it as FormData
 //             see https://github.com/axios/axios/blob/c9aca7525703ab600eacd9e95fd7f6ecc9942616/lib/utils.js#L56
 if (FormData.prototype[Symbol.toStringTag] !== "FormData") FormData.prototype[Symbol.toStringTag] = "FormData";
 
 export async function callApiWithFileUpload<
-  Action extends CaptchaAction,
   Request extends { uploadInfo?: ApiTypes.FileUploadInfoDto },
   Response extends { error?: string; signedUploadRequest?: ApiTypes.SignedFileUploadRequestDto }
->(
-  api: (request: Request, captcha: CaptchaController<Action>) => Promise<ApiResponse<Response>>,
-  request: Omit<Request, "uploadInfo">,
-  captcha: CaptchaController<Action>,
-  file: Blob,
-  progressCallback?: (progress: FileUploadApiProgress) => void,
-  cancelFunctionReceiver?: (cancelFunction: () => void) => void
-): Promise<ApiResponseWithUploadResult<Response>> {
-  if (progressCallback) progressCallback({ status: "Requesting", progress: 0 });
+>(options: CallApiWithFileUploadOptions<Request, Response>): Promise<ApiResponseWithUploadResult<Response>> {
+  if (options.onProgress) options.onProgress({ status: "Requesting", progress: 0 });
 
-  const result = await api(
-    {
-      ...request,
-      uploadInfo: file
-        ? {
-            size: file.size,
-            uuid: null
-          }
-        : null
-    } as Request,
-    captcha
-  );
+  const result =
+    options.file && options.prepareUploadApi
+      ? await options.prepareUploadApi(options.request, options.file)
+      : await options.api({
+          ...options.request,
+          uploadInfo: options.file
+            ? {
+                size: options.file.size,
+                uuid: null
+              }
+            : null
+        } as Request);
   if (result.requestCancelled) return { uploadCancelled: true };
   if (result.requestError) return result;
 
@@ -60,17 +63,17 @@ export async function callApiWithFileUpload<
       cancelTokenSource.cancel();
     };
 
-    if (cancelFunctionReceiver) cancelFunctionReceiver(cancelFunction);
+    if (options.onCancelAvailable) options.onCancelAvailable(cancelFunction);
 
     let error = false;
     function onUploadProgress(e: ProgressEvent<EventTarget>) {
       // setTimeout is a workaround for Axios triggers a "progress" event with 100% loaded after error
 
-      if (progressCallback)
+      if (options.onProgress)
         setTimeout(() => {
           if (error) return;
 
-          progressCallback({ status: "Uploading", progress: e.loaded / e.total });
+          options.onProgress({ status: "Uploading", progress: e.loaded / e.total });
         }, 0);
     }
 
@@ -79,7 +82,7 @@ export async function callApiWithFileUpload<
     for (let i = 0; i < UPLOAD_RETRY_TIMES; i++) {
       try {
         if (result.response.signedUploadRequest.method === "PUT") {
-          await Axios.put(result.response.signedUploadRequest.url, file, {
+          await Axios.put(result.response.signedUploadRequest.url, options.file, {
             cancelToken: cancelTokenSource.token,
             onUploadProgress
           });
@@ -89,7 +92,7 @@ export async function callApiWithFileUpload<
             formData.append(key, value as string)
           );
 
-          formData.append(result.response.signedUploadRequest.fileFieldName, file);
+          formData.append(result.response.signedUploadRequest.fileFieldName, options.file);
           await Axios.post(result.response.signedUploadRequest.url, formData, {
             cancelToken: cancelTokenSource.token,
             onUploadProgress
@@ -109,24 +112,21 @@ export async function callApiWithFileUpload<
           return { uploadError: e };
         } else {
           // Retry after a delay
-          progressCallback({ status: "Retrying", progress: 0 });
+          if (options.onProgress) options.onProgress({ status: "Retrying", progress: 0 });
           await new Promise(resolve => setTimeout(resolve, UPLOAD_RETRY_DEALY_MAX * 1000 * Math.random()));
         }
       }
     }
 
-    if (progressCallback) progressCallback({ status: "Requesting", progress: 0 });
+    if (options.onProgress) options.onProgress({ status: "Requesting", progress: 0 });
 
-    const completionResult = await api(
-      {
-        ...request,
-        uploadInfo: {
-          size: file.size,
-          uuid: result.response.signedUploadRequest.uuid
-        }
-      } as Request,
-      captcha
-    );
+    const completionResult = await options.api({
+      ...options.request,
+      uploadInfo: {
+        size: options.file.size,
+        uuid: result.response.signedUploadRequest.uuid
+      }
+    } as Request);
     return completionResult.requestCancelled ? { uploadCancelled: true } : completionResult;
   }
   // Upload is not required

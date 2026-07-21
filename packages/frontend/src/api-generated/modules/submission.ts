@@ -4,39 +4,45 @@
 
 import { createGetApi, createPostApi } from "@/api";
 
-export const submit = createPostApi<ApiTypes.SubmitRequestDto, ApiTypes.SubmitResponseDto, "submit_problem">(
-  "submission/submit",
-  "submit_problem"
-);
+export const prepareFileUpload = createPostApi<
+  ApiTypes.PrepareSubmissionFileUploadRequestDto,
+  ApiTypes.SubmitResponseDto,
+  { proofOfWorkAction: "prepare_submission_file_upload" }
+>("submission/prepareFileUpload", { proofOfWorkAction: "prepare_submission_file_upload" });
+export const submit = createPostApi<
+  ApiTypes.SubmitRequestDto,
+  ApiTypes.SubmitResponseDto,
+  { captchaAction: "submit_problem"; proofOfWorkAction: "submit_problem" }
+>("submission/submit", { captchaAction: "submit_problem", proofOfWorkAction: "submit_problem" });
 export const querySubmission = createPostApi<ApiTypes.QuerySubmissionRequestDto, ApiTypes.QuerySubmissionResponseDto>(
   "submission/querySubmission",
-  null
+  {}
 );
 export const getSubmissionDetail = createPostApi<
   ApiTypes.GetSubmissionDetailRequestDto,
   ApiTypes.GetSubmissionDetailResponseDto
->("submission/getSubmissionDetail", null);
+>("submission/getSubmissionDetail", {});
 export const downloadSubmissionFile = createPostApi<
   ApiTypes.DownloadSubmissionFileRequestDto,
   ApiTypes.DownloadSubmissionFileResponseDto
->("submission/downloadSubmissionFile", null);
+>("submission/downloadSubmissionFile", {});
 export const querySubmissionStatistics = createPostApi<
   ApiTypes.QuerySubmissionStatisticsRequestDto,
   ApiTypes.QuerySubmissionStatisticsResponseDto
->("submission/querySubmissionStatistics", null);
+>("submission/querySubmissionStatistics", {});
 export const rejudgeSubmission = createPostApi<
   ApiTypes.RejudgeSubmissionRequestDto,
   ApiTypes.RejudgeSubmissionResponseDto
->("submission/rejudgeSubmission", null);
+>("submission/rejudgeSubmission", {});
 export const cancelSubmission = createPostApi<
   ApiTypes.CancelSubmissionRequestDto,
   ApiTypes.CancelSubmissionResponseDto
->("submission/cancelSubmission", null);
+>("submission/cancelSubmission", {});
 export const setSubmissionPublic = createPostApi<
   ApiTypes.SetSubmissionPublicRequestDto,
   ApiTypes.SetSubmissionPublicResponseDto
->("submission/setSubmissionPublic", null);
+>("submission/setSubmissionPublic", {});
 export const deleteSubmission = createPostApi<
   ApiTypes.DeleteSubmissionRequestDto,
   ApiTypes.DeleteSubmissionResponseDto
->("submission/deleteSubmission", null);
+>("submission/deleteSubmission", {});

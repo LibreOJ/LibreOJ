@@ -204,42 +204,43 @@ export class FileService implements OnModuleInit {
     checkLimit: (size: number) => Promise<LimitCheckErrorType> | LimitCheckErrorType,
     transactionalEntityManager: EntityManager
   ): Promise<FileEntity | SignedFileUploadRequestDto | LimitCheckErrorType | "FILE_UUID_EXISTS" | "FILE_NOT_UPLOADED"> {
+    if (!uploadInfo.uuid) return await this.prepareUploadRequest(uploadInfo.size, checkLimit);
+
     const limitCheckError = await checkLimit(uploadInfo.size);
     if (limitCheckError) {
-      if (uploadInfo.uuid) this.deleteUnfinishedUploadedFile(uploadInfo.uuid);
+      this.deleteUnfinishedUploadedFile(uploadInfo.uuid);
       return limitCheckError;
     }
 
-    if (uploadInfo.uuid) {
-      // The client says the file is uploaded
+    if ((await transactionalEntityManager.countBy(FileEntity, { uuid: uploadInfo.uuid })) !== 0)
+      return "FILE_UUID_EXISTS";
 
-      if ((await transactionalEntityManager.countBy(FileEntity, { uuid: uploadInfo.uuid })) !== 0)
-        return "FILE_UUID_EXISTS";
-
-      // Check file existance
-      try {
-        await this.minioClient.statObject(this.bucket, uploadInfo.uuid);
-      } catch (e) {
-        if (e.message === "The specified key does not exist.") {
-          return "FILE_NOT_UPLOADED";
-        }
-        throw e;
+    try {
+      await this.minioClient.statObject(this.bucket, uploadInfo.uuid);
+    } catch (e) {
+      if (e.message === "The specified key does not exist.") {
+        return "FILE_NOT_UPLOADED";
       }
-
-      // Save to the database
-      const file = new FileEntity();
-      file.uuid = uploadInfo.uuid;
-      file.size = uploadInfo.size;
-      file.uploadTime = new Date();
-
-      await transactionalEntityManager.save(FileEntity, file);
-
-      return file;
-    } else {
-      // The client says it want to upload a file for this request
-
-      return await this.signUploadRequest(uploadInfo.size, uploadInfo.size);
+      throw e;
     }
+
+    const file = new FileEntity();
+    file.uuid = uploadInfo.uuid;
+    file.size = uploadInfo.size;
+    file.uploadTime = new Date();
+
+    await transactionalEntityManager.save(FileEntity, file);
+
+    return file;
+  }
+
+  async prepareUploadRequest<LimitCheckErrorType extends string>(
+    size: number,
+    checkLimit: (size: number) => Promise<LimitCheckErrorType> | LimitCheckErrorType
+  ): Promise<SignedFileUploadRequestDto | LimitCheckErrorType> {
+    const limitCheckError = await checkLimit(size);
+    if (limitCheckError) return limitCheckError;
+    return await this.signUploadRequest(size, size);
   }
 
   /**

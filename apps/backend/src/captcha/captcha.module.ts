@@ -7,9 +7,10 @@ import { TencentCaptchaService } from "./tencent-captcha.service";
 import { TurnstileService } from "./turnstile.service";
 
 import { ConfigModule } from "../config/config.module";
+import { ProofOfWorkModule } from "../proof-of-work/proof-of-work.module";
 
 @Module({
-  imports: [ConfigModule],
+  imports: [ConfigModule, ProofOfWorkModule],
   controllers: [CaptchaController],
   providers: [CaptchaGuard, CaptchaService, TencentCaptchaService, TurnstileService],
   exports: [CaptchaGuard, CaptchaService]
