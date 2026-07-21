@@ -49,7 +49,6 @@ interface ChallengeRecord extends RequestBinding {
 }
 
 const EXPENSIVE_ACTIONS = new Set<ProofOfWorkAction>([
-  ProofOfWorkAction.PrepareSubmissionFileUpload,
   ProofOfWorkAction.SubmitProblem,
   ProofOfWorkAction.AcquireTencentCaptcha
 ]);
