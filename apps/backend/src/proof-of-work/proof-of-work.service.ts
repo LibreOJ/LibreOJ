@@ -63,6 +63,16 @@ export class ProofOfWorkService implements OnModuleDestroy {
     ["action", "difficulty"] as const
   );
 
+  private readonly metricChallengesIssued = this.metricsService.counter("libreoj_proof_of_work_challenges_issued", [
+    "action",
+    "difficulty"
+  ] as const);
+
+  private readonly metricChallengesSolved = this.metricsService.counter("libreoj_proof_of_work_challenges_solved", [
+    "action",
+    "difficulty"
+  ] as const);
+
   constructor(
     private readonly configService: ConfigService,
     private readonly metricsService: MetricsService,
@@ -119,6 +129,7 @@ export class ProofOfWorkService implements OnModuleDestroy {
       "NX"
     );
     if (stored !== "OK") throw new Error("Failed to store proof-of-work challenge");
+    this.metricChallengesIssued.labels({ action, difficulty: String(challenge.difficulty) }).inc();
     return challenge;
   }
 
@@ -159,6 +170,7 @@ export class ProofOfWorkService implements OnModuleDestroy {
     const valid =
       timingSafeEqual(expectedResponse, submittedResponse) && result.response.startsWith("0".repeat(record.difficulty));
     if (valid) {
+      this.metricChallengesSolved.labels({ action: record.action, difficulty: String(record.difficulty) }).inc();
       this.metricSolveTime
         .labels({ action: record.action, difficulty: String(record.difficulty) })
         .observe((Date.now() - record.issuedAt) / 1000);

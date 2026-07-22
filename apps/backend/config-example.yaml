@@ -41,7 +41,7 @@ security:
   maintainceKey: also don't leak this
   proofOfWork:
     difficulty: 4
-    expensiveActionDifficulty: 6
+    expensiveActionDifficulty: 5
   captcha:
     turnstile:
       siteKey: CHANGE_THIS
