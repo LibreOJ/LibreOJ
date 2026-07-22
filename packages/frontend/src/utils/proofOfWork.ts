@@ -19,11 +19,7 @@ let workerConstructorPromise: Promise<ProofOfWorkWorkerConstructor> | undefined;
 // https://developer.mozilla.org/en-US/docs/Web/API/Worker/Worker#security
 const getWorkerConstructor = (): Promise<ProofOfWorkWorkerConstructor> => {
   if (!workerConstructorPromise) {
-    workerConstructorPromise = (
-      navigator.userAgent.includes("Firefox") || navigator.userAgent.includes("Goanna")
-        ? import("./workers/proofOfWorkPureJs.worker?worker&inline")
-        : import("./workers/proofOfWorkWebCrypto.worker?worker&inline")
-    ).then(module => module.default);
+    workerConstructorPromise = import("./workers/proofOfWork.worker?worker&inline").then(module => module.default);
   }
   return workerConstructorPromise;
 };
