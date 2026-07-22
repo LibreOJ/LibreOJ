@@ -39,29 +39,18 @@ security:
       - http://libreoj.test
   sessionSecret: don't leak this
   maintainceKey: also don't leak this
-  # Proof of work is required by selected high-abuse or high-cost APIs. Each
-  # difficulty step multiplies the expected work by 16. Submitting a problem
-  # and acquiring paid Tencent Captcha use the intentionally expensive value.
   proofOfWork:
     difficulty: 4
     expensiveActionDifficulty: 6
   captcha:
-    # Submission verification attempts invisible Turnstile first. Replace null
-    # with the mapping below to enable it.
-    turnstile: null
-    # turnstile:
-    #   siteKey: YOUR_TURNSTILE_SITE_KEY
-    #   secretKey: YOUR_TURNSTILE_SECRET_KEY
-
-    # Tencent Captcha is loaded only when Turnstile is unavailable. Its
-    # initialization API requires proof of work. Tencent's console must enforce
-    # encrypted CaptchaAppId validation and one-time IVs.
-    tencentCaptcha: null
-    # tencentCaptcha:
-    #   appSecretKey: CHANGE_THIS
-    #   appId: 123456789
-    #   secretId: CHANGE_THIS
-    #   secretKey: CHANGE_THIS
+    turnstile:
+      siteKey: CHANGE_THIS
+      secretKey: CHANGE_THIS
+    tencentCaptcha:
+      appSecretKey: CHANGE_THIS
+      appId: 123456789
+      secretId: CHANGE_THIS
+      secretKey: CHANGE_THIS
   rateLimit:
     maxRequests: 200
     durationSeconds: 10
