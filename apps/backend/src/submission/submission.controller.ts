@@ -39,11 +39,14 @@ import {
   SetSubmissionPublicResponseError,
   DeleteSubmissionRequestDto,
   DeleteSubmissionResponseDto,
-  DeleteSubmissionResponseError
+  DeleteSubmissionResponseError,
+  PrepareSubmissionFileUploadRequestDto
 } from "./dto";
 
 import { Captcha } from "../captcha/captcha.decorator";
 import { CaptchaAction } from "../captcha/captcha-action.enum";
+import { ProofOfWork } from "../proof-of-work/proof-of-work.decorator";
+import { ProofOfWorkAction } from "../proof-of-work/proof-of-work-action.enum";
 
 import { CurrentUser } from "../common/user.decorator";
 import { UserEntity } from "../user/user.entity";
@@ -73,54 +76,69 @@ export class SubmissionController {
     private readonly fileService: FileService
   ) {}
 
+  private async withSubmittableProblem(
+    currentUser: UserEntity,
+    problemId: number,
+    callback: (problem: ProblemEntity) => Promise<SubmitResponseDto>
+  ): Promise<SubmitResponseDto> {
+    if (!currentUser) return { error: SubmitResponseError.PERMISSION_DENIED };
+
+    return await this.problemService.lockProblemById<SubmitResponseDto>(problemId, "Read", async problem => {
+      if (!problem) return { error: SubmitResponseError.NO_SUCH_PROBLEM };
+
+      // TODO: add "submit" permission
+      if (!(await this.problemService.userHasPermission(currentUser, problem, ProblemPermissionType.View))) {
+        return { error: SubmitResponseError.PERMISSION_DENIED };
+      }
+
+      const [, submittable] = await this.problemService.getProblemJudgeInfo(problem);
+      if (!submittable) return { error: SubmitResponseError.PERMISSION_DENIED };
+      return await callback(problem);
+    });
+  }
+
+  @ApiOperation({ summary: "Prepare an answer-file upload for a submission." })
+  @ProofOfWork(ProofOfWorkAction.PrepareSubmissionFileUpload)
+  @ApiBearerAuth()
+  @Post("prepareFileUpload")
+  async prepareFileUpload(
+    @CurrentUser() currentUser: UserEntity,
+    @Body() request: PrepareSubmissionFileUploadRequestDto
+  ): Promise<SubmitResponseDto> {
+    return await this.withSubmittableProblem(currentUser, request.problemId, async problem => {
+      const validationErrors = await this.submissionService.validateSubmissionContent(problem, request.content);
+      if (validationErrors.length > 0) throw new BadRequestException(validationErrors);
+
+      const result = await this.submissionService.prepareSubmissionFileUpload(problem, request.fileSize);
+      return typeof result === "string" ? { error: result as SubmitResponseError } : { signedUploadRequest: result };
+    });
+  }
+
   @Captcha(CaptchaAction.SubmitProblem)
+  @ProofOfWork(ProofOfWorkAction.SubmitProblem)
   @ApiOperation({
     summary: "Submit code to a problem."
   })
   @ApiBearerAuth()
   @Post("submit")
   async submit(@CurrentUser() currentUser: UserEntity, @Body() request: SubmitRequestDto): Promise<SubmitResponseDto> {
-    if (!currentUser)
-      return {
-        error: SubmitResponseError.PERMISSION_DENIED
-      };
+    return await this.withSubmittableProblem(currentUser, request.problemId, async problem => {
+      const validationErrors = await this.submissionService.validateSubmissionContent(problem, request.content);
+      if (validationErrors.length > 0) throw new BadRequestException(validationErrors);
 
-    return await this.problemService.lockProblemById<SubmitResponseDto>(request.problemId, "Read", async problem => {
-      if (!problem)
-        return {
-          error: SubmitResponseError.NO_SUCH_PROBLEM
-        };
-
-      // TODO: add "submit" permission
-      if (!(await this.problemService.userHasPermission(currentUser, problem, ProblemPermissionType.View)))
-        return {
-          error: SubmitResponseError.PERMISSION_DENIED
-        };
-
-      const [, submittable] = await this.problemService.getProblemJudgeInfo(problem);
-      if (!submittable)
-        return {
-          error: SubmitResponseError.PERMISSION_DENIED
-        };
-
-      const [validationError, fileErrorOrUploadRequest, submission] = await this.submissionService.createSubmission(
+      const [fileErrorOrUploadRequest, submission] = await this.submissionService.createSubmission(
         currentUser,
         problem,
         request.content,
         request.uploadInfo
       );
 
-      if (validationError && validationError.length > 0) throw new BadRequestException(validationError);
-
-      // If file upload is required
       if (typeof fileErrorOrUploadRequest === "string")
         return {
           error: fileErrorOrUploadRequest as SubmitResponseError
         };
       else if (fileErrorOrUploadRequest)
-        return {
-          signedUploadRequest: fileErrorOrUploadRequest
-        };
+        throw new BadRequestException("File uploads must be prepared before submitting");
 
       // Submitted successfully
       return {

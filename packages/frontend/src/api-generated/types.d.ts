@@ -398,8 +398,9 @@ declare namespace ApiTypes {
     permissionDelete?: boolean;
   }
   export interface GetTencentCaptchaAppIdResponseDto {
-    appId?: string;
-    encryptedAppId?: string;
+    appId: string;
+    encryptedAppId: string;
+    encryptedAppIdType: "gcm";
   }
   export interface GetUserDetailRequestDto {
     userId?: number;
@@ -477,7 +478,7 @@ declare namespace ApiTypes {
     memberCount: number;
   }
   export interface HeaderParameters {
-    "maintaince-key": ApiTypes.Parameters.MaintainceKey;
+    "X-Proof-Of-Work": ApiTypes.Parameters.XProofOfWork;
   }
   export interface HomepageSettings {
     notice: ApiTypes.HomepageSettingsNotice;
@@ -505,6 +506,26 @@ declare namespace ApiTypes {
   export interface HomepageSettingsNotice {
     enabled: boolean;
     contents: {};
+  }
+  export interface IssueProofOfWorkChallengeRequestDto {
+    action:
+      | "login"
+      | "email_verification"
+      | "register"
+      | "reset_password"
+      | "create_discussion"
+      | "reply_discussion"
+      | "create_problem"
+      | "add_problem_file"
+      | "prepare_submission_file_upload"
+      | "submit_problem"
+      | "acquire_tencent_captcha";
+  }
+  export interface IssueProofOfWorkChallengeResponseDto {
+    id: string;
+    randomData: string;
+    difficulty: number;
+    expiresAt: number;
   }
   export interface JudgeClientInfoDto {
     id: number;
@@ -570,6 +591,8 @@ declare namespace ApiTypes {
     export type Token = string;
     export type Username = string;
     export type Wildcard = "Start" | "End" | "Both";
+    export type XCaptchaResult = string;
+    export type XProofOfWork = string;
   }
   export interface PreferenceConfig {
     siteName: string;
@@ -619,6 +642,11 @@ declare namespace ApiTypes {
     discussionDefaultPublic: boolean;
     discussionReplyDefaultPublic: boolean;
     allowEveryoneCreateDiscussion: boolean;
+  }
+  export interface PrepareSubmissionFileUploadRequestDto {
+    problemId: number;
+    content: {};
+    fileSize: number;
   }
   export interface ProblemContentSectionDto {
     sectionTitle: string;
@@ -925,6 +953,7 @@ declare namespace ApiTypes {
   namespace Responses {
     export type $200 = ApiTypes.GetHomepageSettingsResponseDto;
     export type $201 = ApiTypes.UpdateHomepageSettingsResponseDto;
+    export interface $403 {}
   }
   export interface RevokeUserSessionRequestDto {
     userId: number;

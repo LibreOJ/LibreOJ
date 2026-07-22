@@ -9,14 +9,7 @@ import style from "../common.module.less";
 import { appState } from "@/appState";
 
 import api from "@/api";
-import {
-  useLocalizer,
-  useFieldCheck,
-  useLoginOrRegisterNavigation,
-  CaptchaAction,
-  useCaptcha,
-  useNavigationChecked
-} from "@/utils/hooks";
+import { useLocalizer, useFieldCheck, useLoginOrRegisterNavigation, useNavigationChecked } from "@/utils/hooks";
 import toast from "@/utils/toast";
 import {
   isValidUsername,
@@ -46,9 +39,6 @@ let RegisterPage: React.FC = () => {
   useEffect(() => {
     appState.enterNewPage(_(".title"));
   }, [appState.locale]);
-
-  const registerCaptcha = useCaptcha(CaptchaAction.Register);
-  const emailVerificationCaptcha = useCaptcha(CaptchaAction.SendEmailVerificationCode);
 
   const [successMessage, setSuccessMessage] = useState<string>(null);
 
@@ -151,20 +141,13 @@ let RegisterPage: React.FC = () => {
       refRetypePasswordInput.current.focus();
       refRetypePasswordInput.current.select();
     } else {
-      const { requestCancelled, requestError, response } = await api.auth.register(
-        {
-          username: username,
-          email: email,
-          emailVerificationCode: emailVerificationCode,
-          password: password
-        },
-        registerCaptcha
-      );
+      const { requestError, response } = await api.auth.register({
+        username: username,
+        email: email,
+        emailVerificationCode: emailVerificationCode,
+        password: password
+      });
 
-      if (requestCancelled) {
-        setRegisterPending(false);
-        return;
-      }
       if (requestError) toast.error(requestError(_));
       else if (response.error) {
         switch (response.error) {
@@ -228,18 +211,11 @@ let RegisterPage: React.FC = () => {
       refEmailInput.current.focus();
       refEmailInput.current.select();
     } else {
-      const { requestCancelled, requestError, response } = await api.auth.sendEmailVerificationCode(
-        {
-          email: email,
-          type: "Register",
-          locale: appState.locale
-        },
-        emailVerificationCaptcha
-      );
-      if (requestCancelled) {
-        setSendEmailVerificationCodePending(false);
-        return;
-      }
+      const { requestError, response } = await api.auth.sendEmailVerificationCode({
+        email: email,
+        type: "Register",
+        locale: appState.locale
+      });
       if (requestError) toast.error(requestError(_));
       else if (response.error) toast.error(_(`.errors.${response.error}`, { errorMessage: response.errorMessage }));
       else {

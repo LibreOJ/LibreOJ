@@ -36,8 +36,8 @@ import {
   RevokeUserSessionResponseError
 } from "./dto";
 
-import { CaptchaAction } from "../captcha/captcha-action.enum";
-import { Captcha } from "../captcha/captcha.decorator";
+import { ProofOfWork } from "../proof-of-work/proof-of-work.decorator";
+import { ProofOfWorkAction } from "../proof-of-work/proof-of-work-action.enum";
 
 import { appGitRepoInfo } from "../main";
 import { ConfigService } from "../config/config.service";
@@ -102,7 +102,7 @@ export class AuthController {
     return result;
   }
 
-  @Captcha(CaptchaAction.Login)
+  @ProofOfWork(ProofOfWorkAction.Login)
   @Post("login")
   @ApiBearerAuth()
   @ApiOperation({
@@ -204,7 +204,7 @@ export class AuthController {
     return result;
   }
 
-  @Captcha(CaptchaAction.SendEmailVerificationCode)
+  @ProofOfWork(ProofOfWorkAction.SendEmailVerificationCode)
   @Post("sendEmailVerificationCode")
   @ApiBearerAuth()
   @ApiOperation({
@@ -286,7 +286,7 @@ export class AuthController {
     return {};
   }
 
-  @Captcha(CaptchaAction.Register)
+  @ProofOfWork(ProofOfWorkAction.Register)
   @Post("register")
   @ApiBearerAuth()
   @ApiOperation({
@@ -325,7 +325,7 @@ export class AuthController {
     };
   }
 
-  @Captcha(CaptchaAction.ResetPassword)
+  @ProofOfWork(ProofOfWorkAction.ResetPassword)
   @Post("resetPassword")
   @ApiBearerAuth()
   @ApiOperation({

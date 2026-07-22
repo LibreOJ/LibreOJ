@@ -70,8 +70,8 @@ import {
   ChangeProblemTypeResponseError
 } from "./dto";
 
-import { Captcha } from "../captcha/captcha.decorator";
-import { CaptchaAction } from "../captcha/captcha-action.enum";
+import { ProofOfWork } from "../proof-of-work/proof-of-work.decorator";
+import { ProofOfWorkAction } from "../proof-of-work/proof-of-work-action.enum";
 
 import { ConfigService } from "../config/config.service";
 import { UserService } from "../user/user.service";
@@ -209,7 +209,7 @@ export class ProblemController {
     };
   }
 
-  @Captcha(CaptchaAction.CreateProblem)
+  @ProofOfWork(ProofOfWorkAction.CreateProblem)
   @Post("createProblem")
   @ApiBearerAuth()
   @ApiOperation({
@@ -676,7 +676,7 @@ export class ProblemController {
     return {};
   }
 
-  @Captcha(CaptchaAction.AddProblemFile)
+  @ProofOfWork(ProofOfWorkAction.AddProblemFile)
   @Post("addProblemFile")
   @ApiBearerAuth()
   @ApiOperation({

@@ -8,6 +8,7 @@ import {
   IsBoolean,
   IsInt,
   Min,
+  Max,
   IsEmail,
   IsOptional,
   IsArray,
@@ -175,6 +176,18 @@ class SecurityConfigTencentCaptcha {
   readonly secretKey: string;
 }
 
+class SecurityConfigProofOfWork {
+  @IsInt()
+  @Min(1)
+  @Max(8)
+  readonly difficulty: number;
+
+  @IsInt()
+  @Min(1)
+  @Max(8)
+  readonly expensiveActionDifficulty: number;
+}
+
 class SecurityConfigCaptcha {
   @ValidateNested()
   @Type(() => SecurityConfigTurnstile)
@@ -205,6 +218,10 @@ class SecurityConfig {
   @ValidateNested()
   @Type(() => SecurityConfigCaptcha)
   readonly captcha: SecurityConfigCaptcha;
+
+  @ValidateNested()
+  @Type(() => SecurityConfigProofOfWork)
+  readonly proofOfWork: SecurityConfigProofOfWork;
 
   @ValidateNested()
   @Type(() => SecurityConfigCrossOrigin)
