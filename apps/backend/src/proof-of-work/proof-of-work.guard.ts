@@ -15,6 +15,8 @@ export class ProofOfWorkGuard implements CanActivate {
     const action = this.reflector.get<ProofOfWorkAction>(PROOF_OF_WORK_ACTION_METADATA, context.getHandler());
     if (!action) throw new Error("ProofOfWorkGuard requires a proof-of-work action");
 
+    if (await request.session?.userHasSkipRecaptchaPrivilege()) return true;
+
     const verified = await this.proofOfWorkService.verify(request.get("X-Proof-Of-Work"), action, {
       remoteIp: request.ip,
       sessionId: request.session?.sessionId,
