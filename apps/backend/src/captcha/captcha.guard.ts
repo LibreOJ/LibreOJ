@@ -15,7 +15,7 @@ export class CaptchaGuard implements CanActivate {
     const action = this.reflector.get<CaptchaAction>(CAPTCHA_ACTION_METADATA, context.getHandler());
     if (!action) throw new Error("CaptchaGuard requires a captcha action");
 
-    if (!this.captchaService.isConfigured || (await request.session?.userCanSkipCaptcha())) return true;
+    if (!this.captchaService.isConfigured || (await request.session?.userHasSkipRecaptchaPrivilege())) return true;
 
     const verified = await this.captchaService.verify(request.get("X-Captcha-Result"), action, request.ip);
     if (!verified) throw new ForbiddenException("Captcha verification failed");

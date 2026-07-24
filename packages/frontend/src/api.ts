@@ -151,9 +151,11 @@ export function createPostApi<BodyType, ResponseType>(path: string, options: Pos
     try {
       if (acquisition && acquisition.status === "cancelled") return { requestCancelled: true };
 
-      let proofOfWorkResult: ProofOfWorkResult;
+      let proofOfWorkResult: ProofOfWorkResult | undefined;
       try {
-        if (options.proofOfWorkAction) proofOfWorkResult = await acquireProofOfWork(options.proofOfWorkAction);
+        if (options.proofOfWorkAction && !appState.currentUserHasPrivilege("SkipRecaptcha")) {
+          proofOfWorkResult = await acquireProofOfWork(options.proofOfWorkAction);
+        }
       } catch (error) {
         console.error("Proof-of-work acquisition failed", error);
         if (error instanceof ProofOfWorkAcquisitionError) return { requestError: error.requestError };

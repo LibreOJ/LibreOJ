@@ -214,7 +214,8 @@ return {
       },
       SkipRecaptcha: {
         name: "[TBT] Skip human verification",
-        notes: "[TBT] Submit protected requests without human verification. Useful for robots and virtual judges."
+        notes:
+          "[TBT] Submit protected requests without human verification or proof of work. Useful for robots and virtual judges."
       }
     },
     admin_only: "[TBT] Only admins can change user's privileges.",
