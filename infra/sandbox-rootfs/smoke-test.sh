@@ -202,10 +202,12 @@ expect_output OK mono fsharp.exe
 
 cat > testlib.cpp <<'EOF'
 #include <testlib.h>
-#include <iostream>
-int main() { std::cout << "OK\n"; }
+int main(int argc, char *argv[]) {
+    registerTestlibCmd(argc, argv);
+    quitf(_ok, "OK");
+}
 EOF
 g++ -std=c++20 testlib.cpp -o testlib
-expect_output OK ./testlib
+expect_output "ok OK" bash -c './testlib /dev/null /dev/null /dev/null 2>&1'
 
 echo "LibreOJ rootfs smoke test passed"

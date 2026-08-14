@@ -63,7 +63,11 @@ public:
 
                 dup2(pipeFd[1], STDERR_FILENO);
                 close(pipeFd[0]);
-                registerTestlib(3, "/dev/null", outputFile.c_str(), answerFile.c_str());
+                // registerTestlib(3, ...) omitted argv[0], but registerTestlibCmd requires it.
+                char programName[] = "";
+                char inputFile[] = "/dev/null";
+                char *checkerArgv[] = {programName, inputFile, outputFile.data(), answerFile.data()};
+                registerTestlibCmd(4, checkerArgv);
                 checkerFunction();
                 
                 exit(0); // Won't reach here
