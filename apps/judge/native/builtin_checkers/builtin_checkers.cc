@@ -69,8 +69,7 @@ public:
                 char *checkerArgv[] = {programName, inputFile, outputFile.data(), answerFile.data()};
                 registerTestlibCmd(4, checkerArgv);
                 checkerFunction();
-                
-                exit(0); // Won't reach here
+                quitf(_fail, "Builtin checker returned without reporting a result");
             }
 
             // Parent
@@ -117,6 +116,10 @@ void runBuiltinChecker(const Napi::CallbackInfo &info, std::function<void ()> ch
 }
 
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
+    // testlib is registered only in forked checker workers, while its default
+    // finalizer also runs in the Node host process and would force exit code 3.
+    disableFinalizeGuard();
+
     exports.Set("runBuiltinChecker", Napi::Function::New(env, [] (const Napi::CallbackInfo &info) {
         const auto config = info[2].As<Napi::Object>();
         auto type = config.Get("type").As<Napi::String>().Utf8Value();

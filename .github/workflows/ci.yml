@@ -99,6 +99,8 @@ jobs:
       - if: steps.changes.outputs.native == 'true'
         run: pnpm build:native
       - if: steps.changes.outputs.native == 'true'
+        run: pnpm --filter @libreoj/judge test:native
+      - if: steps.changes.outputs.native == 'true'
         run: |
           sudo systemd-run \
             --wait \

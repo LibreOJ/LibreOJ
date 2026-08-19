@@ -13,11 +13,12 @@
   "scripts": {
     "build": "tsc --noEmit -p tsconfig.json",
     "build:native": "cmake-js compile",
-    "check-format": "prettier --check \"src/**/*.ts\"",
+    "check-format": "prettier --check \"src/**/*.ts\" \"native/**/*.mjs\"",
     "check-types": "tsc --noEmit -p tsconfig.json",
-    "format": "prettier --write \"src/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"native/**/*.mjs\"",
     "lint": "eslint src --ext ts --cache",
-    "start": "node -r @swc-node/register index.mjs"
+    "start": "node -r @swc-node/register index.mjs",
+    "test:native": "node native/builtin_checkers/smoke-test.mjs"
   },
   "config": {
     "commitizen": {
