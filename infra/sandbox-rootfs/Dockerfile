@@ -91,12 +91,11 @@ RUN unzip -q /tmp/kotlin.zip -d /opt \
       /tmp/python3.9.tar.gz /tmp/python3.10.tar.gz /tmp/rustc /tmp/rust-std \
       /tmp/rustc.tar.xz /tmp/rust-std.tar.xz
 
-ADD --checksum=sha256:4bd5dfda34dd379d81fb01d44f6d69af29e9c8774c038f0782372c873ab3f5af \
-  https://raw.githubusercontent.com/MikeMirzayanov/testlib/e6cf1e23fdd81a47c2ceb924a547f3919efd6267/testlib.h /usr/include/testlib.h
+ADD --checksum=sha256:bb323e3c89285214966076e0d23d5a295c5f6126da7ff198c1276ddb95ecb1a0 \
+  https://raw.githubusercontent.com/MikeMirzayanov/testlib/1e4e8a24c79c6bad3becbdb5a332ffc352b7d5dd/testlib.h /usr/include/testlib.h
 
-RUN sed -i '/#include <fcntl.h>/a #include <cstdint>' /usr/include/testlib.h \
-    && chmod 0644 /usr/include/testlib.h \
-    && printf '%s  %s\n' 9ef48f43e9ada7b17eeee316137934208a3778ca1f28379604b7170c1e511c4e /usr/include/testlib.h | sha256sum --check
+RUN chmod 0644 /usr/include/testlib.h \
+    && printf '%s  %s\n' bb323e3c89285214966076e0d23d5a295c5f6126da7ff198c1276ddb95ecb1a0 /usr/include/testlib.h | sha256sum --check
 
 COPY infra/sandbox-rootfs/csc /usr/local/bin/csc
 COPY infra/sandbox-rootfs/fsharpc /usr/local/bin/fsharpc
